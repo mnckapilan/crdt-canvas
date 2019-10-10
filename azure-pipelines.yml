@@ -20,7 +20,6 @@ steps:
     xcWorkspacePath: 'Canvas.xcworkspace'
     useXcpretty: 'false'
     xcodeVersion: 'default' # Options: 8, 9, 10, default, specifyPath
-    useXcpretty: 'false' # Makes it easier to diagnose build failures
 
 - script: /usr/local/bin/pod install
   displayName: 'pod install using a script'
