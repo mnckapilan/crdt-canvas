@@ -53,7 +53,7 @@
 			isa = PBXGroup;
 			children = (
 				C180D163234FCE9C0035ECD3 /* Canvas.bundle.js */,
-				DAB023A62278AC4C005102E6 /* PencilKitDraw */,
+				DAB023A62278AC4C005102E6 /* Canvas */,
 				DAB023A52278AC4C005102E6 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -66,7 +66,7 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		DAB023A62278AC4C005102E6 /* PencilKitDraw */ = {
+		DAB023A62278AC4C005102E6 /* Canvas */ = {
 			isa = PBXGroup;
 			children = (
 				DAB023A72278AC4C005102E6 /* AppDelegate.swift */,
@@ -82,7 +82,7 @@
 				DAB023B02278AC4E005102E6 /* LaunchScreen.storyboard */,
 				DAB023B32278AC4E005102E6 /* Info.plist */,
 			);
-			path = PencilKitDraw;
+			path = Canvas;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
