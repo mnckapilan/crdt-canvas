@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		C180D162234FCA150035ECD3 /* AutomergeJavascript.swift in Sources */ = {isa = PBXBuildFile; fileRef = C180D161234FCA150035ECD3 /* AutomergeJavascript.swift */; };
+		C180D164234FCE9C0035ECD3 /* Canvas.bundle.js in Resources */ = {isa = PBXBuildFile; fileRef = C180D163234FCE9C0035ECD3 /* Canvas.bundle.js */; };
 		DA4FD8922278E5F5000FE6C3 /* ThumbnailCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA4FD8912278E5F5000FE6C3 /* ThumbnailCollectionViewController.swift */; };
 		DA4FD8AE2278F074000FE6C3 /* DataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA4FD8AD2278F074000FE6C3 /* DataModel.swift */; };
 		DA67042F22946742004011A1 /* PencilKitDrawNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DADCBC1A2290DEB300236FA7 /* PencilKitDrawNavigationController.swift */; };
@@ -20,6 +22,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		C180D161234FCA150035ECD3 /* AutomergeJavascript.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AutomergeJavascript.swift; sourceTree = "<group>"; };
+		C180D163234FCE9C0035ECD3 /* Canvas.bundle.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; name = Canvas.bundle.js; path = Javascript/dist/Canvas.bundle.js; sourceTree = "<group>"; };
 		DA4FD8912278E5F5000FE6C3 /* ThumbnailCollectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThumbnailCollectionViewController.swift; sourceTree = "<group>"; };
 		DA4FD8AD2278F074000FE6C3 /* DataModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataModel.swift; sourceTree = "<group>"; };
 		DAB023A42278AC4C005102E6 /* Canvas.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Canvas.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -48,6 +52,7 @@
 		DAB0239B2278AC4C005102E6 = {
 			isa = PBXGroup;
 			children = (
+				C180D163234FCE9C0035ECD3 /* Canvas.bundle.js */,
 				DAB023A62278AC4C005102E6 /* PencilKitDraw */,
 				DAB023A52278AC4C005102E6 /* Products */,
 			);
@@ -69,6 +74,7 @@
 				DADCBC1A2290DEB300236FA7 /* PencilKitDrawNavigationController.swift */,
 				DA4FD8912278E5F5000FE6C3 /* ThumbnailCollectionViewController.swift */,
 				DAC481D4227A1AA10076D01F /* ThumbnailCollectionViewCell.swift */,
+				C180D161234FCA150035ECD3 /* AutomergeJavascript.swift */,
 				DAB023A92278AC4C005102E6 /* DrawingViewController.swift */,
 				DAB860E8227CE6DA009C9B1D /* SignatureViewController.swift */,
 				DAB023AB2278AC4C005102E6 /* Main.storyboard */,
@@ -140,6 +146,7 @@
 				DAB023B22278AC4E005102E6 /* LaunchScreen.storyboard in Resources */,
 				DAB023AF2278AC4E005102E6 /* Assets.xcassets in Resources */,
 				DAB023AD2278AC4C005102E6 /* Main.storyboard in Resources */,
+				C180D164234FCE9C0035ECD3 /* Canvas.bundle.js in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -154,6 +161,7 @@
 				DA67042F22946742004011A1 /* PencilKitDrawNavigationController.swift in Sources */,
 				DAB023A82278AC4C005102E6 /* AppDelegate.swift in Sources */,
 				DA4FD8922278E5F5000FE6C3 /* ThumbnailCollectionViewController.swift in Sources */,
+				C180D162234FCA150035ECD3 /* AutomergeJavascript.swift in Sources */,
 				DAC481D5227A1AA10076D01F /* ThumbnailCollectionViewCell.swift in Sources */,
 				DAB860E9227CE6DA009C9B1D /* SignatureViewController.swift in Sources */,
 				DA4FD8AE2278F074000FE6C3 /* DataModel.swift in Sources */,
