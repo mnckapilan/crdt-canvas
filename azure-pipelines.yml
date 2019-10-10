@@ -11,10 +11,11 @@ pool:
 
 steps:
 - task: Xcode@5
+  displayName: 'Build the app using Xcode'
   inputs:
     actions: 'build'
-    scheme: ''
     sdk: 'iphoneos'
-    configuration: 'Release'
+    scheme: 'Canvas'
+    configuration: 'Debug'
     xcWorkspacePath: '**/*.xcodeproj/project.xcworkspace'
-    xcodeVersion: 'default' # Options: 8, 9, 10, default, specifyPath
+    useXcpretty: 'false'
