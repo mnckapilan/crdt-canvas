@@ -20,9 +20,3 @@ steps:
     xcWorkspacePath: 'Canvas.xcworkspace'
     useXcpretty: 'false'
     xcodeVersion: 'default' # Options: 8, 9, 10, default, specifyPath
-
-- script: /usr/local/bin/pod install
-  displayName: 'pod install using a script'
-
-- task: CocoaPods@0
-  displayName: 'pod install using the CocoaPods task with defaults'
