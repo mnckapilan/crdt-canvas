@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		748F8654B75C0865EC6D65F8 /* Pods_Canvas.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 374A8B96ED43D61DEA3F7AA5 /* Pods_Canvas.framework */; };
+		C1C1C0F32350E3E2006DED27 /* AutomergeJavaScript.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1C1C0F22350E3E2006DED27 /* AutomergeJavaScript.swift */; };
+		C1C1C0F52350E404006DED27 /* Canvas.bundle.js in Resources */ = {isa = PBXBuildFile; fileRef = C1C1C0F42350E404006DED27 /* Canvas.bundle.js */; };
 		E0BE81FB2350C3A100D93BF1 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0BE81FA2350C3A100D93BF1 /* AppDelegate.swift */; };
 		E0BE81FD2350C3A100D93BF1 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0BE81FC2350C3A100D93BF1 /* SceneDelegate.swift */; };
 		E0BE82002350C3A100D93BF1 /* Canvas.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = E0BE81FE2350C3A100D93BF1 /* Canvas.xcdatamodeld */; };
@@ -20,6 +22,8 @@
 /* Begin PBXFileReference section */
 		374A8B96ED43D61DEA3F7AA5 /* Pods_Canvas.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Canvas.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		598B5FE35F8CA9243267CB9E /* Pods-Canvas.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Canvas.release.xcconfig"; path = "Target Support Files/Pods-Canvas/Pods-Canvas.release.xcconfig"; sourceTree = "<group>"; };
+		C1C1C0F22350E3E2006DED27 /* AutomergeJavaScript.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AutomergeJavaScript.swift; sourceTree = "<group>"; };
+		C1C1C0F42350E404006DED27 /* Canvas.bundle.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; name = Canvas.bundle.js; path = Javascript/dist/Canvas.bundle.js; sourceTree = SOURCE_ROOT; };
 		E0BE81F72350C3A100D93BF1 /* Canvas.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Canvas.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E0BE81FA2350C3A100D93BF1 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		E0BE81FC2350C3A100D93BF1 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -85,6 +89,8 @@
 				E0BE81FA2350C3A100D93BF1 /* AppDelegate.swift */,
 				E0BE81FC2350C3A100D93BF1 /* SceneDelegate.swift */,
 				E0BE82012350C3A100D93BF1 /* ContentView.swift */,
+				C1C1C0F22350E3E2006DED27 /* AutomergeJavaScript.swift */,
+				C1C1C0F42350E404006DED27 /* Canvas.bundle.js */,
 				E0BE82032350C3A300D93BF1 /* Assets.xcassets */,
 				E0BE82082350C3A300D93BF1 /* LaunchScreen.storyboard */,
 				E0BE820B2350C3A300D93BF1 /* Info.plist */,
@@ -164,6 +170,7 @@
 				E0BE820A2350C3A300D93BF1 /* LaunchScreen.storyboard in Resources */,
 				E0BE82072350C3A300D93BF1 /* Preview Assets.xcassets in Resources */,
 				E0BE82042350C3A300D93BF1 /* Assets.xcassets in Resources */,
+				C1C1C0F52350E404006DED27 /* Canvas.bundle.js in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -199,6 +206,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C1C1C0F32350E3E2006DED27 /* AutomergeJavaScript.swift in Sources */,
 				E0BE81FB2350C3A100D93BF1 /* AppDelegate.swift in Sources */,
 				E0BE82002350C3A100D93BF1 /* Canvas.xcdatamodeld in Sources */,
 				E0BE82022350C3A100D93BF1 /* ContentView.swift in Sources */,
