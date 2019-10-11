@@ -131,7 +131,7 @@
 			attributes = {
 				LastSwiftUpdateCheck = 1110;
 				LastUpgradeCheck = 1110;
-				ORGANIZATIONNAME = "soft-eng-17";
+				ORGANIZATIONNAME = jackmorrison;
 				TargetAttributes = {
 					E0BE81F62350C3A100D93BF1 = {
 						CreatedOnToolsVersion = 11.1;
@@ -348,7 +348,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.softeng17.Canvas;
+				PRODUCT_BUNDLE_IDENTIFIER = com.jm.PKTest;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -369,7 +369,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.softeng17.Canvas;
+				PRODUCT_BUNDLE_IDENTIFIER = com.jm.PKTest;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
