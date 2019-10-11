@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		C11F55CA23509AE500740784 /* PencilKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C11F55C923509AE500740784 /* PencilKit.framework */; };
 		C180D162234FCA150035ECD3 /* AutomergeJavascript.swift in Sources */ = {isa = PBXBuildFile; fileRef = C180D161234FCA150035ECD3 /* AutomergeJavascript.swift */; };
 		C180D164234FCE9C0035ECD3 /* Canvas.bundle.js in Resources */ = {isa = PBXBuildFile; fileRef = C180D163234FCE9C0035ECD3 /* Canvas.bundle.js */; };
 		DA4FD8922278E5F5000FE6C3 /* ThumbnailCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA4FD8912278E5F5000FE6C3 /* ThumbnailCollectionViewController.swift */; };
@@ -26,6 +27,7 @@
 		049EFB545DF495A04F203BBD /* Pods-Canvas.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Canvas.release.xcconfig"; path = "Pods/Target Support Files/Pods-Canvas/Pods-Canvas.release.xcconfig"; sourceTree = "<group>"; };
 		7DB0959C4FEAE3BB87AA7735 /* Pods-Canvas.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Canvas.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Canvas/Pods-Canvas.debug.xcconfig"; sourceTree = "<group>"; };
 		8E5F5F4351331F15E46FAD38 /* Pods_Canvas.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Canvas.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		C11F55C923509AE500740784 /* PencilKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = PencilKit.framework; path = System/Library/Frameworks/PencilKit.framework; sourceTree = SDKROOT; };
 		C180D161234FCA150035ECD3 /* AutomergeJavascript.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AutomergeJavascript.swift; sourceTree = "<group>"; };
 		C180D163234FCE9C0035ECD3 /* Canvas.bundle.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; name = Canvas.bundle.js; path = Javascript/dist/Canvas.bundle.js; sourceTree = "<group>"; };
 		DA4FD8912278E5F5000FE6C3 /* ThumbnailCollectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThumbnailCollectionViewController.swift; sourceTree = "<group>"; };
@@ -47,6 +49,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C11F55CA23509AE500740784 /* PencilKit.framework in Frameworks */,
 				EBE31D161BBB4DA656DAC9C2 /* Pods_Canvas.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -57,6 +60,7 @@
 		43BF682C7DBEA3BADA6667E0 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				C11F55C923509AE500740784 /* PencilKit.framework */,
 				8E5F5F4351331F15E46FAD38 /* Pods_Canvas.framework */,
 			);
 			name = Frameworks;
