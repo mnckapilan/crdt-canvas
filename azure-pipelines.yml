@@ -10,6 +10,7 @@ pool:
   vmImage: 'macos-latest'
 
 steps:
+- script: cd Javascript ; npm run build ; cd ..
 - task: Xcode@5
   displayName: 'Build the app using Xcode'
   inputs:
