@@ -10,9 +10,9 @@ If any changes are made in the Javascript folder, run `npm run build` in the Jav
 
 
 ## Development Team
-- Kapilan M
-- Jack Morrison 
-- Serene Chongtrakul
-- Hashan Punchihewa
-- Hugo Mayo
-- Supervised by Holger Pirk
+- [Kapilan M](https://kapilanm.com/)
+- [Jack Morrison](https://jackmorrison.xyz/)
+- [Serene Chongtrakul](https://www.linkedin.com/in/serenechongtrakul/)
+- [Hashan Punchihewa](https://hashanp.xyz/)
+- [Hugo Mayo](https://www.linkedin.com/in/hugo-mayo17337/)
+- Supervised by [Holger Pirk](https://www.doc.ic.ac.uk/~hlgr/)
