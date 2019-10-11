@@ -17,6 +17,6 @@ steps:
     sdk: 'iphoneos'
     scheme: 'Canvas'
     configuration: 'Debug'
-    xcWorkspacePath: '**/*.xcodeproj/project.xcworkspace'
-    useXcpretty: 'false'
+    xcWorkspacePath: 'Canvas.xcworkspace'
+    useXcpretty: 'false
     xcodeVersion: 'default' # Options: 8, 9, 10, default, specifyPath
