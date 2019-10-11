@@ -14,15 +14,9 @@ steps:
   displayName: 'Build the app using Xcode'
   inputs:
     actions: 'build'
-    sdk: 'iphoneos'
+    sdk: 'iphonesimulator'
     scheme: 'Canvas'
     configuration: 'Debug'
     xcWorkspacePath: 'Canvas.xcworkspace'
     useXcpretty: 'false'
-    xcodeVersion: 'default' # Options: 8, 9, 10, default, specifyPath
-
-- script: /usr/local/bin/pod install
-  displayName: 'pod install using a script'
-
-- task: CocoaPods@0
-  displayName: 'pod install using the CocoaPods task with defaults'
+    xcodeVersion: '11' # Options: 8, 9, 10, default, specifyPath
