@@ -364,7 +364,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 4NW5AU75YZ;
-				INFOPLIST_FILE = PencilKitDraw/Info.plist;
+				INFOPLIST_FILE = "$(SRCROOT)/Canvas/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -386,7 +386,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 4NW5AU75YZ;
-				INFOPLIST_FILE = PencilKitDraw/Info.plist;
+				INFOPLIST_FILE = "$(SRCROOT)/Canvas/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
