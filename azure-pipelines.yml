@@ -14,9 +14,9 @@ steps:
   displayName: 'Build the app using Xcode'
   inputs:
     actions: 'build'
-    sdk: 'iphoneos'
+    sdk: 'iphonesimulator13.1'
     scheme: 'Canvas'
     configuration: 'Debug'
     xcWorkspacePath: 'Canvas.xcworkspace'
     useXcpretty: 'false'
-    xcodeVersion: 'default' # Options: 8, 9, 10, default, specifyPath
+    xcodeVersion: '11.1' # Options: 8, 9, 10, default, specifyPath
