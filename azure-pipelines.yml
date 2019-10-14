@@ -11,7 +11,9 @@ pool:
 
 steps:
 - script: cd Javascript ; npm install ; cd ..
+  displayName: Install NPM Dependencies
 - script: cd Javascript ; npm run build ; cd ..
+  displayName: Run Webpack Bundle Script
 - task: Xcode@5
   displayName: 'Build the app using Xcode'
   inputs:

@@ -9,9 +9,15 @@
 import UIKit
 
 class DrawView: UIView {
+    
+    @IBOutlet weak var mainImageView: UIImageView!
+    @IBOutlet weak var tempImageView: UIImageView!
 
-    var lines: [Line] = []
-    var lastPoint: CGPoint!
+    var lines: [UIBezierPath] = []
+    var lastPath: UIBezierPath!
+    var count: Int = 0
+    var prevPoint: CGPoint!
+    var pPrevPoint: CGPoint!
     var drawColour = UIColor.white.cgColor
     
     required init?(coder aDecoder: NSCoder) {
@@ -20,32 +26,50 @@ class DrawView: UIView {
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        lastPoint = Array(touches)[0].location(in: self)
+        print("start")
+        lastPath = UIBezierPath.init()
+        lastPath.move(to: Array(touches)[0].location(in: self))
+        lastPath.lineCapStyle = CGLineCap.round
+        lastPath.lineWidth = 3
+        count = -1
     }
     
     override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
-        let newPoint = Array(touches)[0].location(in: self)
-        lines.append(Line(start: lastPoint, end: newPoint))
-        lastPoint = newPoint
-        
+        print("move")
+        count = count + 1
+        let point = Array(touches)[0].location(in: self)
+        if (count % 3 == 2) {
+            lastPath.addCurve(to: point, controlPoint1: pPrevPoint, controlPoint2: prevPoint)
+        } else if (count % 3 == 0) {
+            pPrevPoint = point
+        } else if (count % 3 == 1) {
+            prevPoint = point
+        }
+                
         self.setNeedsDisplay()
     }
     
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
-        lastPoint = nil
+        print("end")
+        lines.append(lastPath)
+        lastPath = nil
     }
     
     override func draw(_ rect: CGRect) {
-        let context = UIGraphicsGetCurrentContext()
-        context?.beginPath()
-        for line in lines {
-            context?.move(to: line.start)
-            context?.addLine(to: line.end)
+        print("draw")
+
+        guard let context = UIGraphicsGetCurrentContext() else {
+            return
         }
-        context?.setLineCap(CGLineCap.round)
-        context?.setLineWidth(5)
-        context?.setStrokeColor(drawColour)
-        context?.strokePath()
+        context.beginPath()
+        context.setStrokeColor(drawColour)
+        for line in lines {
+            context.addPath(line.cgPath)
+        }
+        if (lastPath != nil) {
+            context.addPath(lastPath.cgPath)
+        }
+        context.strokePath()
     }
     
     @IBAction func colourChosen(_ sender: UIButton) {
@@ -53,6 +77,10 @@ class DrawView: UIView {
             return
         }
         drawColour = chosen.colour.cgColor
+    }
+    
+    @IBAction func clearCanvas(_ sender: Any) {
+      mainImageView.image = nil
     }
 
 }
