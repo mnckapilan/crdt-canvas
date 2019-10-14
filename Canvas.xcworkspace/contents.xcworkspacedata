@@ -2,6 +2,9 @@
 <Workspace
    version = "1.0">
    <FileRef
+      location = "group:/Users/jackmorrison/Documents/Xcode/crdt-canvas/Canvas/ViewController.swift">
+   </FileRef>
+   <FileRef
       location = "group:Canvas.xcodeproj">
    </FileRef>
    <FileRef
