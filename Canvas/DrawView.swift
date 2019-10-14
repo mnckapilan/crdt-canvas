@@ -12,6 +12,7 @@ class DrawView: UIView {
 
     var lines: [Line] = []
     var lastPoint: CGPoint!
+    var drawColour = UIColor.white.cgColor
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
@@ -43,8 +44,18 @@ class DrawView: UIView {
         }
         context?.setLineCap(CGLineCap.round)
         context?.setLineWidth(5)
-        context?.setStrokeColor(UIColor.orange.cgColor)
+        print(drawColour)
+        context?.setStrokeColor(drawColour)
         context?.strokePath()
+    }
+    
+    @IBAction func colourChosen(_ sender: UIButton) {
+        guard let chosen = Colour(tag: sender.tag) else {
+            print("oops")
+            return
+        }
+        print(chosen)
+        drawColour = chosen.colour.cgColor
     }
 
 }
