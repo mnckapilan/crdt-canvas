@@ -213,7 +213,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "WORKING_DIR=$(pwd)\n# temporarily switch to the JavaScript dir so we can run npm commands\ncd $SRCROOT\"/JavaScript\"\n# build the JavaScript bundle\nnpm run build\n# if non-zero exit code, exit and warn the user\nif [ $? -ne 0 ]; then\n        echo \"failure in 'Run Script' phase - building JS bundle\"\n        cd $WORKING_DIR\n        exit 1\nfi\n# go back to the working directory\ncd $WORKING_DIR\n";
+			shellScript = "WORKING_DIR=$(pwd)\n# temporarily switch to the JavaScript dir so we can run npm commands\ncd $SRCROOT\"/Javascript\"\n# build the JavaScript bundle\nnpm run build\n# if non-zero exit code, exit and warn the user\nif [ $? -ne 0 ]; then\n        echo \"failure in 'Run Script' phase - building JS bundle\"\n        cd $WORKING_DIR\n        exit 1\nfi\n# go back to the working directory\ncd $WORKING_DIR\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
