@@ -27,11 +27,13 @@
                                 <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                             </view>
                             <button opaque="NO" tag="1" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="dfW-sZ-Tsp">
-                                <rect key="frame" x="20" y="51.5" width="50" height="50"/>
+                                <rect key="frame" x="20" y="50.5" width="50" height="50"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" name=".AppleSystemUIFont" family=".AppleSystemUIFont" pointSize="11"/>
                                 <color key="tintColor" systemColor="systemBlueColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                <state key="normal" backgroundImage="pencil.circle.fill" catalog="system"/>
+                                <state key="normal" backgroundImage="pencil.circle.fill" catalog="system">
+                                    <color key="titleShadowColor" cocoaTouchSystemColor="darkTextColor"/>
+                                </state>
                                 <connections>
                                     <action selector="colourChosen:" destination="Nsp-Ud-L6L" eventType="touchUpInside" id="SkC-d3-hTd"/>
                                 </connections>
@@ -40,7 +42,9 @@
                                 <rect key="frame" x="78" y="50.5" width="50" height="50"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="tintColor" systemColor="systemGreenColor" red="0.20392156859999999" green="0.78039215689999997" blue="0.34901960780000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                <state key="normal" backgroundImage="pencil.circle.fill" catalog="system"/>
+                                <state key="normal" backgroundImage="pencil.circle.fill" catalog="system">
+                                    <color key="titleShadowColor" cocoaTouchSystemColor="darkTextColor"/>
+                                </state>
                                 <connections>
                                     <action selector="colourChosen:" destination="Nsp-Ud-L6L" eventType="touchUpInside" id="7oa-n3-lOA"/>
                                 </connections>
@@ -49,18 +53,33 @@
                                 <rect key="frame" x="136" y="50.5" width="50" height="50"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="tintColor" systemColor="systemYellowColor" red="1" green="0.80000000000000004" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                <state key="normal" backgroundImage="pencil.circle.fill" catalog="system"/>
+                                <state key="normal" backgroundImage="pencil.circle.fill" catalog="system">
+                                    <color key="titleShadowColor" cocoaTouchSystemColor="darkTextColor"/>
+                                </state>
                                 <connections>
                                     <action selector="colourChosen:" destination="Nsp-Ud-L6L" eventType="touchUpInside" id="i9t-0y-SdW"/>
                                 </connections>
                             </button>
                             <button opaque="NO" tag="4" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="yvS-i9-QLe">
-                                <rect key="frame" x="194" y="49.5" width="50" height="50"/>
+                                <rect key="frame" x="194" y="50.5" width="50" height="50"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="tintColor" systemColor="systemPinkColor" red="1" green="0.1764705882" blue="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                <state key="normal" backgroundImage="pencil.circle.fill" catalog="system"/>
+                                <state key="normal" backgroundImage="pencil.circle.fill" catalog="system">
+                                    <color key="titleShadowColor" cocoaTouchSystemColor="darkTextColor"/>
+                                </state>
                                 <connections>
                                     <action selector="colourChosen:" destination="Nsp-Ud-L6L" eventType="touchUpInside" id="tvx-tv-0c7"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" tag="5" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="z2C-wA-q3M">
+                                <rect key="frame" x="251" y="50" width="50" height="50"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="tintColor" cocoaTouchSystemColor="lightTextColor"/>
+                                <state key="normal" backgroundImage="pencil.circle.fill" catalog="system">
+                                    <color key="titleShadowColor" cocoaTouchSystemColor="darkTextColor"/>
+                                </state>
+                                <connections>
+                                    <action selector="colourChosen:" destination="Nsp-Ud-L6L" eventType="touchUpInside" id="RX7-N8-vHS"/>
                                 </connections>
                             </button>
                         </subviews>

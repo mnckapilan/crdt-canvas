@@ -44,17 +44,14 @@ class DrawView: UIView {
         }
         context?.setLineCap(CGLineCap.round)
         context?.setLineWidth(5)
-        print(drawColour)
         context?.setStrokeColor(drawColour)
         context?.strokePath()
     }
     
     @IBAction func colourChosen(_ sender: UIButton) {
         guard let chosen = Colour(tag: sender.tag) else {
-            print("oops")
             return
         }
-        print(chosen)
         drawColour = chosen.colour.cgColor
     }
 

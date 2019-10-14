@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		748F8654B75C0865EC6D65F8 /* Pods_Canvas.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 374A8B96ED43D61DEA3F7AA5 /* Pods_Canvas.framework */; };
-		B20695E72354C72000380182 /* ColourView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B20695E62354C72000380182 /* ColourView.swift */; };
 		B20695EB2354D81800380182 /* Colour.swift in Sources */ = {isa = PBXBuildFile; fileRef = B20695EA2354D81800380182 /* Colour.swift */; };
 		C1C1C0F32350E3E2006DED27 /* AutomergeJavaScript.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1C1C0F22350E3E2006DED27 /* AutomergeJavaScript.swift */; };
 		C1C1C0F52350E404006DED27 /* Canvas.bundle.js in Resources */ = {isa = PBXBuildFile; fileRef = C1C1C0F42350E404006DED27 /* Canvas.bundle.js */; };
@@ -26,7 +25,6 @@
 /* Begin PBXFileReference section */
 		374A8B96ED43D61DEA3F7AA5 /* Pods_Canvas.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Canvas.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		598B5FE35F8CA9243267CB9E /* Pods-Canvas.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Canvas.release.xcconfig"; path = "Target Support Files/Pods-Canvas/Pods-Canvas.release.xcconfig"; sourceTree = "<group>"; };
-		B20695E62354C72000380182 /* ColourView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColourView.swift; sourceTree = "<group>"; };
 		B20695EA2354D81800380182 /* Colour.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Colour.swift; sourceTree = "<group>"; };
 		C1C1C0F22350E3E2006DED27 /* AutomergeJavaScript.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AutomergeJavaScript.swift; sourceTree = "<group>"; };
 		C1C1C0F42350E404006DED27 /* Canvas.bundle.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; name = Canvas.bundle.js; path = Javascript/dist/Canvas.bundle.js; sourceTree = SOURCE_ROOT; };
@@ -101,7 +99,6 @@
 				E0BE82032350C3A300D93BF1 /* Assets.xcassets */,
 				E0BE82082350C3A300D93BF1 /* LaunchScreen.storyboard */,
 				E0EEA231235495350076D540 /* Main.storyboard */,
-				B20695E62354C72000380182 /* ColourView.swift */,
 				B20695EA2354D81800380182 /* Colour.swift */,
 				E0BE820B2350C3A300D93BF1 /* Info.plist */,
 				E0BE81FE2350C3A100D93BF1 /* Canvas.xcdatamodeld */,
@@ -212,7 +209,6 @@
 			files = (
 				C1C1C0F32350E3E2006DED27 /* AutomergeJavaScript.swift in Sources */,
 				E0EEA22E235494C10076D540 /* DrawView.swift in Sources */,
-				B20695E72354C72000380182 /* ColourView.swift in Sources */,
 				B20695EB2354D81800380182 /* Colour.swift in Sources */,
 				E0BE81FB2350C3A100D93BF1 /* AppDelegate.swift in Sources */,
 				E0BE82002350C3A100D93BF1 /* Canvas.xcdatamodeld in Sources */,
