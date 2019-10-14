@@ -18,7 +18,6 @@ enum Colour {
     case white
   
     init?(tag: Int) {
-        print(tag)
         switch tag {
         case 1:
             self = .blue

@@ -80,7 +80,9 @@ class DrawView: UIView {
     }
     
     @IBAction func clearCanvas(_ sender: Any) {
-      mainImageView.image = nil
+        print("REE")
+        lines = []
+        self.setNeedsDisplay()
     }
 
 }
