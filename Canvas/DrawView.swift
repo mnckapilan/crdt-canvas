@@ -9,11 +9,8 @@
 import UIKit
 
 class DrawView: UIView {
-    
-    @IBOutlet weak var mainImageView: UIImageView!
-    @IBOutlet weak var tempImageView: UIImageView!
 
-    var lines: [UIBezierPath] = []
+    var lines:[(bzPath: UIBezierPath, colour: CGColor)] = []
     var lastPath: UIBezierPath!
     var count: Int = 0
     var prevPoint: CGPoint!
@@ -45,13 +42,13 @@ class DrawView: UIView {
         } else if (count % 3 == 1) {
             prevPoint = point
         }
-                
+
         self.setNeedsDisplay()
     }
     
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
         print("end")
-        lines.append(lastPath)
+        lines.append((bzPath: lastPath, colour: drawColour))
         lastPath = nil
     }
     
@@ -62,9 +59,10 @@ class DrawView: UIView {
             return
         }
         context.beginPath()
-        context.setStrokeColor(drawColour)
-        for line in lines {
-            context.addPath(line.cgPath)
+        for (bPath, colour) in lines {
+            context.setStrokeColor(colour)
+            context.addPath(bPath.cgPath)
+            context.strokePath()
         }
         if (lastPath != nil) {
             context.addPath(lastPath.cgPath)
