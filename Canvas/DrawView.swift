@@ -49,6 +49,25 @@ class DrawView: UIView {
         print("end")
         lines.append(lastPath)
         lastPath = nil
+        let vc = ViewController()
+        print("here")
+        guard let mcSession = vc.mcSession else { return }
+        print("here2")
+        if mcSession.connectedPeers.count > 0 {
+            print("connected")
+            do {
+                let data = "hello".data(using: .utf8)!
+                try mcSession.send(data, toPeers: mcSession.connectedPeers, with: .reliable)
+                print("worked")
+            } catch {
+                print("failed")
+                let ac = UIAlertController(title: "Send error", message: error.localizedDescription, preferredStyle: .alert)
+                ac.addAction(UIAlertAction(title: "OK", style: .default))
+            }
+            
+        } else {
+            print("nothing connected")
+        }
         
     }
     
