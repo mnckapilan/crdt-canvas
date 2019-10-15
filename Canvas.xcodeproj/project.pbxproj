@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		748F8654B75C0865EC6D65F8 /* Pods_Canvas.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 374A8B96ED43D61DEA3F7AA5 /* Pods_Canvas.framework */; };
 		C1C1C0F32350E3E2006DED27 /* AutomergeJavaScript.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1C1C0F22350E3E2006DED27 /* AutomergeJavaScript.swift */; };
 		C1C1C0F52350E404006DED27 /* Canvas.bundle.js in Resources */ = {isa = PBXBuildFile; fileRef = C1C1C0F42350E404006DED27 /* Canvas.bundle.js */; };
 		E009D221235520EB00B55EA0 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E009D220235520EB00B55EA0 /* ViewController.swift */; };
@@ -22,7 +21,6 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		374A8B96ED43D61DEA3F7AA5 /* Pods_Canvas.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Canvas.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		598B5FE35F8CA9243267CB9E /* Pods-Canvas.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Canvas.release.xcconfig"; path = "Target Support Files/Pods-Canvas/Pods-Canvas.release.xcconfig"; sourceTree = "<group>"; };
 		C1C1C0F22350E3E2006DED27 /* AutomergeJavaScript.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AutomergeJavaScript.swift; sourceTree = "<group>"; };
 		C1C1C0F42350E404006DED27 /* Canvas.bundle.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; name = Canvas.bundle.js; path = Javascript/dist/Canvas.bundle.js; sourceTree = SOURCE_ROOT; };
@@ -45,7 +43,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				748F8654B75C0865EC6D65F8 /* Pods_Canvas.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -55,7 +52,6 @@
 		29491A0A65FB92C9DA3B6008 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				374A8B96ED43D61DEA3F7AA5 /* Pods_Canvas.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -212,8 +208,8 @@
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "WORKING_DIR=$(pwd)\n# temporarily switch to the JavaScript dir so we can run npm commands\ncd $SRCROOT\"/Javascript\"\n# build the JavaScript bundle\nnpm run build\n# if non-zero exit code, exit and warn the user\nif [ $? -ne 0 ]; then\n        echo \"failure in 'Run Script' phase - building JS bundle\"\n        cd $WORKING_DIR\n        exit 1\nfi\n# go back to the working directory\ncd $WORKING_DIR\n";
+			shellPath = /bin/bash;
+			shellScript = "source $HOME/.bashrc\nWORKING_DIR=$(pwd)\n# temporarily switch to the JavaScript dir so we can run npm commands\ncd $SRCROOT\"/Javascript\"\n# build the JavaScript bundle\nnpm run build\n# if non-zero exit code, exit and warn the user\nif [ $? -ne 0 ]; then\n        echo \"failure in 'Run Script' phase - building JS bundle\"\n        cd $WORKING_DIR\n        exit 1\nfi\n# go back to the working directory\ncd $WORKING_DIR\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
