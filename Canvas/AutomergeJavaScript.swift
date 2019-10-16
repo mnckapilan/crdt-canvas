@@ -26,7 +26,7 @@ class AutomergeJavaScript: NSObject {
            self.context.evaluateScript(jsCode)
        }
        
-    func javascript_func(completion: @escaping (_ randomNumber: Int) -> Void){
+    func javascript_func(completion: @escaping (_ randomNumber: Int) -> Void) {
            // Run this asynchronously in the background
            DispatchQueue.global(qos: .userInitiated).async {
                var randomNumber = 0
