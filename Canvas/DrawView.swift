@@ -53,8 +53,6 @@ class DrawView: UIView {
     }
     
     override func draw(_ rect: CGRect) {
-        print("draw")
-
         guard let context = UIGraphicsGetCurrentContext() else {
             return
         }
@@ -78,7 +76,6 @@ class DrawView: UIView {
     }
     
     @IBAction func clearCanvas(_ sender: Any) {
-        print("REE")
         lines = []
         self.setNeedsDisplay()
     }
