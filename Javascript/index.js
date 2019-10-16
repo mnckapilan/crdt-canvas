@@ -1,12 +1,48 @@
 import * as Automerge from 'automerge'
 
+
 export class Synchronizer {
+
     static randomNumber() {
         return Math.floor(Math.random() * 100);
     }
 
-    static synchronise() {
-        /* */
+    static initDocument() {
+        return Automerge.save(Automerge.init());
+    }
+    
+    // Local changes when user adds a stoke.
+    // We will be sending a list of changes but this list only contains one change
+    static addStroke(currentDocString, stroke) {
+        currentDoc = Automerge.load(currentDocString);
+        let newDoc =  Automerge.change(currentDoc, currentDoc => {
+            currentDoc.strokes.push(stroke);
+        });
+        let change = Automerge.getChanges(currentDoc, newDoc);
+        return [Automerge.save(newDoc), change];
+    }
+
+    // If we are sending/receiving changes, use this.
+    // May be an issue as it's only one change ? But give it a go
+    static mergeIncomingChanges(currentDocString, changes) {
+        currentDoc = Automerge.load(currentDocString);
+        let newDoc = Automerge.applyChanges(currentDoc, changes);
+        return Automerge.save(newDoc);
+    }
+
+    // Maybe add ids to every change, and pass that in as a parameter
+    // so we can find it as this may not work.
+    static undoRecentLocalChange(currentDocString) {
+        currentDoc = Automerge.load(currentDocString);
+        newDoc = Automerge.undo(currentDoc);
+        return Automerge.save(newDoc);
+    }
+
+    static redoRecentLocalChange(currentDocString) {
+        currentDoc = Automerge.load(currentDocString);
+        newDoc = Automerge.redo(currentDoc);
+        return Automerge.save(newDoc);
+    }
 
      /* Case 1: Everyone online drawing
         user1 makes a change and sends changes to all other users
@@ -22,5 +58,4 @@ export class Synchronizer {
         */
     /* Case 3: Everyone drops 
     */
-    }
 };
