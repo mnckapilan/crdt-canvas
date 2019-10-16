@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import SwiftyJSON
 
 class DrawView: UIView {
 
@@ -16,6 +17,17 @@ class DrawView: UIView {
     var prevPoint: CGPoint!
     var pPrevPoint: CGPoint!
     var drawColour = UIColor.white.cgColor
+    var stroke:[(x: Float, y: Float)] = []
+    
+//    struct tempStroke: Codable {
+//        var stroke: [CGPoint]
+//        var colour: CGColor
+//
+//        enum CodingKeys: String, CodingKey {
+//            case stroke = "stroke"
+//            case colour = "colour"
+//        }
+//    }
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
@@ -41,15 +53,26 @@ class DrawView: UIView {
         } else if (count % 3 == 1) {
             prevPoint = point
         }
+        
+        stroke.append((Float(point.x), Float(point.y)))
 
         self.setNeedsDisplay()
     }
     
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
-        print("end")
+        
         lines.append((bzPath: lastPath, colour: drawColour))
         lastPath = nil
-        AutomergeJavaScript.shared.javascript_func() { (randomNumber) in
+    
+        let jsonObject: JSON = [
+            "stroke": stroke.map({ (arg0) -> JSON in
+                let (x, y) = arg0
+                return ["x": x, "y": y]
+            })
+        ]
+
+        stroke = []
+        AutomergeJavaScript.shared.javascript_func(jsonObject) { (randomNumber) in
             print(randomNumber)
         }
     }

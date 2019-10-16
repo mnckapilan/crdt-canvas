@@ -7,6 +7,7 @@
 //
 
 import JavaScriptCore
+import SwiftyJSON
 
 class AutomergeJavaScript: NSObject {
     
@@ -21,22 +22,36 @@ class AutomergeJavaScript: NSObject {
         // Create a new JavaScript context that will contain the state of our evaluated JS code.
         self.context = JSContext(virtualMachine: self.vm)
        
+        self.context.evaluateScript("var console = { log: function(message) { _consoleLog(message) } }")
+        let consoleLog: @convention(block) (String) -> Void = { message in
+            print("console.log: " + message)
+        }
+        
+        self.context.setObject(unsafeBitCast(consoleLog, to: AnyObject.self), forKeyedSubscript: "_consoleLog" as (NSCopying & NSObjectProtocol)?)
+        
+        
+        
         // Evaluate the JS code that defines the functions to be used later on.
         self.context.evaluateScript(jsCode)
     }
        
-    func javascript_func(completion: @escaping (_ randomNumber: Int) -> Void) {
+    func javascript_func(_ json: JSON, completion: @escaping (_ randomNumber: String) -> Void) {
         // Run this asynchronously in the background
+        
+        let jsonString = json.rawString([.castNilToNSNull: true])
+        print (jsonString!)
+        
         DispatchQueue.global(qos: .userInitiated).async {
-            var randomNumber = 0
+            var randomNumber = "this failed"
             let jsModule = self.context.objectForKeyedSubscript("Canvas")
             let jsSynchronizer = jsModule?.objectForKeyedSubscript("Synchronizer")
            
             // In the JSContext global values can be accessed through `objectForKeyedSubscript`.
-            if let result = jsSynchronizer?.objectForKeyedSubscript("randomNumber").call(withArguments: []) {
-                randomNumber = Int(result.toInt32())
+            if let result = jsSynchronizer?.objectForKeyedSubscript("randomNumber").call(withArguments: [jsonString!]) {
+                print(result)
+                randomNumber = String(result.toString())
                }
-               
+            
                // Call the completion block on the main thread
                DispatchQueue.main.async {
                    completion(randomNumber)
