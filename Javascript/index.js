@@ -1,7 +1,7 @@
 import * as Automerge from 'automerge'
 
 
-export class Synchronizer {
+export class Automerger {
 
     static randomNumber(thing) {
         return thing;
