@@ -32,7 +32,6 @@ class DrawView: UIView {
     }
     
     override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
-        print("move")
         count = count + 1
         let point = Array(touches)[0].location(in: self)
         if (count % 3 == 2) {
@@ -50,6 +49,9 @@ class DrawView: UIView {
         print("end")
         lines.append((bzPath: lastPath, colour: drawColour))
         lastPath = nil
+        AutomergeJavaScript.shared.javascript_func() { (randomNumber) in
+            print(randomNumber)
+        }
     }
     
     override func draw(_ rect: CGRect) {
