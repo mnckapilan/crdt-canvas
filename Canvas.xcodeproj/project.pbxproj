@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		B20695ED23573E2300380182 /* Colour.swift in Sources */ = {isa = PBXBuildFile; fileRef = B20695EC23573E2300380182 /* Colour.swift */; };
 		C1C1C0F32350E3E2006DED27 /* AutomergeJavaScript.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1C1C0F22350E3E2006DED27 /* AutomergeJavaScript.swift */; };
 		C1C1C0F52350E404006DED27 /* Canvas.bundle.js in Resources */ = {isa = PBXBuildFile; fileRef = C1C1C0F42350E404006DED27 /* Canvas.bundle.js */; };
 		E009D221235520EB00B55EA0 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E009D220235520EB00B55EA0 /* ViewController.swift */; };
@@ -17,12 +16,12 @@
 		E0BE82042350C3A300D93BF1 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E0BE82032350C3A300D93BF1 /* Assets.xcassets */; };
 		E0BE820A2350C3A300D93BF1 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E0BE82082350C3A300D93BF1 /* LaunchScreen.storyboard */; };
 		E0EEA22E235494C10076D540 /* DrawView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0EEA22D235494C10076D540 /* DrawView.swift */; };
+		E0EEA230235494D20076D540 /* Line.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0EEA22F235494D20076D540 /* Line.swift */; };
 		E0EEA233235495350076D540 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E0EEA231235495350076D540 /* Main.storyboard */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		598B5FE35F8CA9243267CB9E /* Pods-Canvas.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Canvas.release.xcconfig"; path = "Target Support Files/Pods-Canvas/Pods-Canvas.release.xcconfig"; sourceTree = "<group>"; };
-		B20695EC23573E2300380182 /* Colour.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Colour.swift; sourceTree = "<group>"; };
 		C1C1C0F22350E3E2006DED27 /* AutomergeJavaScript.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AutomergeJavaScript.swift; sourceTree = "<group>"; };
 		C1C1C0F42350E404006DED27 /* Canvas.bundle.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; name = Canvas.bundle.js; path = Javascript/dist/Canvas.bundle.js; sourceTree = SOURCE_ROOT; };
 		E009D220235520EB00B55EA0 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -34,6 +33,7 @@
 		E0BE82092350C3A300D93BF1 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		E0BE820B2350C3A300D93BF1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		E0EEA22D235494C10076D540 /* DrawView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrawView.swift; sourceTree = "<group>"; };
+		E0EEA22F235494D20076D540 /* Line.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Line.swift; sourceTree = "<group>"; };
 		E0EEA232235495350076D540 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		E9A0DD3D807F449C58371142 /* Pods-Canvas.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Canvas.debug.xcconfig"; path = "Target Support Files/Pods-Canvas/Pods-Canvas.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -91,12 +91,12 @@
 				C1C1C0F22350E3E2006DED27 /* AutomergeJavaScript.swift */,
 				C1C1C0F42350E404006DED27 /* Canvas.bundle.js */,
 				E0BE82032350C3A300D93BF1 /* Assets.xcassets */,
-				B20695EC23573E2300380182 /* Colour.swift */,
 				E0BE82082350C3A300D93BF1 /* LaunchScreen.storyboard */,
 				E0EEA231235495350076D540 /* Main.storyboard */,
 				E0BE820B2350C3A300D93BF1 /* Info.plist */,
 				E0BE81FE2350C3A100D93BF1 /* Canvas.xcdatamodeld */,
 				E0EEA22D235494C10076D540 /* DrawView.swift */,
+				E0EEA22F235494D20076D540 /* Line.swift */,
 				E009D220235520EB00B55EA0 /* ViewController.swift */,
 			);
 			path = Canvas;
@@ -112,6 +112,7 @@
 				12A84525EA14D91249A61A85 /* [CP] Check Pods Manifest.lock */,
 				E0BE81F32350C3A100D93BF1 /* Sources */,
 				E0BE81F42350C3A100D93BF1 /* Frameworks */,
+				C1B527BC2354F45300DB4DCA /* ShellScript */,
 				E0BE81F52350C3A100D93BF1 /* Resources */,
 			);
 			buildRules = (
@@ -193,6 +194,23 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
+		C1B527BC2354F45300DB4DCA /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/bash;
+			shellScript = "source $HOME/.bashrc\nWORKING_DIR=$(pwd)\n# temporarily switch to the JavaScript dir so we can run npm commands\ncd $SRCROOT\"/Javascript\"\n# build the JavaScript bundle\nnpm run build\n# if non-zero exit code, exit and warn the user\nif [ $? -ne 0 ]; then\n        echo \"failure in 'Run Script' phase - building JS bundle\"\n        cd $WORKING_DIR\n        exit 1\nfi\n# go back to the working directory\ncd $WORKING_DIR\n";
+		};
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -201,11 +219,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				C1C1C0F32350E3E2006DED27 /* AutomergeJavaScript.swift in Sources */,
-				B20695ED23573E2300380182 /* Colour.swift in Sources */,
 				E0EEA22E235494C10076D540 /* DrawView.swift in Sources */,
 				E0BE81FB2350C3A100D93BF1 /* AppDelegate.swift in Sources */,
 				E0BE82002350C3A100D93BF1 /* Canvas.xcdatamodeld in Sources */,
 				E009D221235520EB00B55EA0 /* ViewController.swift in Sources */,
+				E0EEA230235494D20076D540 /* Line.swift in Sources */,
 				E0BE81FD2350C3A100D93BF1 /* SceneDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
