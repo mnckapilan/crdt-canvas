@@ -19,9 +19,15 @@ class DrawView: UIView {
     var drawColour = UIColor.white.cgColor
     var stroke: [[String:Float]] = []
     
+    var document = ""
+    
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         self.backgroundColor = UIColor.black
+        AutomergeJavaScript.shared.initDocument() { (returnString) in
+            self.document = returnString
+        }
+        print(document)
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -50,19 +56,19 @@ class DrawView: UIView {
     }
     
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
-        
         lines.append((bzPath: lastPath, colour: drawColour))
         lastPath = nil
         
         let strokeObject: JSON = [
             "stroke": stroke
         ]
-
+            
         stroke = []
         
-        AutomergeJavaScript.shared.addStroke(strokeObject) { (returnString) in
-            print(returnString)
+        AutomergeJavaScript.shared.addStroke(strokeObject, document) { (returnString) in
+            self.document = returnString
         }
+        print (document)
     }
     
     override func draw(_ rect: CGRect) {

@@ -344,6 +344,7 @@
 		};
 		E0BE820D2350C3A300D93BF1 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 598B5FE35F8CA9243267CB9E /* Pods-Canvas.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_NONNULL = YES;
@@ -419,7 +420,7 @@
 		};
 		E0BE82102350C3A300D93BF1 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = B3D944FCAA92BF6AFA47F594 /* Pods-Canvas.release.xcconfig */;
+			baseConfigurationReference = 598B5FE35F8CA9243267CB9E /* Pods-Canvas.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;

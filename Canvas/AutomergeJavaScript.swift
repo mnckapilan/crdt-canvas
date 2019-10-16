@@ -35,11 +35,11 @@ class AutomergeJavaScript: NSObject {
         self.context.evaluateScript(jsCode)
     }
        
-    func addStroke(_ json: JSON, completion: @escaping (_ randomNumber: String) -> Void) {
+    func addStroke(_ stroke: JSON, _ currentDocument: String, completion: @escaping (_ randomNumber: String) -> Void) {
         // Run this asynchronously in the background
         
-        let jsonString = json.rawString([.castNilToNSNull: true])
-        print (jsonString!)
+        let strokeJsonString = stroke.rawString([.castNilToNSNull: true])
+        print (strokeJsonString!)
         
         DispatchQueue.global(qos: .userInitiated).async {
             var returnString = "failed"
@@ -47,10 +47,31 @@ class AutomergeJavaScript: NSObject {
             let jsAutomerger = jsModule?.objectForKeyedSubscript("Automerger")
            
             // In the JSContext global values can be accessed through `objectForKeyedSubscript`.
-            if let result = jsAutomerger?.objectForKeyedSubscript("randomNumber").call(withArguments: [jsonString!]) {
+            if let result = jsAutomerger?.objectForKeyedSubscript("addStroke").call(withArguments: [currentDocument, strokeJsonString!]) {
                 print(result)
                 returnString = String(result.toString())
                }
+            
+               // Call the completion block on the main thread
+               DispatchQueue.main.async {
+                   completion(returnString)
+               }
+       }
+    }
+    
+    func initDocument(completion: @escaping (_ randomNumber: String) -> Void) {
+        // Run this asynchronously in the background
+        DispatchQueue.global(qos: .userInitiated).async {
+            var returnString = "failed"
+            let jsModule = self.context.objectForKeyedSubscript("Canvas")
+            let jsAutomerger = jsModule?.objectForKeyedSubscript("Automerger")
+           
+            // In the JSContext global values can be accessed through `objectForKeyedSubscript`.
+            if let result = jsAutomerger?.objectForKeyedSubscript("initDocument").call(withArguments: []) {
+                returnString = String(result.toString())
+                print(result)
+               }
+            print(returnString)
             
                // Call the completion block on the main thread
                DispatchQueue.main.async {
