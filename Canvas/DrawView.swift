@@ -17,17 +17,7 @@ class DrawView: UIView {
     var prevPoint: CGPoint!
     var pPrevPoint: CGPoint!
     var drawColour = UIColor.white.cgColor
-    var stroke:[(x: Float, y: Float)] = []
-    
-//    struct tempStroke: Codable {
-//        var stroke: [CGPoint]
-//        var colour: CGColor
-//
-//        enum CodingKeys: String, CodingKey {
-//            case stroke = "stroke"
-//            case colour = "colour"
-//        }
-//    }
+    var stroke: [[String:Float]] = []
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
@@ -54,7 +44,7 @@ class DrawView: UIView {
             prevPoint = point
         }
         
-        stroke.append((Float(point.x), Float(point.y)))
+        stroke.append(["x": Float(point.x), "y": Float(point.y)])
 
         self.setNeedsDisplay()
     }
@@ -63,17 +53,15 @@ class DrawView: UIView {
         
         lines.append((bzPath: lastPath, colour: drawColour))
         lastPath = nil
-    
-        let jsonObject: JSON = [
-            "stroke": stroke.map({ (arg0) -> JSON in
-                let (x, y) = arg0
-                return ["x": x, "y": y]
-            })
+        
+        let strokeObject: JSON = [
+            "stroke": stroke
         ]
 
         stroke = []
-        AutomergeJavaScript.shared.javascript_func(jsonObject) { (randomNumber) in
-            print(randomNumber)
+        
+        AutomergeJavaScript.shared.addStroke(strokeObject) { (returnString) in
+            print(returnString)
         }
     }
     

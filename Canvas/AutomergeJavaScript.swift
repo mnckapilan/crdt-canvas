@@ -35,26 +35,26 @@ class AutomergeJavaScript: NSObject {
         self.context.evaluateScript(jsCode)
     }
        
-    func javascript_func(_ json: JSON, completion: @escaping (_ randomNumber: String) -> Void) {
+    func addStroke(_ json: JSON, completion: @escaping (_ randomNumber: String) -> Void) {
         // Run this asynchronously in the background
         
         let jsonString = json.rawString([.castNilToNSNull: true])
         print (jsonString!)
         
         DispatchQueue.global(qos: .userInitiated).async {
-            var randomNumber = "this failed"
+            var returnString = "failed"
             let jsModule = self.context.objectForKeyedSubscript("Canvas")
-            let jsSynchronizer = jsModule?.objectForKeyedSubscript("Synchronizer")
+            let jsAutomerger = jsModule?.objectForKeyedSubscript("Automerger")
            
             // In the JSContext global values can be accessed through `objectForKeyedSubscript`.
-            if let result = jsSynchronizer?.objectForKeyedSubscript("randomNumber").call(withArguments: [jsonString!]) {
+            if let result = jsAutomerger?.objectForKeyedSubscript("randomNumber").call(withArguments: [jsonString!]) {
                 print(result)
-                randomNumber = String(result.toString())
+                returnString = String(result.toString())
                }
             
                // Call the completion block on the main thread
                DispatchQueue.main.async {
-                   completion(randomNumber)
+                   completion(returnString)
                }
        }
     }
