@@ -62,7 +62,7 @@
 				E9A0DD3D807F449C58371142 /* Pods-Canvas.debug.xcconfig */,
 				598B5FE35F8CA9243267CB9E /* Pods-Canvas.release.xcconfig */,
 			);
-			path = Pods;
+			name = Pods;
 			sourceTree = "<group>";
 		};
 		E0BE81EE2350C3A100D93BF1 = {
