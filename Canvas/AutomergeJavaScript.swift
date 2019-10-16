@@ -20,7 +20,12 @@ class AutomergeJavaScript: NSObject {
         
         // Create a new JavaScript context that will contain the state of our evaluated JS code.
         self.context = JSContext(virtualMachine: self.vm)
-       
+       context.evaluateScript("var console = { log: function(message) { _consoleLog(message) } }")
+       let consoleLog: @convention(block) (String) -> Void = { message in
+           print("JavaScript console.log: " + message)
+       }
+        context.setObject(unsafeBitCast(consoleLog, to: AnyObject.self), forKeyedSubscript: "_consoleLog" as (NSCopying & NSObjectProtocol)?)
+        
         // Evaluate the JS code that defines the functions to be used later on.
         self.context.evaluateScript(jsCode)
     }
