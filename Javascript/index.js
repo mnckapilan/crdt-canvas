@@ -3,8 +3,9 @@ import * as Automerge from 'automerge'
 
 export class Automerger {
 
-    static randomNumber(thing) {
-        return thing;
+    static randomNumber() {
+        console.log("random number generated");
+        return Math.floor(Math.random() * 100);
     }
 
     static initDocument() {

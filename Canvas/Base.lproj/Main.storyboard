@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="15400" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
-    <device id="ipad12_9" orientation="portrait" layout="fullscreen" appearance="light"/>
+    <device id="ipad12_9" orientation="landscape" layout="fullscreen" appearance="dark"/>
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15404"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
@@ -12,18 +12,11 @@
             <objects>
                 <viewController id="BYZ-38-t0r" customClass="ViewController" customModule="Canvas" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
-                        <rect key="frame" x="0.0" y="0.0" width="1024" height="1366"/>
+                        <rect key="frame" x="0.0" y="0.0" width="1366" height="1024"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Jxa-2k-TZ7">
-                                <rect key="frame" x="467" y="64" width="90" height="30"/>
-                                <state key="normal" title="Canvas Clear"/>
-                                <connections>
-                                    <action selector="clearCanvas:" destination="Nsp-Ud-L6L" eventType="touchUpInside" id="FWQ-Jo-Gju"/>
-                                </connections>
-                            </button>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Nsp-Ud-L6L" customClass="DrawView" customModule="Canvas" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="106" width="1024" height="1260"/>
+                                <rect key="frame" x="0.0" y="96.5" width="1366" height="927.5"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                             </view>
                             <button opaque="NO" tag="1" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="dfW-sZ-Tsp">
@@ -74,7 +67,7 @@
                             <button opaque="NO" tag="5" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="z2C-wA-q3M">
                                 <rect key="frame" x="251" y="50" width="50" height="50"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="tintColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <color key="tintColor" systemColor="labelColor" cocoaTouchSystemColor="darkTextColor"/>
                                 <state key="normal" backgroundImage="pencil.circle" catalog="system">
                                     <color key="titleShadowColor" cocoaTouchSystemColor="darkTextColor"/>
                                 </state>
@@ -82,12 +75,26 @@
                                     <action selector="colourChosen:" destination="Nsp-Ud-L6L" eventType="touchUpInside" id="RX7-N8-vHS"/>
                                 </connections>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" showsTouchWhenHighlighted="YES" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Jxa-2k-TZ7">
+                                <rect key="frame" x="480" y="51" width="55" height="50"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="52.5" id="E57-l4-IJv"/>
+                                    <constraint firstAttribute="width" constant="55" id="Yqf-WD-OqV"/>
+                                </constraints>
+                                <color key="tintColor" systemColor="labelColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <state key="normal" backgroundImage="clear.fill" catalog="system">
+                                    <color key="titleColor" systemColor="labelColor" cocoaTouchSystemColor="darkTextColor"/>
+                                </state>
+                                <connections>
+                                    <action selector="clearCanvas:" destination="Nsp-Ud-L6L" eventType="touchUpInside" id="FWQ-Jo-Gju"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <constraints>
-                            <constraint firstItem="Jxa-2k-TZ7" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="5zQ-JT-cEx"/>
-                            <constraint firstItem="Nsp-Ud-L6L" firstAttribute="top" secondItem="Jxa-2k-TZ7" secondAttribute="bottom" constant="12.000000000000568" id="QcV-Bw-Bv7"/>
-                            <constraint firstItem="Jxa-2k-TZ7" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="63.999999999999545" id="iw1-jX-xDx"/>
+                            <constraint firstItem="Nsp-Ud-L6L" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="96.5" id="LOk-lB-MVz"/>
+                            <constraint firstItem="Jxa-2k-TZ7" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" constant="-175.5" id="Sbj-DK-2QF"/>
+                            <constraint firstAttribute="top" secondItem="Jxa-2k-TZ7" secondAttribute="bottom" constant="-102.5" id="dyZ-Wc-7Tr"/>
                             <constraint firstItem="Nsp-Ud-L6L" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="lfT-G1-WBT"/>
                             <constraint firstItem="Nsp-Ud-L6L" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="mqt-R4-Znl"/>
                             <constraint firstItem="Nsp-Ud-L6L" firstAttribute="bottom" secondItem="6Tk-OE-BBY" secondAttribute="bottom" id="zt2-Zb-2p5"/>
@@ -101,6 +108,7 @@
         </scene>
     </scenes>
     <resources>
+        <image name="clear.fill" catalog="system" width="64" height="56"/>
         <image name="pencil.circle" catalog="system" width="64" height="60"/>
         <image name="pencil.circle.fill" catalog="system" width="64" height="60"/>
     </resources>
