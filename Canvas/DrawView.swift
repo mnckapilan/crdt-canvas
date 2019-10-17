@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import MultipeerConnectivity
 
 class DrawView: UIView {
 
@@ -16,6 +17,7 @@ class DrawView: UIView {
     var prevPoint: CGPoint!
     var pPrevPoint: CGPoint!
     var drawColour = UIColor.white.cgColor
+    public var mcSession: MCSession?
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
@@ -48,7 +50,9 @@ class DrawView: UIView {
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
         print("end")
         lines.append((bzPath: lastPath, colour: drawColour))
+        sendPath(lastPath)
         lastPath = nil
+        
         AutomergeJavaScript.shared.javascript_func() { (randomNumber) in
             print(randomNumber)
         }
@@ -80,6 +84,25 @@ class DrawView: UIView {
     @IBAction func clearCanvas(_ sender: Any) {
         lines = []
         self.setNeedsDisplay()
+    }
+    
+    public func addPath(_ path: UIBezierPath) {
+        lines.append((path, UIColor.red.cgColor))
+        self.setNeedsDisplay()
+    }
+    
+    func sendPath(_ path: UIBezierPath) {
+        let data = try NSKeyedArchiver.archivedData(withRootObject: path)
+        
+        if let m = mcSession {
+            if m.connectedPeers.count > 0 {
+                do {
+                    try m.send(data, toPeers: m.connectedPeers, with: .reliable)
+                } catch let error as NSError {
+                }
+            }
+        }
+        
     }
 
 }

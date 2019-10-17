@@ -7,13 +7,12 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		92D415DBEBFAA250B9156247 /* Pods_Canvas.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3A91296F60DE182F3A6FF754 /* Pods_Canvas.framework */; };
+		2FED4E2FA4E4D877062CDD7C /* Pods_Canvas.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3403694BB6C1101C6A237CD4 /* Pods_Canvas.framework */; };
 		B20695EF2357547800380182 /* Colour.swift in Sources */ = {isa = PBXBuildFile; fileRef = B20695EE2357547800380182 /* Colour.swift */; };
 		C1C1C0F32350E3E2006DED27 /* AutomergeJavaScript.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1C1C0F22350E3E2006DED27 /* AutomergeJavaScript.swift */; };
 		C1C1C0F52350E404006DED27 /* Canvas.bundle.js in Resources */ = {isa = PBXBuildFile; fileRef = C1C1C0F42350E404006DED27 /* Canvas.bundle.js */; };
 		E009D221235520EB00B55EA0 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E009D220235520EB00B55EA0 /* ViewController.swift */; };
 		E0BE81FB2350C3A100D93BF1 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0BE81FA2350C3A100D93BF1 /* AppDelegate.swift */; };
-		E0BE81FD2350C3A100D93BF1 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0BE81FC2350C3A100D93BF1 /* SceneDelegate.swift */; };
 		E0BE82002350C3A100D93BF1 /* Canvas.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = E0BE81FE2350C3A100D93BF1 /* Canvas.xcdatamodeld */; };
 		E0BE82042350C3A300D93BF1 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E0BE82032350C3A300D93BF1 /* Assets.xcassets */; };
 		E0BE820A2350C3A300D93BF1 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E0BE82082350C3A300D93BF1 /* LaunchScreen.storyboard */; };
@@ -22,16 +21,15 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		1EB21BB2373EAB6654FFDF3F /* Pods-Canvas.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Canvas.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Canvas/Pods-Canvas.debug.xcconfig"; sourceTree = "<group>"; };
-		3A91296F60DE182F3A6FF754 /* Pods_Canvas.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Canvas.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		85584A9C66CF9AEBA2EF06FA /* Pods-Canvas.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Canvas.release.xcconfig"; path = "Pods/Target Support Files/Pods-Canvas/Pods-Canvas.release.xcconfig"; sourceTree = "<group>"; };
+		2B33796C09639911A1E2558F /* Pods-Canvas.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Canvas.release.xcconfig"; path = "Target Support Files/Pods-Canvas/Pods-Canvas.release.xcconfig"; sourceTree = "<group>"; };
+		3403694BB6C1101C6A237CD4 /* Pods_Canvas.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Canvas.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		489810F79B772AEAF65689AE /* Pods-Canvas.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Canvas.debug.xcconfig"; path = "Target Support Files/Pods-Canvas/Pods-Canvas.debug.xcconfig"; sourceTree = "<group>"; };
 		B20695EE2357547800380182 /* Colour.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Colour.swift; path = Canvas/Colour.swift; sourceTree = "<group>"; };
 		C1C1C0F22350E3E2006DED27 /* AutomergeJavaScript.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AutomergeJavaScript.swift; sourceTree = "<group>"; };
 		C1C1C0F42350E404006DED27 /* Canvas.bundle.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; name = Canvas.bundle.js; path = Javascript/dist/Canvas.bundle.js; sourceTree = SOURCE_ROOT; };
 		E009D220235520EB00B55EA0 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		E0BE81F72350C3A100D93BF1 /* Canvas.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Canvas.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E0BE81FA2350C3A100D93BF1 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		E0BE81FC2350C3A100D93BF1 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		E0BE81FF2350C3A100D93BF1 /* Canvas.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Canvas.xcdatamodel; sourceTree = "<group>"; };
 		E0BE82032350C3A300D93BF1 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		E0BE82092350C3A300D93BF1 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -45,28 +43,19 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				92D415DBEBFAA250B9156247 /* Pods_Canvas.framework in Frameworks */,
+				2FED4E2FA4E4D877062CDD7C /* Pods_Canvas.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		53F4C60E78E2FFD84E814436 /* Frameworks */ = {
+		399507711CE1AA8BB4591D17 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				3A91296F60DE182F3A6FF754 /* Pods_Canvas.framework */,
+				3403694BB6C1101C6A237CD4 /* Pods_Canvas.framework */,
 			);
 			name = Frameworks;
-			sourceTree = "<group>";
-		};
-		5F7A28EB20C58D32883B43F6 /* Pods */ = {
-			isa = PBXGroup;
-			children = (
-				1EB21BB2373EAB6654FFDF3F /* Pods-Canvas.debug.xcconfig */,
-				85584A9C66CF9AEBA2EF06FA /* Pods-Canvas.release.xcconfig */,
-			);
-			name = Pods;
 			sourceTree = "<group>";
 		};
 		E0BE81EE2350C3A100D93BF1 = {
@@ -75,8 +64,8 @@
 				B20695EE2357547800380182 /* Colour.swift */,
 				E0BE81F92350C3A100D93BF1 /* Canvas */,
 				E0BE81F82350C3A100D93BF1 /* Products */,
-				5F7A28EB20C58D32883B43F6 /* Pods */,
-				53F4C60E78E2FFD84E814436 /* Frameworks */,
+				F0E7449D42AC450BD7340C18 /* Pods */,
+				399507711CE1AA8BB4591D17 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -92,7 +81,6 @@
 			isa = PBXGroup;
 			children = (
 				E0BE81FA2350C3A100D93BF1 /* AppDelegate.swift */,
-				E0BE81FC2350C3A100D93BF1 /* SceneDelegate.swift */,
 				C1C1C0F22350E3E2006DED27 /* AutomergeJavaScript.swift */,
 				C1C1C0F42350E404006DED27 /* Canvas.bundle.js */,
 				E0BE82032350C3A300D93BF1 /* Assets.xcassets */,
@@ -106,6 +94,15 @@
 			path = Canvas;
 			sourceTree = "<group>";
 		};
+		F0E7449D42AC450BD7340C18 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				489810F79B772AEAF65689AE /* Pods-Canvas.debug.xcconfig */,
+				2B33796C09639911A1E2558F /* Pods-Canvas.release.xcconfig */,
+			);
+			path = Pods;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -113,7 +110,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = E0BE820E2350C3A300D93BF1 /* Build configuration list for PBXNativeTarget "Canvas" */;
 			buildPhases = (
-				5A9252BCF8B1C37B5C660B29 /* [CP] Check Pods Manifest.lock */,
+				7AF0F7ABE6979C4D104D32B4 /* [CP] Check Pods Manifest.lock */,
 				E0BE81F32350C3A100D93BF1 /* Sources */,
 				E0BE81F42350C3A100D93BF1 /* Frameworks */,
 				C1B527BC2354F45300DB4DCA /* ShellScript */,
@@ -176,7 +173,7 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		5A9252BCF8B1C37B5C660B29 /* [CP] Check Pods Manifest.lock */ = {
+		7AF0F7ABE6979C4D104D32B4 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -228,7 +225,6 @@
 				B20695EF2357547800380182 /* Colour.swift in Sources */,
 				E0BE82002350C3A100D93BF1 /* Canvas.xcdatamodeld in Sources */,
 				E009D221235520EB00B55EA0 /* ViewController.swift in Sources */,
-				E0BE81FD2350C3A100D93BF1 /* SceneDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -370,7 +366,7 @@
 		};
 		E0BE820F2350C3A300D93BF1 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 1EB21BB2373EAB6654FFDF3F /* Pods-Canvas.debug.xcconfig */;
+			baseConfigurationReference = 489810F79B772AEAF65689AE /* Pods-Canvas.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
@@ -391,7 +387,7 @@
 		};
 		E0BE82102350C3A300D93BF1 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 85584A9C66CF9AEBA2EF06FA /* Pods-Canvas.release.xcconfig */;
+			baseConfigurationReference = 2B33796C09639911A1E2558F /* Pods-Canvas.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
