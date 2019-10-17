@@ -26,6 +26,10 @@ class AutomergeJavaScript: NSObject {
            print("JavaScript console.log: " + message)
        }
         context.setObject(unsafeBitCast(consoleLog, to: AnyObject.self), forKeyedSubscript: "_consoleLog" as (NSCopying & NSObjectProtocol)?)
+
+        context.exceptionHandler = { context, exception in
+            print(exception!.toString())
+        }
         
         // Evaluate the JS code that defines the functions to be used later on.
         self.context.evaluateScript(jsCode)
@@ -35,6 +39,7 @@ class AutomergeJavaScript: NSObject {
         // Run this asynchronously in the background
         
         let strokeJsonString = stroke.rawString([.castNilToNSNull: true])
+        
         print (strokeJsonString!)
         
         DispatchQueue.global(qos: .userInitiated).async {
@@ -65,10 +70,7 @@ class AutomergeJavaScript: NSObject {
             // In the JSContext global values can be accessed through `objectForKeyedSubscript`.
             if let result = jsAutomerger?.objectForKeyedSubscript("initDocument").call(withArguments: []) {
                 returnString = String(result.toString())
-                print(result)
                }
-            print(returnString)
-            
                // Call the completion block on the main thread
                DispatchQueue.main.async {
                    completion(returnString)

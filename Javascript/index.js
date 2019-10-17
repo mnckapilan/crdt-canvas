@@ -9,7 +9,7 @@ export class Automerger {
     }
 
     static initDocument() {
-        return Automerge.save(Automerge.init());
+        return Automerge.save(Automerge.from({ strokes: [] }));
     }
 
     // Local changes when user adds a stoke.
@@ -18,7 +18,7 @@ export class Automerger {
 
     // static addStroke(currentDocString, strokeString) {
     //     var stroke = JSON.parse(strokeString);
-    //     currentDoc = Automerge.load(currentDocString);
+    //     var currentDoc = Automerge.load(currentDocString);
     //     let newDoc = Automerge.change(currentDoc, currentDoc => {
     //         currentDoc.strokes.push(stroke);
     //     });
@@ -28,7 +28,7 @@ export class Automerger {
 
     static addStroke(currentDocString, strokeString) {
         var stroke = JSON.parse(strokeString);
-        currentDoc = Automerge.load(currentDocString);
+        var currentDoc = Automerge.load(currentDocString);
         let newDoc = Automerge.change(currentDoc, currentDoc => {
             currentDoc.strokes.push(stroke);
         });
