@@ -8,6 +8,7 @@
 
 import UIKit
 import SwiftyJSON
+import MultipeerConnectivity
 
 class DrawView: UIView {
 
@@ -20,6 +21,7 @@ class DrawView: UIView {
     var stroke: [[String:Float]] = []
     
     var documentString = ""
+    public var mcSession: MCSession?
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
@@ -56,6 +58,7 @@ class DrawView: UIView {
     
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
         lines.append((bzPath: lastPath, colour: drawColour))
+        sendPath(lastPath)
         lastPath = nil
         
         let strokeObject: JSON = [
@@ -66,7 +69,6 @@ class DrawView: UIView {
         
         AutomergeJavaScript.shared.addStroke(strokeObject, documentString) { (returnValue) in
             self.documentString = returnValue[0]
-        }
     }
     
     override func draw(_ rect: CGRect) {
@@ -95,6 +97,25 @@ class DrawView: UIView {
     @IBAction func clearCanvas(_ sender: Any) {
         lines = []
         self.setNeedsDisplay()
+    }
+    
+    public func addPath(_ path: UIBezierPath) {
+        lines.append((path, UIColor.red.cgColor))
+        self.setNeedsDisplay()
+    }
+    
+    func sendPath(_ path: UIBezierPath) {
+        let data = try NSKeyedArchiver.archivedData(withRootObject: path)
+        
+        if let m = mcSession {
+            if m.connectedPeers.count > 0 {
+                do {
+                    try m.send(data, toPeers: m.connectedPeers, with: .reliable)
+                } catch let error as NSError {
+                }
+            }
+        }
+        
     }
 
 }

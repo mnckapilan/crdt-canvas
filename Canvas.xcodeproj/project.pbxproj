@@ -12,7 +12,6 @@
 		C1C1C0F52350E404006DED27 /* Canvas.bundle.js in Resources */ = {isa = PBXBuildFile; fileRef = C1C1C0F42350E404006DED27 /* Canvas.bundle.js */; };
 		E009D221235520EB00B55EA0 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E009D220235520EB00B55EA0 /* ViewController.swift */; };
 		E0BE81FB2350C3A100D93BF1 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0BE81FA2350C3A100D93BF1 /* AppDelegate.swift */; };
-		E0BE81FD2350C3A100D93BF1 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0BE81FC2350C3A100D93BF1 /* SceneDelegate.swift */; };
 		E0BE82002350C3A100D93BF1 /* Canvas.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = E0BE81FE2350C3A100D93BF1 /* Canvas.xcdatamodeld */; };
 		E0BE82042350C3A300D93BF1 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E0BE82032350C3A300D93BF1 /* Assets.xcassets */; };
 		E0BE820A2350C3A300D93BF1 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E0BE82082350C3A300D93BF1 /* LaunchScreen.storyboard */; };
@@ -31,7 +30,6 @@
 		E009D220235520EB00B55EA0 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		E0BE81F72350C3A100D93BF1 /* Canvas.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Canvas.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E0BE81FA2350C3A100D93BF1 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		E0BE81FC2350C3A100D93BF1 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		E0BE81FF2350C3A100D93BF1 /* Canvas.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Canvas.xcdatamodel; sourceTree = "<group>"; };
 		E0BE82032350C3A300D93BF1 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		E0BE82092350C3A300D93BF1 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -92,7 +90,6 @@
 			isa = PBXGroup;
 			children = (
 				E0BE81FA2350C3A100D93BF1 /* AppDelegate.swift */,
-				E0BE81FC2350C3A100D93BF1 /* SceneDelegate.swift */,
 				C1C1C0F22350E3E2006DED27 /* AutomergeJavaScript.swift */,
 				C1C1C0F42350E404006DED27 /* Canvas.bundle.js */,
 				E0BE82032350C3A300D93BF1 /* Assets.xcassets */,
@@ -104,6 +101,15 @@
 				E009D220235520EB00B55EA0 /* ViewController.swift */,
 			);
 			path = Canvas;
+			sourceTree = "<group>";
+		};
+		F0E7449D42AC450BD7340C18 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				489810F79B772AEAF65689AE /* Pods-Canvas.debug.xcconfig */,
+				2B33796C09639911A1E2558F /* Pods-Canvas.release.xcconfig */,
+			);
+			path = Pods;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -251,7 +257,6 @@
 				B20695EF2357547800380182 /* Colour.swift in Sources */,
 				E0BE82002350C3A100D93BF1 /* Canvas.xcdatamodeld in Sources */,
 				E009D221235520EB00B55EA0 /* ViewController.swift in Sources */,
-				E0BE81FD2350C3A100D93BF1 /* SceneDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
