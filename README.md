@@ -4,13 +4,13 @@ Meet Canvas, a resilient collaborative drawing app using CRDTs and Apple's Penci
 
 ## Development
 
-When importing this project into XCode, use the Canvas.xcworkspace file instead of the whole folder.
+After cloning this repo, make sure you run `npm install` in the Javascript folder, and then `carthage bootstrap` in the source folder.
 
 If any changes are made in the Javascript folder, run `npm run build` in the Javascript folder before building the iOS App on XCode.
 
 
 ## Development Team
-- [Kapilan M](https://kapilanm.com/)
+- [Kapilan M](https://linkedin.com/in/kapilan-m/)
 - [Jack Morrison](https://jackmorrison.xyz/)
 - [Serene Chongtrakul](https://www.linkedin.com/in/serenechongtrakul/)
 - [Hashan Punchihewa](https://hashanp.xyz/)
