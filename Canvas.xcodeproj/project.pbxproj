@@ -19,7 +19,7 @@
 		E0BE820A2350C3A300D93BF1 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E0BE82082350C3A300D93BF1 /* LaunchScreen.storyboard */; };
 		E0EEA22E235494C10076D540 /* DrawView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0EEA22D235494C10076D540 /* DrawView.swift */; };
 		E0EEA233235495350076D540 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E0EEA231235495350076D540 /* Main.storyboard */; };
-		F12D905B3D73ADED8AE452E8 /* Pods_Canvas.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 56D119255E5F32DF2C74CA4D /* Pods_Canvas.framework */; };
+		
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -70,15 +70,6 @@
 				C130AABB2358C3450073644B /* SwiftyJSON.framework */,
 			);
 			name = Frameworks;
-			sourceTree = "<group>";
-		};
-		58B49C50B1022DA39396DF28 /* Pods */ = {
-			isa = PBXGroup;
-			children = (
-				782B98B2134CD2089E56B613 /* Pods-Canvas.debug.xcconfig */,
-				BFDD437395B045B27A8DF4F5 /* Pods-Canvas.release.xcconfig */,
-			);
-			name = Pods;
 			sourceTree = "<group>";
 		};
 		E0BE81EE2350C3A100D93BF1 = {
