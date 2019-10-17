@@ -23,6 +23,6 @@ steps:
     sdk: 'iphonesimulator'
     scheme: 'Canvas'
     configuration: 'Debug'
-    xcWorkspacePath: 'Canvas.xcworkspace'
+    xcWorkspacePath: 'Canvas.xcodeproj'
     useXcpretty: 'false'
     xcodeVersion: '11' # Options: 8, 9, 10, default, specifyPath
