@@ -3,14 +3,12 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 51;
 	objects = {
 
 /* Begin PBXBuildFile section */
 		B20695EF2357547800380182 /* Colour.swift in Sources */ = {isa = PBXBuildFile; fileRef = B20695EE2357547800380182 /* Colour.swift */; };
 		C130AABC2358C3450073644B /* SwiftyJSON.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C130AABB2358C3450073644B /* SwiftyJSON.framework */; };
-		C130AABD2358C3450073644B /* SwiftyJSON.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = C130AABB2358C3450073644B /* SwiftyJSON.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		C19085D623592DC200ABDB4D /* SwiftyJSON.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = C130AABB2358C3450073644B /* SwiftyJSON.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		C1C1C0F32350E3E2006DED27 /* AutomergeJavaScript.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1C1C0F22350E3E2006DED27 /* AutomergeJavaScript.swift */; };
 		C1C1C0F52350E404006DED27 /* Canvas.bundle.js in Resources */ = {isa = PBXBuildFile; fileRef = C1C1C0F42350E404006DED27 /* Canvas.bundle.js */; };
 		E009D221235520EB00B55EA0 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E009D220235520EB00B55EA0 /* ViewController.swift */; };
@@ -21,30 +19,6 @@
 		E0EEA22E235494C10076D540 /* DrawView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0EEA22D235494C10076D540 /* DrawView.swift */; };
 		E0EEA233235495350076D540 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E0EEA231235495350076D540 /* Main.storyboard */; };
 /* End PBXBuildFile section */
-
-/* Begin PBXCopyFilesBuildPhase section */
-		C130AABE2358C3450073644B /* Embed Frameworks */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = "";
-			dstSubfolderSpec = 10;
-			files = (
-				C130AABD2358C3450073644B /* SwiftyJSON.framework in Embed Frameworks */,
-			);
-			name = "Embed Frameworks";
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		C19085D523592DB100ABDB4D /* CopyFiles */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = "";
-			dstSubfolderSpec = 10;
-			files = (
-				C19085D623592DC200ABDB4D /* SwiftyJSON.framework in CopyFiles */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		B20695EE2357547800380182 /* Colour.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Colour.swift; path = Canvas/Colour.swift; sourceTree = "<group>"; };
@@ -128,9 +102,7 @@
 				E0BE81F42350C3A100D93BF1 /* Frameworks */,
 				C1B527BC2354F45300DB4DCA /* ShellScript */,
 				E0BE81F52350C3A100D93BF1 /* Resources */,
-				C130AABE2358C3450073644B /* Embed Frameworks */,
-				C130AABF2358C3640073644B /* ShellScript */,
-				C19085D523592DB100ABDB4D /* CopyFiles */,
+				F453F4887EA3533DB42CCAF4 /* Carthage */,
 			);
 			buildRules = (
 			);
@@ -189,24 +161,6 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		C130AABF2358C3640073644B /* ShellScript */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"$(SRCROOT)/Carthage/Build/iOS/SwiftyJSON.framework",
-			);
-			outputFileListPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "/usr/local/bin/carthage copy-frameworks\n";
-		};
 		C1B527BC2354F45300DB4DCA /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -223,6 +177,26 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/bash;
 			shellScript = "source $HOME/.bashrc\nWORKING_DIR=$(pwd)\n# temporarily switch to the JavaScript dir so we can run npm commands\ncd $SRCROOT\"/Javascript\"\n# build the JavaScript bundle\nnpm run build\n# if non-zero exit code, exit and warn the user\nif [ $? -ne 0 ]; then\n        echo \"failure in 'Run Script' phase - building JS bundle\"\n        cd $WORKING_DIR\n        exit 1\nfi\n# go back to the working directory\ncd $WORKING_DIR\n";
+		};
+		F453F4887EA3533DB42CCAF4 /* Carthage */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"$(SRCROOT)/Carthage/xcfilelists/Canvas-inputPaths.xcfilelist",
+			);
+			inputPaths = (
+			);
+			name = Carthage;
+			outputFileListPaths = (
+				"$(SRCROOT)/Carthage/xcfilelists/Canvas-outputPaths.xcfilelist",
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "/usr/local/bin/carthage copy-frameworks\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
