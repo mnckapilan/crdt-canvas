@@ -14,8 +14,6 @@ steps:
   displayName: Install NPM Dependencies
 - script: cd Javascript ; npm run build ; cd ..
   displayName: Run Webpack Bundle Script
-- task: CocoaPods@0
-  displayName: 'pod install using the CocoaPods task with defaults'
 - task: Xcode@5
   displayName: 'Build the app using Xcode'
   inputs:
