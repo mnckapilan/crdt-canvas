@@ -93,6 +93,7 @@ class DrawView: UIView {
             return
         }
         drawColour = chosen.colour.cgColor
+        // TODO: Change colour button so can see what colour is being used
     }
     
     @IBAction func clearCanvas(_ sender: Any) {
@@ -101,6 +102,7 @@ class DrawView: UIView {
     }
     
     public func addPath(_ path: UIBezierPath) {
+        // Need to pass in the colour of the path here too, currently default set to red
         lines.append((path, UIColor.red.cgColor))
         self.setNeedsDisplay()
     }
@@ -112,7 +114,7 @@ class DrawView: UIView {
             if m.connectedPeers.count > 0 {
                 do {
                     try m.send(data, toPeers: m.connectedPeers, with: .reliable)
-                } catch let error as NSError {
+                } catch _ as NSError {
                 }
             }
         }
