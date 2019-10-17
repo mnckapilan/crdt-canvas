@@ -19,7 +19,6 @@ class DrawView: UIView {
     var drawColour = UIColor.white.cgColor
     var stroke: [[String:Float]] = []
     
-//    var documentDict: [[[String:Float]]] = []
     var documentString = ""
     
     required init?(coder aDecoder: NSCoder) {
@@ -28,7 +27,6 @@ class DrawView: UIView {
         AutomergeJavaScript.shared.initDocument() { (returnString) in
             self.documentString = returnString
         }
-        print("document string is " + documentString)
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -66,10 +64,9 @@ class DrawView: UIView {
             
         stroke = []
         
-        AutomergeJavaScript.shared.addStroke(strokeObject, documentString) { (returnString) in
-            self.documentString = returnString
+        AutomergeJavaScript.shared.addStroke(strokeObject, documentString) { (returnValue) in
+            self.documentString = returnValue[0]
         }
-        print ("new document string" + documentString)
     }
     
     override func draw(_ rect: CGRect) {

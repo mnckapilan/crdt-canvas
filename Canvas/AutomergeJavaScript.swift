@@ -28,34 +28,31 @@ class AutomergeJavaScript: NSObject {
         context.setObject(unsafeBitCast(consoleLog, to: AnyObject.self), forKeyedSubscript: "_consoleLog" as (NSCopying & NSObjectProtocol)?)
 
         context.exceptionHandler = { context, exception in
-            print(exception!.toString())
+            print(exception!.toString()!)
         }
         
         // Evaluate the JS code that defines the functions to be used later on.
         self.context.evaluateScript(jsCode)
     }
        
-    func addStroke(_ stroke: JSON, _ currentDocument: String, completion: @escaping (_ randomNumber: String) -> Void) {
+    func addStroke(_ stroke: JSON, _ currentDocument: String, completion: @escaping (_ returnValue: [String]) -> Void) {
         // Run this asynchronously in the background
         
         let strokeJsonString = stroke.rawString([.castNilToNSNull: true])
-        
-        print (strokeJsonString!)
-        
+                
         DispatchQueue.global(qos: .userInitiated).async {
-            var returnString = "failed"
+            var returnValue: [String] = []
             let jsModule = self.context.objectForKeyedSubscript("Canvas")
             let jsAutomerger = jsModule?.objectForKeyedSubscript("Automerger")
            
             // In the JSContext global values can be accessed through `objectForKeyedSubscript`.
             if let result = jsAutomerger?.objectForKeyedSubscript("addStroke").call(withArguments: [currentDocument, strokeJsonString!]) {
-                print(result)
-                returnString = String(result.toString())
+                returnValue = result.toArray() as! [String]
                }
             
                // Call the completion block on the main thread
                DispatchQueue.main.async {
-                   completion(returnString)
+                   completion(returnValue)
                }
        }
     }

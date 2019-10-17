@@ -15,17 +15,6 @@ export class Automerger {
     // Local changes when user adds a stoke.
     // We will be sending a list of changes but this list only contains one change
 
-
-    // static addStroke(currentDocString, strokeString) {
-    //     var stroke = JSON.parse(strokeString);
-    //     var currentDoc = Automerge.load(currentDocString);
-    //     let newDoc = Automerge.change(currentDoc, currentDoc => {
-    //         currentDoc.strokes.push(stroke);
-    //     });
-    //     let change = Automerge.getChanges(currentDoc, newDoc);
-    //     return [Automerge.save(newDoc), change];
-    // }
-
     static addStroke(currentDocString, strokeString) {
         var stroke = JSON.parse(strokeString);
         var currentDoc = Automerge.load(currentDocString);
@@ -33,7 +22,7 @@ export class Automerger {
             currentDoc.strokes.push(stroke);
         });
         let change = Automerge.getChanges(currentDoc, newDoc);
-        return Automerge.save(newDoc);
+        return [Automerge.save(newDoc), JSON.stringify(change)];
     }
 
     // If we are sending/receiving changes, use this.
