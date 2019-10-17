@@ -1,7 +1,7 @@
 import * as Automerge from 'automerge'
 
 
-export class Synchronizer {
+export class Automerger {
 
     static randomNumber() {
         console.log("random number generated");
@@ -9,18 +9,20 @@ export class Synchronizer {
     }
 
     static initDocument() {
-        return Automerge.save(Automerge.init());
+        return Automerge.save(Automerge.from({ strokes: [] }));
     }
 
     // Local changes when user adds a stoke.
     // We will be sending a list of changes but this list only contains one change
-    static addStroke(currentDocString, stroke) {
-        currentDoc = Automerge.load(currentDocString);
+
+    static addStroke(currentDocString, strokeString) {
+        var stroke = JSON.parse(strokeString);
+        var currentDoc = Automerge.load(currentDocString);
         let newDoc = Automerge.change(currentDoc, currentDoc => {
             currentDoc.strokes.push(stroke);
         });
         let change = Automerge.getChanges(currentDoc, newDoc);
-        return [Automerge.save(newDoc), change];
+        return [Automerge.save(newDoc), JSON.stringify(change)];
     }
 
     // If we are sending/receiving changes, use this.

@@ -19,6 +19,7 @@
 		E0BE820A2350C3A300D93BF1 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E0BE82082350C3A300D93BF1 /* LaunchScreen.storyboard */; };
 		E0EEA22E235494C10076D540 /* DrawView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0EEA22D235494C10076D540 /* DrawView.swift */; };
 		E0EEA233235495350076D540 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E0EEA231235495350076D540 /* Main.storyboard */; };
+		
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */

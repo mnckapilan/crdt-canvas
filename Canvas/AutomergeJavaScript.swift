@@ -7,6 +7,7 @@
 //
 
 import JavaScriptCore
+import SwiftyJSON
 
 class AutomergeJavaScript: NSObject {
     
@@ -25,26 +26,51 @@ class AutomergeJavaScript: NSObject {
            print("JavaScript console.log: " + message)
        }
         context.setObject(unsafeBitCast(consoleLog, to: AnyObject.self), forKeyedSubscript: "_consoleLog" as (NSCopying & NSObjectProtocol)?)
+
+        context.exceptionHandler = { context, exception in
+            print(exception!.toString()!)
+        }
         
         // Evaluate the JS code that defines the functions to be used later on.
         self.context.evaluateScript(jsCode)
     }
        
-    func javascript_func(completion: @escaping (_ randomNumber: Int) -> Void) {
+    func addStroke(_ stroke: JSON, _ currentDocument: String, completion: @escaping (_ returnValue: [String]) -> Void) {
         // Run this asynchronously in the background
+        
+        let strokeJsonString = stroke.rawString([.castNilToNSNull: true])
+                
         DispatchQueue.global(qos: .userInitiated).async {
-            var randomNumber = 0
+            var returnValue: [String] = []
             let jsModule = self.context.objectForKeyedSubscript("Canvas")
-            let jsSynchronizer = jsModule?.objectForKeyedSubscript("Synchronizer")
+            let jsAutomerger = jsModule?.objectForKeyedSubscript("Automerger")
            
             // In the JSContext global values can be accessed through `objectForKeyedSubscript`.
-            if let result = jsSynchronizer?.objectForKeyedSubscript("randomNumber").call(withArguments: []) {
-                randomNumber = Int(result.toInt32())
+            if let result = jsAutomerger?.objectForKeyedSubscript("addStroke").call(withArguments: [currentDocument, strokeJsonString!]) {
+                returnValue = result.toArray() as! [String]
                }
-               
+            
                // Call the completion block on the main thread
                DispatchQueue.main.async {
-                   completion(randomNumber)
+                   completion(returnValue)
+               }
+       }
+    }
+    
+    func initDocument(completion: @escaping (_ randomNumber: String) -> Void) {
+        // Run this asynchronously in the background
+        DispatchQueue.global(qos: .userInitiated).async {
+            var returnString = "failed"
+            let jsModule = self.context.objectForKeyedSubscript("Canvas")
+            let jsAutomerger = jsModule?.objectForKeyedSubscript("Automerger")
+           
+            // In the JSContext global values can be accessed through `objectForKeyedSubscript`.
+            if let result = jsAutomerger?.objectForKeyedSubscript("initDocument").call(withArguments: []) {
+                returnString = String(result.toString())
+               }
+               // Call the completion block on the main thread
+               DispatchQueue.main.async {
+                   completion(returnString)
                }
        }
     }

@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import SwiftyJSON
 import MultipeerConnectivity
 
 class DrawView: UIView {
@@ -17,11 +18,17 @@ class DrawView: UIView {
     var prevPoint: CGPoint!
     var pPrevPoint: CGPoint!
     var drawColour = UIColor.white.cgColor
+    var stroke: [[String:Float]] = []
+    
+    var documentString = ""
     public var mcSession: MCSession?
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         self.backgroundColor = UIColor.black
+        AutomergeJavaScript.shared.initDocument() { (returnString) in
+            self.documentString = returnString
+        }
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -43,19 +50,26 @@ class DrawView: UIView {
         } else if (count % 3 == 1) {
             prevPoint = point
         }
+        
+        stroke.append(["x": Float(point.x), "y": Float(point.y)])
 
         self.setNeedsDisplay()
     }
     
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
-        print("end")
         lines.append((bzPath: lastPath, colour: drawColour))
         sendPath(lastPath)
         lastPath = nil
         
-        AutomergeJavaScript.shared.javascript_func() { (randomNumber) in
-            print(randomNumber)
-        }
+        let strokeObject: JSON = [
+            "stroke": stroke
+        ]
+            
+        stroke = []
+        
+        AutomergeJavaScript.shared.addStroke(strokeObject, documentString) { (returnValue) in
+            self.documentString = returnValue[0]
+    }
     }
     
     override func draw(_ rect: CGRect) {
