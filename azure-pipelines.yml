@@ -14,6 +14,8 @@ steps:
   displayName: Install NPM Dependencies
 - script: cd Javascript ; npm run build ; cd ..
   displayName: Run Webpack Bundle Script
+- script: carthage bootstrap
+  displayName: Carthage Dependencies
 - task: Xcode@5
   displayName: 'Build the app using Xcode'
   inputs:
@@ -21,6 +23,6 @@ steps:
     sdk: 'iphonesimulator'
     scheme: 'Canvas'
     configuration: 'Debug'
-    xcWorkspacePath: 'Canvas.xcworkspace'
+    xcWorkspacePath: '**/*.xcodeproj/project.xcworkspace'
     useXcpretty: 'false'
     xcodeVersion: '11' # Options: 8, 9, 10, default, specifyPath
