@@ -70,6 +70,7 @@ class DrawView: UIView {
         AutomergeJavaScript.shared.addStroke(strokeObject, documentString) { (returnValue) in
             self.documentString = returnValue[0]
     }
+    }
     
     override func draw(_ rect: CGRect) {
         guard let context = UIGraphicsGetCurrentContext() else {
