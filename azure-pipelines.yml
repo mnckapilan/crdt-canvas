@@ -16,6 +16,8 @@ steps:
   displayName: Run Webpack Bundle Script
 - script: carthage update --platform ios
   displayName: Carthage Dependencies 
+- script: xcrun swift --version
+  displayName: Output Swift Version
 - task: Xcode@5
   displayName: 'Build the app using Xcode'
   inputs:
