@@ -14,15 +14,17 @@ steps:
   displayName: Install NPM Dependencies
 - script: cd Javascript ; npm run build ; cd ..
   displayName: Run Webpack Bundle Script
-- script: carthage bootstrap
+- script: TOOLCHAINS=com.apple.dt.toolchain.Swift_5_1 carthage update --platform ios
   displayName: Carthage Dependencies 
+- script: xcrun swift --version
+  displayName: Output Swift Version
 - task: Xcode@5
   displayName: 'Build the app using Xcode'
   inputs:
     actions: 'build'
-    sdk: 'iphonesimulator'
+    sdk: 'iphoneos'
     scheme: 'Canvas'
     configuration: 'Debug'
     xcWorkspacePath: 'Canvas.xcodeproj'
     useXcpretty: 'false'
-    xcodeVersion: '11' # Options: 8, 9, 10, default, specifyPath
+    xcodeVersion: 'default' # Options: 8, 9, 10, default, specifyPath
