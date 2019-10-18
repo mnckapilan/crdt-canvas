@@ -36,7 +36,7 @@ enum Colour {
     var colour: UIColor {
         switch self {
         case .pink:
-          return .systemPink
+          return .blue
         case .blue:
             return .blue
         case .yellow:
