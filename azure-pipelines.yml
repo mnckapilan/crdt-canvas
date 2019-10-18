@@ -27,4 +27,4 @@ steps:
     configuration: 'Debug'
     xcWorkspacePath: 'Canvas.xcodeproj'
     useXcpretty: 'false'
-    xcodeVersion: '11_1' # Options: 8, 9, 10, default, specifyPath
+    xcodeVersion: 'default' # Options: 8, 9, 10, default, specifyPath
