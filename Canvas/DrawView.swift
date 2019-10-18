@@ -93,7 +93,6 @@ class DrawView: UIView {
             return
         }
         drawColour = chosen.colour.cgColor
-        // TODO: Change colour button so can see what colour is being used
     }
     
     @IBAction func clearCanvas(_ sender: Any) {
