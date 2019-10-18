@@ -10,7 +10,7 @@ import Foundation
 import UIKit
 
 enum Colour {
-    case pink
+    case red
     case blue
     case yellow
     case green
@@ -25,7 +25,7 @@ enum Colour {
         case 3:
             self = .yellow
         case 4:
-            self = .pink
+            self = .red
         case 5:
             self = .white
         default:
@@ -35,8 +35,8 @@ enum Colour {
     
     var colour: UIColor {
         switch self {
-        case .pink:
-          return .blue
+        case .red:
+            return .red
         case .blue:
             return .blue
         case .yellow:

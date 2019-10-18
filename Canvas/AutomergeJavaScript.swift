@@ -11,7 +11,7 @@ import SwiftyJSON
 
 class AutomergeJavaScript: NSObject {
     
-    /// Singleton instance. Much more resource-friendly than creating multiple new instances.
+    // Singleton instance. More resource-friendly than creating multiple new instances.
     static let shared = AutomergeJavaScript()
     private let vm = JSVirtualMachine()
     private let context: JSContext

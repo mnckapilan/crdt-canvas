@@ -21,7 +21,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		B20695EE2357547800380182 /* Colour.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Colour.swift; path = Canvas/Colour.swift; sourceTree = "<group>"; };
+		B20695EE2357547800380182 /* Colour.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Colour.swift; sourceTree = "<group>"; };
 		C130AABB2358C3450073644B /* SwiftyJSON.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftyJSON.framework; path = Carthage/Build/iOS/SwiftyJSON.framework; sourceTree = "<group>"; };
 		C1C1C0F22350E3E2006DED27 /* AutomergeJavaScript.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AutomergeJavaScript.swift; sourceTree = "<group>"; };
 		C1C1C0F42350E404006DED27 /* Canvas.bundle.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; name = Canvas.bundle.js; path = Javascript/dist/Canvas.bundle.js; sourceTree = SOURCE_ROOT; };
@@ -59,7 +59,6 @@
 		E0BE81EE2350C3A100D93BF1 = {
 			isa = PBXGroup;
 			children = (
-				B20695EE2357547800380182 /* Colour.swift */,
 				E0BE81F92350C3A100D93BF1 /* Canvas */,
 				E0BE81F82350C3A100D93BF1 /* Products */,
 				C130AABA2358C3450073644B /* Frameworks */,
@@ -77,6 +76,7 @@
 		E0BE81F92350C3A100D93BF1 /* Canvas */ = {
 			isa = PBXGroup;
 			children = (
+				B20695EE2357547800380182 /* Colour.swift */,
 				E0BE81FA2350C3A100D93BF1 /* AppDelegate.swift */,
 				C1C1C0F22350E3E2006DED27 /* AutomergeJavaScript.swift */,
 				C1C1C0F42350E404006DED27 /* Canvas.bundle.js */,
@@ -176,7 +176,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/bash;
-			shellScript = "source $HOME/.bashrc\nWORKING_DIR=$(pwd)\n# temporarily switch to the JavaScript dir so we can run npm commands\ncd $SRCROOT\"/Javascript\"\n# build the JavaScript bundle\nnpm run build\n# if non-zero exit code, exit and warn the user\nif [ $? -ne 0 ]; then\n        echo \"failure in 'Run Script' phase - building JS bundle\"\n        cd $WORKING_DIR\n        exit 1\nfi\n# go back to the working directory\ncd $WORKING_DIR\n";
+			shellScript = "#source $HOME/.bashrc\n#WORKING_DIR=$(pwd)\n# temporarily switch to the JavaScript dir so we can run npm commands\n#cd $SRCROOT\"/Javascript\"\n# build the JavaScript bundle\n#npm run build\n# if non-zero exit code, exit and warn the user\n#if [ $? -ne 0 ]; then\n        #echo \"failure in 'Run Script' phase - building JS bundle\"\n        #cd $WORKING_DIR\n        #exit 1\n#fi\n# go back to the working directory\n#cd $WORKING_DIR\n";
 		};
 		F453F4887EA3533DB42CCAF4 /* Carthage */ = {
 			isa = PBXShellScriptBuildPhase;

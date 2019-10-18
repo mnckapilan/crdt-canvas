@@ -11,8 +11,6 @@ import UIKit
 class ViewController: UIViewController, MCSessionDelegate, MCBrowserViewControllerDelegate {
     
     @IBOutlet var drawView: DrawView!
-    
-    
 
     var peerID: MCPeerID!
     var mcSession: MCSession!
