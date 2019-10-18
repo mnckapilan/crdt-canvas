@@ -11,8 +11,11 @@ import UIKit
 class ViewController: UIViewController, MCSessionDelegate, MCBrowserViewControllerDelegate {
     
     @IBOutlet var drawView: DrawView!
-    
-    
+    @IBOutlet var blueBtn: UIButton!
+    @IBOutlet var greenBtn: UIButton!
+    @IBOutlet var yellowBtn: UIButton!
+    @IBOutlet var redBtn: UIButton!
+    @IBOutlet var whiteBtn: UIButton!
 
     var peerID: MCPeerID!
     var mcSession: MCSession!
@@ -40,6 +43,18 @@ class ViewController: UIViewController, MCSessionDelegate, MCBrowserViewControll
            }
         
         present(ac, animated: true)
+    }
+    
+    @IBAction func btnClicked(_ sender: UIButton) {
+        let btnTag = sender.tag
+        let buttons: [UIButton] = [blueBtn, greenBtn, yellowBtn, redBtn, whiteBtn]
+        for i in 1...5 {
+            if (i == btnTag) {
+                buttons[i - 1].isSelected = true
+            } else {
+                buttons[i - 1].isSelected = false
+            }
+        }
     }
 
     func startHosting(action: UIAlertAction) {
