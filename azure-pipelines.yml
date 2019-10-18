@@ -14,7 +14,7 @@ steps:
   displayName: Install NPM Dependencies
 - script: cd Javascript ; npm run build ; cd ..
   displayName: Run Webpack Bundle Script
-- script: carthage update --platform ios
+- script: TOOLCHAINS=com.apple.dt.toolchain.Swift_5_1 carthage update --platform ios
   displayName: Carthage Dependencies 
 - script: xcrun swift --version
   displayName: Output Swift Version
