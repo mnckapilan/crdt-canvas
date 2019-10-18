@@ -22,7 +22,7 @@ steps:
   displayName: 'Build the app using Xcode'
   inputs:
     actions: 'build'
-    sdk: 'iphonesimulator'
+    sdk: 'iphoneos'
     scheme: 'Canvas'
     configuration: 'Debug'
     xcWorkspacePath: 'Canvas.xcodeproj'
