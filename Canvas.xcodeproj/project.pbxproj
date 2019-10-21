@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		15F9B347235E068600A6F790 /* Stroke.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15F9B346235E068600A6F790 /* Stroke.swift */; };
 		B20695EF2357547800380182 /* Colour.swift in Sources */ = {isa = PBXBuildFile; fileRef = B20695EE2357547800380182 /* Colour.swift */; };
 		C130AABC2358C3450073644B /* SwiftyJSON.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C130AABB2358C3450073644B /* SwiftyJSON.framework */; };
 		C1C1C0F32350E3E2006DED27 /* AutomergeJavaScript.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1C1C0F22350E3E2006DED27 /* AutomergeJavaScript.swift */; };
@@ -21,6 +22,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		15F9B346235E068600A6F790 /* Stroke.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Stroke.swift; sourceTree = "<group>"; };
 		B20695EE2357547800380182 /* Colour.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Colour.swift; sourceTree = "<group>"; };
 		C130AABB2358C3450073644B /* SwiftyJSON.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftyJSON.framework; path = Carthage/Build/iOS/SwiftyJSON.framework; sourceTree = "<group>"; };
 		C1C1C0F22350E3E2006DED27 /* AutomergeJavaScript.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AutomergeJavaScript.swift; sourceTree = "<group>"; };
@@ -87,6 +89,7 @@
 				E0BE81FE2350C3A100D93BF1 /* Canvas.xcdatamodeld */,
 				E0EEA22D235494C10076D540 /* DrawView.swift */,
 				E009D220235520EB00B55EA0 /* ViewController.swift */,
+				15F9B346235E068600A6F790 /* Stroke.swift */,
 			);
 			path = Canvas;
 			sourceTree = "<group>";
@@ -211,6 +214,7 @@
 				B20695EF2357547800380182 /* Colour.swift in Sources */,
 				E0BE82002350C3A100D93BF1 /* Canvas.xcdatamodeld in Sources */,
 				E009D221235520EB00B55EA0 /* ViewController.swift in Sources */,
+				15F9B347235E068600A6F790 /* Stroke.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

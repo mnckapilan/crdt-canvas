@@ -105,10 +105,10 @@ class ViewController: UIViewController, MCSessionDelegate, MCBrowserViewControll
 
     func session(_ session: MCSession, didReceive data: Data, fromPeer peerID: MCPeerID) {
         do {
-            let data = try NSKeyedUnarchiver.unarchiveTopLevelObjectWithData(data) as! UIBezierPath
+            let data = String(data: data, encoding: .utf8)!
             DispatchQueue.main.async { [unowned self] in
                 print("here")
-                self.drawView.addPath(data)
+                self.drawView.incomingChange(data)
             }
         } catch {
             print(error)

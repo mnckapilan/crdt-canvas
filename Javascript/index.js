@@ -1,5 +1,6 @@
 import * as Automerge from 'automerge'
 
+var cheekyGlobalVariable = Automerge.from({strokes: {}});
 
 export class Automerger {
 
@@ -15,23 +16,34 @@ export class Automerger {
     // Local changes when user adds a stoke.
     // We will be sending a list of changes but this list only contains one change
 
-    static addStroke(currentDocString, strokeString) {
-        var stroke = JSON.parse(strokeString);
-        var currentDoc = Automerge.load(currentDocString);
-        let newDoc = Automerge.change(currentDoc, currentDoc => {
-            currentDoc.strokes.push(stroke);
-        });
-        let change = Automerge.getChanges(currentDoc, newDoc);
-        return [Automerge.save(newDoc), JSON.stringify(change)];
+    static addChange(changeString) {
+        var change = JSON.parse(changeString);
+        var type = change.type;
+        if (type === "ADD_POINT") {
+          var nDoc = Automerge.change(cheekyGlobalVariable, "LOL0", doc => {
+            console.log(JSON.stringify(doc.strokes));
+            console.log(JSON.stringify(change));
+            console.log("start");
+            doc.strokes[change.identifier].points = doc.strokes[change.identifier].points.concat(change.point);
+            console.log("end");
+          });
+        } else if (type === "ADD_STROKE") {
+           var nDoc = Automerge.change(cheekyGlobalVariable, "LOL1", doc => {
+            doc.strokes[change.identifier] = change.stroke;
+          });
+        }
+        var retValue = [JSON.stringify(nDoc.strokes), JSON.stringify(Automerge.getChanges(cheekyGlobalVariable, nDoc))];
+        cheekyGlobalVariable = nDoc;
+        return retValue;
     }
 
     // If we are sending/receiving changes, use this.
     // May be an issue as it's only one change ? But give it a go
-    static mergeIncomingChanges(currentDocString, changes) {
-        currentDoc = Automerge.load(currentDocString);
-        let newDoc = Automerge.applyChanges(currentDoc, changes);
-        return Automerge.save(newDoc);
-    }
+    static mergeIncomingChanges(changesString) {
+       let changes = JSON.parse(changesString);
+       cheekyGlobalVariable = Automerge.applyChanges(cheekyGlobalVariable, changes);
+       return JSON.stringify(cheekyGlobalVariables.strokes);
+     }
 
     // Maybe add ids to every change, and pass that in as a parameter
     // so we can find it as this may not work.

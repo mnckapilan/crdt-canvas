@@ -34,44 +34,68 @@ class AutomergeJavaScript: NSObject {
         // Evaluate the JS code that defines the functions to be used later on.
         self.context.evaluateScript(jsCode)
     }
-       
-    func addStroke(_ stroke: JSON, _ currentDocument: String, completion: @escaping (_ returnValue: [String]) -> Void) {
+    
+    func applyExternalChanges(_ changes: String, completion: @escaping (_ returnValue: [String: Stroke]) -> Void) {
         // Run this asynchronously in the background
         
-        let strokeJsonString = stroke.rawString([.castNilToNSNull: true])
+        DispatchQueue.global(qos: .userInitiated).async {
+            var returnString: [String: Stroke]!
+            let jsModule = self.context.objectForKeyedSubscript("Canvas")
+            let jsAutomerger = jsModule?.objectForKeyedSubscript("Automerger")
+           
+            // In the JSContext global values can be accessed through `objectForKeyedSubscript`.
+            if let result = jsAutomerger?.objectForKeyedSubscript("mergeIncomingChanges").call(withArguments: [changes]) {
+                do {
+                    let s = String(result.toString())
+                    let decoder = JSONDecoder()
+                    returnString = try decoder.decode([String: Stroke].self, from: s.data(using: .utf8)!)
+
+                } catch {
                 
-        DispatchQueue.global(qos: .userInitiated).async {
-            var returnValue: [String] = []
-            let jsModule = self.context.objectForKeyedSubscript("Canvas")
-            let jsAutomerger = jsModule?.objectForKeyedSubscript("Automerger")
-           
-            // In the JSContext global values can be accessed through `objectForKeyedSubscript`.
-            if let result = jsAutomerger?.objectForKeyedSubscript("addStroke").call(withArguments: [currentDocument, strokeJsonString!]) {
-                returnValue = result.toArray() as! [String]
-               }
+                }
+
+                }
             
-               // Call the completion block on the main thread
-               DispatchQueue.main.async {
-                   completion(returnValue)
-               }
-       }
-    }
-    
-    func initDocument(completion: @escaping (_ randomNumber: String) -> Void) {
-        // Run this asynchronously in the background
-        DispatchQueue.global(qos: .userInitiated).async {
-            var returnString = "failed"
-            let jsModule = self.context.objectForKeyedSubscript("Canvas")
-            let jsAutomerger = jsModule?.objectForKeyedSubscript("Automerger")
-           
-            // In the JSContext global values can be accessed through `objectForKeyedSubscript`.
-            if let result = jsAutomerger?.objectForKeyedSubscript("initDocument").call(withArguments: []) {
-                returnString = String(result.toString())
-               }
                // Call the completion block on the main thread
                DispatchQueue.main.async {
                    completion(returnString)
                }
        }
+    }
+       
+    func addChange(_ change: Change, completion: @escaping (_ returnValue: ([String: Stroke], String)) -> Void) {
+        // Run this asynchronously in the background
+        do {
+            let jsonEncoder = JSONEncoder()
+            let jsonData = try jsonEncoder.encode(change)
+            let jsonString = String(data: jsonData, encoding: .utf8)
+            
+            DispatchQueue.global(qos: .userInitiated).async {
+                 var returnValue: ([String: Stroke], String)!
+                 let jsModule = self.context.objectForKeyedSubscript("Canvas")
+                 let jsAutomerger = jsModule?.objectForKeyedSubscript("Automerger")
+                
+                 // In the JSContext global values can be accessed through `objectForKeyedSubscript`.
+                 if let result = jsAutomerger?.objectForKeyedSubscript("addChange").call(withArguments: [jsonString!]) {
+                        do {
+                            let t = result.toArray() as! [String]
+                            let decoder = JSONDecoder()
+                            let strokes = try decoder.decode([String: Stroke].self, from: t[0].data(using: .utf8)!)
+                            returnValue = (strokes, t[1])
+                        } catch {
+                        
+                        }
+                    }
+                 
+                    // Call the completion block on the main thread
+                    DispatchQueue.main.async {
+                        completion(returnValue)
+                    }
+            }
+        } catch {
+            
+        }
+                
+        
     }
 }
