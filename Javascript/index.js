@@ -21,10 +21,11 @@ export class Automerger {
         var type = change.type;
         if (type === "ADD_POINT") {
           var nDoc = Automerge.change(cheekyGlobalVariable, "LOL0", doc => {
-            console.log(JSON.stringify(doc.strokes));
-            console.log(JSON.stringify(change));
-            console.log("start");
-            doc.strokes[change.identifier].points = doc.strokes[change.identifier].points.concat(change.point);
+            //console.log(JSON.stringify(doc.strokes));
+            //console.log(JSON.stringify(change));
+            //console.log("start");
+            var p = doc.strokes[change.identifier].points;
+            change.point.forEach(x => p.push(x));
             console.log("end");
           });
         } else if (type === "ADD_STROKE") {

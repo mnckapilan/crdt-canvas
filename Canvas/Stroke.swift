@@ -10,7 +10,11 @@ import Foundation
 import UIKit
 import CoreGraphics
 
-class Point: Codable {
+class Point: Codable, Equatable, CustomStringConvertible {
+    static func == (lhs: Point, rhs: Point) -> Bool {
+        return lhs.x == rhs.x && lhs.y == rhs.y
+    }
+    
     var x: Float
     var y: Float
     
@@ -28,6 +32,8 @@ class Point: Codable {
             return CGPoint(x: CGFloat(x), y: CGFloat(y))
         }
     }
+    
+    public var description: String { return "x: \(x) y: \(y)" }
 }
 
 enum Change: Encodable {
@@ -125,6 +131,7 @@ class Stroke: Codable {
                     prevPoint = point.cgPoint
                 } else  if c == 3 {
                     path.addCurve(to: point.cgPoint, controlPoint1: pPrevPoint, controlPoint2: prevPoint)
+                    c = 0
                 }
                 c += 1
             }

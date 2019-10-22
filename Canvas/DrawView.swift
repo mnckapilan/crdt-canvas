@@ -36,6 +36,7 @@ class DrawView: UIView {
         let point = Point(fromCGPoint: Array(touches)[0].location(in: self))
         let stroke = Stroke(points: [point], colour: drawColour)
         currentIdentifier = getIdentifier()
+        pointsToWrite = [point]
         let change = Change.addStroke(stroke, currentIdentifier)
         handleChange(change: change)
     }
@@ -49,27 +50,34 @@ class DrawView: UIView {
     
     override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
         let point = Point(fromCGPoint: Array(touches)[0].location(in: self))
-        pointsToWrite.append(point)
-        c += 1
-        if c == 50 {
+        if pointsToWrite.count > 0 && pointsToWrite.last! != point {
+            pointsToWrite.append(point)
+        } else {
+            //print(pointsToWrite.last!)
+            //print(point)
+        }
+        if pointsToWrite.count >= 15 {
+            pointsToWrite.remove(at: 0)
             handleChange(change: Change.addPoint(pointsToWrite, currentIdentifier))
-            c = 0
-            pointsToWrite = []
+            pointsToWrite = [pointsToWrite.last!]
         }
     }
     
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
         currentIdentifier = nil
+        print(pointsToWrite.count)
+        pointsToWrite = []
+        c = 0
     }
     
     override func draw(_ rect: CGRect) {
         guard let context = UIGraphicsGetCurrentContext() else {
             return
         }
-        
-        context.beginPath()
+                
         for (_, stroke) in lines {
             context.setStrokeColor(stroke.colour.cgColor)
+            print(stroke.points.count)
             context.addPath(stroke.cgPath)
             context.strokePath()
         }
