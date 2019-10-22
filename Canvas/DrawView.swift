@@ -100,6 +100,13 @@ class DrawView: UIView {
         self.setNeedsDisplay()
     }
     
+    @IBAction func undoLastStroke(_ sender: Any) {
+        if (lines.count > 0) {
+          lines.remove(at: lines.endIndex - 1)
+          self.setNeedsDisplay()
+        }
+    }
+    
     public func addPath(_ path: UIBezierPath) {
         // Need to pass in the colour of the path here too, currently default set to red
         lines.append((path, UIColor.red.cgColor))

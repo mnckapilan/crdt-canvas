@@ -108,6 +108,15 @@
                                     <action selector="clearCanvas:" destination="Nsp-Ud-L6L" eventType="touchUpInside" id="FWQ-Jo-Gju"/>
                                 </connections>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9ke-aS-7NE">
+                                <rect key="frame" x="431" y="55" width="46" height="44"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="tintColor" systemColor="labelColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <state key="normal" backgroundImage="arrowshape.turn.up.left.fill" catalog="system"/>
+                                <connections>
+                                    <action selector="undoLastStroke:" destination="Nsp-Ud-L6L" eventType="touchUpInside" id="quh-k9-LUO"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <constraints>
@@ -135,6 +144,7 @@
         </scene>
     </scenes>
     <resources>
+        <image name="arrowshape.turn.up.left.fill" catalog="system" width="64" height="52"/>
         <image name="clear.fill" catalog="system" width="64" height="56"/>
         <image name="pencil.and.outline" catalog="system" width="64" height="58"/>
         <image name="pencil.circle" catalog="system" width="64" height="60"/>
