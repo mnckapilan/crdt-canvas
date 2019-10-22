@@ -44,6 +44,7 @@ class DrawView: UIView {
     func handleChange(change: Change) {
         AutomergeJavaScript.shared.addChange(change) { (returnValue) in
             self.lines = returnValue.0
+            self.sendPath(returnValue.1)
             self.setNeedsDisplay()
         }
     }
@@ -107,6 +108,7 @@ class DrawView: UIView {
     
     func incomingChange(_ change: String) {
         AutomergeJavaScript.shared.applyExternalChanges(change) { (returnValue) in
+            self.lines = returnValue
             self.setNeedsDisplay()
         }
     }
