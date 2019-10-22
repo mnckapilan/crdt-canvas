@@ -5,7 +5,7 @@ var cheekyGlobalVariable = Automerge.from({strokes: {}});
 export class Automerger {
 
     static randomNumber() {
-        console.log("random number generated");
+        // console.log("random number generated");
         return Math.floor(Math.random() * 100);
     }
 
@@ -26,12 +26,16 @@ export class Automerger {
             //console.log("start");
             var p = doc.strokes[change.identifier].points;
             change.point.forEach(x => p.push(x));
-            console.log("end");
+            // console.log("end");
           });
         } else if (type === "ADD_STROKE") {
            var nDoc = Automerge.change(cheekyGlobalVariable, "LOL1", doc => {
             doc.strokes[change.identifier] = change.stroke;
           });
+        } else if (type === "CLEAR_CANVAS") {
+          var nDoc = Automerge.change(cheekyGlobalVariable, "LOL2", doc => {
+            doc.strokes = {};
+          })
         }
         var retValue = [JSON.stringify(nDoc.strokes), JSON.stringify(Automerge.getChanges(cheekyGlobalVariable, nDoc))];
         cheekyGlobalVariable = nDoc;

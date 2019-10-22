@@ -31,7 +31,7 @@ class DrawView: UIView {
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        print("start")
+//        print("start")
         
         let point = Point(fromCGPoint: Array(touches)[0].location(in: self))
         let stroke = Stroke(points: [point], colour: drawColour)
@@ -56,7 +56,7 @@ class DrawView: UIView {
             //print(pointsToWrite.last!)
             //print(point)
         }
-        if pointsToWrite.count >= 15 {
+        if pointsToWrite.count >= 10 {
             pointsToWrite.remove(at: 0)
             handleChange(change: Change.addPoint(pointsToWrite, currentIdentifier))
             pointsToWrite = [pointsToWrite.last!]
@@ -65,7 +65,7 @@ class DrawView: UIView {
     
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
         currentIdentifier = nil
-        print(pointsToWrite.count)
+//        print(pointsToWrite.count)
         pointsToWrite = []
         c = 0
     }
@@ -77,7 +77,7 @@ class DrawView: UIView {
                 
         for (_, stroke) in lines {
             context.setStrokeColor(stroke.colour.cgColor)
-            print(stroke.points.count)
+//            print(stroke.points.count)
             context.addPath(stroke.cgPath)
             context.strokePath()
         }
@@ -92,8 +92,18 @@ class DrawView: UIView {
     
     @IBAction func clearCanvas(_ sender: Any) {
         // TODO FIX THIS
+        lines = [:]
+        handleChange(change: Change.clearCanvas(""))
+        self.setNeedsDisplay()
+        
     }
 
+    @IBAction func undoLastStroke(_ sender: Any) {
+//        if (lines.count > 0) {
+//          lines.remove(at: lines.endIndex - 1)
+//          self.setNeedsDisplay()
+//        }
+    }
     
     func incomingChange(_ change: String) {
         AutomergeJavaScript.shared.applyExternalChanges(change) { (returnValue) in

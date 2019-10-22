@@ -71,7 +71,7 @@ class AutomergeJavaScript: NSObject {
             let jsonString = String(data: jsonData, encoding: .utf8)
             
             DispatchQueue.global(qos: .userInitiated).async {
-                 var returnValue: ([String: Stroke], String)!
+                var returnValue: ([String: Stroke], String)!
                  let jsModule = self.context.objectForKeyedSubscript("Canvas")
                  let jsAutomerger = jsModule?.objectForKeyedSubscript("Automerger")
                 
@@ -83,7 +83,7 @@ class AutomergeJavaScript: NSObject {
                             let strokes = try decoder.decode([String: Stroke].self, from: t[0].data(using: .utf8)!)
                             returnValue = (strokes, t[1])
                         } catch {
-                        
+
                         }
                     }
                  
