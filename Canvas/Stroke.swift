@@ -90,7 +90,7 @@ class Stroke: Codable {
         let nested = try container.nestedContainer(keyedBy: ColourCodingKeys.self, forKey: CodingKeys.colour)
         let red = try nested.decode(CGFloat.self, forKey: ColourCodingKeys.red)
         let green = try nested.decode(CGFloat.self, forKey: ColourCodingKeys.green)
-        let blue = try nested.decode(CGFloat.self, forKey: ColourCodingKeys.green)
+        let blue = try nested.decode(CGFloat.self, forKey: ColourCodingKeys.blue)
         let alpha = try nested.decode(CGFloat.self, forKey: ColourCodingKeys.alpha)
         colour = UIColor(red: red, green: green, blue: blue, alpha: alpha)
     }
