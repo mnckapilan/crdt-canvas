@@ -114,6 +114,7 @@ class DrawView: UIView {
     }
     
     func sendPath(_ change: String) {
+        print(change)
         if let m = self.mcSession {
             if m.connectedPeers.count > 0 {
                 do {

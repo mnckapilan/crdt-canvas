@@ -1,6 +1,6 @@
 import * as Automerge from 'automerge'
 
-var cheekyGlobalVariable = Automerge.from({strokes: {}});
+var cheekyGlobalVariable = Automerge.load('["~#iL",[["~#iM",["ops",["^0",[["^1",["action","makeMap","obj","5a65b71d-f303-46b7-9052-67dc8ee533e0"]],["^1",["action","link","obj","00000000-0000-0000-0000-000000000000","key","strokes","value","5a65b71d-f303-46b7-9052-67dc8ee533e0"]]]],"actor","92d0a138-8f2b-4aa1-819c-c8695d8f5f2d","seq",1,"deps",["^1",[]],"message","Initialization"]]]]');
 
 export class Automerger {
 
@@ -47,7 +47,7 @@ export class Automerger {
     static mergeIncomingChanges(changesString) {
        let changes = JSON.parse(changesString);
        cheekyGlobalVariable = Automerge.applyChanges(cheekyGlobalVariable, changes);
-       return JSON.stringify(cheekyGlobalVariables.strokes);
+       return JSON.stringify(cheekyGlobalVariable.strokes);
      }
 
     // Maybe add ids to every change, and pass that in as a parameter
