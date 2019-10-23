@@ -1,10 +1,11 @@
 import * as Automerge from 'automerge'
 
+var cheekyGlobalVariable = Automerge.load('["~#iL",[["~#iM",["ops",["^0",[["^1",["action","makeMap","obj","5a65b71d-f303-46b7-9052-67dc8ee533e0"]],["^1",["action","link","obj","00000000-0000-0000-0000-000000000000","key","strokes","value","5a65b71d-f303-46b7-9052-67dc8ee533e0"]]]],"actor","92d0a138-8f2b-4aa1-819c-c8695d8f5f2d","seq",1,"deps",["^1",[]],"message","Initialization"]]]]');
 
 export class Automerger {
 
     static randomNumber() {
-        console.log("random number generated");
+        // console.log("random number generated");
         return Math.floor(Math.random() * 100);
     }
 
@@ -15,23 +16,39 @@ export class Automerger {
     // Local changes when user adds a stoke.
     // We will be sending a list of changes but this list only contains one change
 
-    static addStroke(currentDocString, strokeString) {
-        var stroke = JSON.parse(strokeString);
-        var currentDoc = Automerge.load(currentDocString);
-        let newDoc = Automerge.change(currentDoc, currentDoc => {
-            currentDoc.strokes.push(stroke);
-        });
-        let change = Automerge.getChanges(currentDoc, newDoc);
-        return [Automerge.save(newDoc), JSON.stringify(change)];
+    static addChange(changeString) {
+        var change = JSON.parse(changeString);
+        var type = change.type;
+        if (type === "ADD_POINT") {
+          var nDoc = Automerge.change(cheekyGlobalVariable, "LOL0", doc => {
+            //console.log(JSON.stringify(doc.strokes));
+            //console.log(JSON.stringify(change));
+            //console.log("start");
+            var p = doc.strokes[change.identifier].points;
+            change.point.forEach(x => p.push(x));
+            // console.log("end");
+          });
+        } else if (type === "ADD_STROKE") {
+           var nDoc = Automerge.change(cheekyGlobalVariable, "LOL1", doc => {
+            doc.strokes[change.identifier] = change.stroke;
+          });
+        } else if (type === "CLEAR_CANVAS") {
+          var nDoc = Automerge.change(cheekyGlobalVariable, "LOL2", doc => {
+            doc.strokes = {};
+          })
+        }
+        var retValue = [JSON.stringify(nDoc.strokes), JSON.stringify(Automerge.getChanges(cheekyGlobalVariable, nDoc))];
+        cheekyGlobalVariable = nDoc;
+        return retValue;
     }
 
     // If we are sending/receiving changes, use this.
     // May be an issue as it's only one change ? But give it a go
-    static mergeIncomingChanges(currentDocString, changes) {
-        currentDoc = Automerge.load(currentDocString);
-        let newDoc = Automerge.applyChanges(currentDoc, changes);
-        return Automerge.save(newDoc);
-    }
+    static mergeIncomingChanges(changesString) {
+       let changes = JSON.parse(changesString);
+       cheekyGlobalVariable = Automerge.applyChanges(cheekyGlobalVariable, changes);
+       return JSON.stringify(cheekyGlobalVariable.strokes);
+     }
 
     // Maybe add ids to every change, and pass that in as a parameter
     // so we can find it as this may not work.
