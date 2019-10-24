@@ -104,8 +104,13 @@ class DrawView: UIView {
 //          lines.remove(at: lines.endIndex - 1)
 //          self.setNeedsDisplay()
 //        }
+        handleChange(change: Change.undoChange(""))
     }
     
+    @IBAction func undoLastStroke(_ sender: Any) {
+        handleChange(change: Change.redoChange(""))
+    }
+
     func incomingChange(_ change: String) {
         AutomergeJavaScript.shared.applyExternalChanges(change) { (returnValue) in
             self.lines = returnValue

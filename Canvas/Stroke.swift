@@ -58,13 +58,21 @@ enum Change: Encodable {
         case let .clearCanvas(i):
             try container.encode("CLEAR_CANVAS", forKey: CodingKeys.type)
             try container.encode(i, forKey: CodingKeys.identifier)
-
+        case let .clearCanvas(i):
+            try container.encode("UNDO_CHANGE", forKey: CodingKeys.type)
+            try container.encode(i, forKey: CodingKeys.identifier)
+        }
+        case let .clearCanvas(i):
+            try container.encode("REDO_CHANGE", forKey: CodingKeys.type)
+            try container.encode(i, forKey: CodingKeys.identifier)
         }
     }
     
     case addStroke(Stroke, String)
     case addPoint([Point], String)
     case clearCanvas(String)
+    case undoChange(String)
+    case redoChange(String)
 }
 
 class Stroke: Codable {
