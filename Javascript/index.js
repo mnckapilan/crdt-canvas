@@ -36,11 +36,11 @@ export class Automerger {
           var nDoc = Automerge.change(cheekyGlobalVariable, "LOL2", doc => {
             doc.strokes = {};
           });
-        } else if (type === "UNDO_CHANGE") {
-          var nDoc = Automerge.canUndo(doc) ? Automerge.undo(doc) : doc;
-        } else if (type === "REDO_CHANGE") {
-          var nDoc = Automerge.canRedo(doc) ? Automerge.redo(doc) : doc;
-        }
+        } else if (type === "REMOVE_STROKE") {
+          var nDoc = Automerge.change(cheekyGlobalVariable, "LOL1", doc => {
+            delete doc.strokes[change.identifier];
+          });
+        } 
         var retValue = [JSON.stringify(nDoc.strokes), JSON.stringify(Automerge.getChanges(cheekyGlobalVariable, nDoc))];
         cheekyGlobalVariable = nDoc;
         return retValue;

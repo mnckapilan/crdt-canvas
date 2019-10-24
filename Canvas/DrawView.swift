@@ -19,6 +19,9 @@ class DrawView: UIView {
     var pointsToWrite: [Point] = []
     var c = 0
     
+    var undoStack: [String] = []
+    var redoStack: [Stroke] = []
+    
     public var mcSession: MCSession?
     
     required init?(coder aDecoder: NSCoder) {
@@ -39,6 +42,8 @@ class DrawView: UIView {
         pointsToWrite = [point]
         let change = Change.addStroke(stroke, currentIdentifier)
         handleChange(change: change)
+        undoStack.append(currentIdentifier)
+        redoStack = []
     }
     
     func handleChange(change: Change) {
@@ -94,21 +99,25 @@ class DrawView: UIView {
     @IBAction func clearCanvas(_ sender: Any) {
         // TODO FIX THIS
         lines = [:]
-        handleChange(change: Change.clearCanvas(""))
+        handleChange(change: Change.clearCanvas)
         self.setNeedsDisplay()
         
     }
 
     @IBAction func undoLastStroke(_ sender: Any) {
-//        if (lines.count > 0) {
-//          lines.remove(at: lines.endIndex - 1)
-//          self.setNeedsDisplay()
-//        }
-        handleChange(change: Change.undoChange(""))
+        if let id = undoStack.popLast() {
+            let stroke = lines[id]!
+            handleChange(change: Change.removeStroke(id))
+            redoStack.append(stroke)
+        }
     }
     
-    @IBAction func undoLastStroke(_ sender: Any) {
-        handleChange(change: Change.redoChange(""))
+    @IBAction func redoLastStroke(_ sender: Any) {
+        if let stroke = redoStack.popLast() {
+            let id = getIdentifier()
+            handleChange(change: Change.addStroke(stroke, id))
+            undoStack.append(id)
+        }
     }
 
     func incomingChange(_ change: String) {
