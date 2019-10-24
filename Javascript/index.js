@@ -50,6 +50,14 @@ export class Automerger {
        return JSON.stringify(cheekyGlobalVariable.strokes);
      }
 
+     // If we are sending/receiving changes, use this.
+    // May be an issue as it's only one change ? But give it a go
+    static getAllChanges() {
+      let q = Automerge.getChanges(Automerge.init(), cheekyGlobalVariable);
+      let p = JSON.stringify(q);
+      return p;
+    }
+
     // Maybe add ids to every change, and pass that in as a parameter
     // so we can find it as this may not work.
     static undoRecentLocalChange(currentDocString) {

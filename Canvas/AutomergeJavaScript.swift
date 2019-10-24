@@ -98,4 +98,33 @@ class AutomergeJavaScript: NSObject {
                 
         
     }
+    
+    func getAllChanges(completion: @escaping (_ returnValue: String) -> Void) {
+        // Run this asynchronously in the background
+        do {
+            DispatchQueue.global(qos: .userInitiated).async {
+                 var returnValue: String!
+                 let jsModule = self.context.objectForKeyedSubscript("Canvas")
+                 let jsAutomerger = jsModule?.objectForKeyedSubscript("Automerger")
+                
+                 // In the JSContext global values can be accessed through `objectForKeyedSubscript`.
+                 if let result = jsAutomerger?.objectForKeyedSubscript("getAllChanges").call(withArguments: []) {
+                        do {
+                           returnValue = String(result.toString())
+                        } catch {
+
+                        }
+                    }
+                 
+                    // Call the completion block on the main thread
+                    DispatchQueue.main.async {
+                        completion(returnValue)
+                    }
+            }
+        } catch {
+            
+        }
+                
+        
+    }
 }

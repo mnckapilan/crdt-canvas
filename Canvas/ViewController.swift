@@ -92,6 +92,9 @@ class ViewController: UIViewController, MCSessionDelegate, MCBrowserViewControll
         switch state {
         case MCSessionState.connected:
             print("Connected: \(peerID.displayName)")
+            AutomergeJavaScript.shared.getAllChanges() { (returnValue) in
+                self.drawView.sendPath(returnValue)
+            }
 
         case MCSessionState.connecting:
             print("Connecting: \(peerID.displayName)")
@@ -114,6 +117,11 @@ class ViewController: UIViewController, MCSessionDelegate, MCBrowserViewControll
             print(error)
         }
         
+    }
+    
+    @IBAction func disconnectSession() {
+        mcSession.disconnect();
+        print("Disconnected");
     }
 }
 
