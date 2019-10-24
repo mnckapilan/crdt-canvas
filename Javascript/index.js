@@ -35,7 +35,11 @@ export class Automerger {
         } else if (type === "CLEAR_CANVAS") {
           var nDoc = Automerge.change(cheekyGlobalVariable, "LOL2", doc => {
             doc.strokes = {};
-          })
+          });
+        } else if (type === "UNDO_CHANGE") {
+          var nDoc = Automerge.canUndo(doc) ? Automerge.undo(doc) : doc;
+        } else if (type === "REDO_CHANGE") {
+          var nDoc = Automerge.canRedo(doc) ? Automerge.redo(doc) : doc;
         }
         var retValue = [JSON.stringify(nDoc.strokes), JSON.stringify(Automerge.getChanges(cheekyGlobalVariable, nDoc))];
         cheekyGlobalVariable = nDoc;
@@ -49,20 +53,6 @@ export class Automerger {
        cheekyGlobalVariable = Automerge.applyChanges(cheekyGlobalVariable, changes);
        return JSON.stringify(cheekyGlobalVariable.strokes);
      }
-
-    // Maybe add ids to every change, and pass that in as a parameter
-    // so we can find it as this may not work.
-    static undoRecentLocalChange(currentDocString) {
-        currentDoc = Automerge.load(currentDocString);
-        newDoc = Automerge.undo(currentDoc);
-        return Automerge.save(newDoc);
-    }
-
-    static redoRecentLocalChange(currentDocString) {
-        currentDoc = Automerge.load(currentDocString);
-        newDoc = Automerge.redo(currentDoc);
-        return Automerge.save(newDoc);
-    }
 
     /* Case 1: Everyone online drawing
        user1 makes a change and sends changes to all other users
