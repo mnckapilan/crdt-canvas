@@ -108,15 +108,6 @@
                                     <action selector="clearCanvas:" destination="Nsp-Ud-L6L" eventType="touchUpInside" id="FWQ-Jo-Gju"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="w79-A3-Lk3">
-                                <rect key="frame" x="485" y="50" width="46" height="44"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="tintColor" systemColor="labelColor" cocoaTouchSystemColor="darkTextColor"/>
-                                <state key="normal" backgroundImage="wifi.slash" catalog="system"/>
-                                <connections>
-                                    <action selector="disconnectSession" destination="BYZ-38-t0r" eventType="touchUpInside" id="dFC-dq-lYb"/>
-                                </connections>
-                            </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9ke-aS-7NE">
                                 <rect key="frame" x="431" y="47" width="46" height="44"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -124,6 +115,24 @@
                                 <state key="normal" backgroundImage="arrowshape.turn.up.left.fill" catalog="system"/>
                                 <connections>
                                     <action selector="undoLastStroke:" destination="Nsp-Ud-L6L" eventType="touchUpInside" id="quh-k9-LUO"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="wif-xu-BzE">
+                                <rect key="frame" x="489" y="47" width="46" height="44"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="tintColor" systemColor="labelColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <state key="normal" backgroundImage="arrowshape.turn.up.right.fill" catalog="system"/>
+                                <connections>
+                                    <action selector="redoLastStroke:" destination="Nsp-Ud-L6L" eventType="touchUpInside" id="FSY-QE-cgJ"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="w79-A3-Lk3">
+                                <rect key="frame" x="543" y="48.5" width="46" height="44"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="tintColor" systemColor="labelColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <state key="normal" backgroundImage="wifi.slash" catalog="system"/>
+                                <connections>
+                                    <action selector="disconnectSession" destination="BYZ-38-t0r" eventType="touchUpInside" id="dFC-dq-lYb"/>
                                 </connections>
                             </button>
                         </subviews>
@@ -154,6 +163,7 @@
     </scenes>
     <resources>
         <image name="arrowshape.turn.up.left.fill" catalog="system" width="64" height="52"/>
+        <image name="arrowshape.turn.up.right.fill" catalog="system" width="64" height="52"/>
         <image name="clear.fill" catalog="system" width="64" height="56"/>
         <image name="pencil.and.outline" catalog="system" width="64" height="58"/>
         <image name="pencil.circle" catalog="system" width="64" height="60"/>
