@@ -54,12 +54,7 @@ export class Automerger {
     // May be an issue as it's only one change ? But give it a go
     static getAllChanges() {
       let q = Automerge.getChanges(Automerge.init(), cheekyGlobalVariable);
-      console.log("hello");
-      console.log(q);
-      console.log("good");
       let p = JSON.stringify(q);
-      console.log("bye");
-      console.log(p);
       return p;
     }
 
