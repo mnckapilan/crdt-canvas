@@ -85,7 +85,7 @@ class Stroke: Codable {
         case colour
     }
     
-    enum StrokeType: String {
+    enum ActionType: String {
         case add
         case remove
     }
