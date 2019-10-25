@@ -22,6 +22,8 @@ class DrawView: UIView {
     var undoStack: [String] = []
     var redoStack: [Stroke] = []
     
+    var isEraser = false
+    
     public var mcSession: MCSession?
     
     required init?(coder aDecoder: NSCoder) {
@@ -33,17 +35,28 @@ class DrawView: UIView {
         return UUID().uuidString
     }
     
+    func lookUpStroke(_ point: Point) {
+        for stroke in lines {
+            
+        }
+    }
+    
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
 //        print("start")
-        
         let point = Point(fromCGPoint: Array(touches)[0].location(in: self))
-        let stroke = Stroke(points: [point], colour: drawColour)
-        currentIdentifier = getIdentifier()
-        pointsToWrite = [point]
-        let change = Change.addStroke(stroke, currentIdentifier)
-        handleChange(change: change)
-        undoStack.append(currentIdentifier)
-        redoStack = []
+        
+        if (isEraser) {
+            let stroke = lookUpStroke(point)
+        } else {
+            let stroke = Stroke(points: [point], colour: drawColour)
+            currentIdentifier = getIdentifier()
+            pointsToWrite = [point]
+            let change = Change.addStroke(stroke, currentIdentifier)
+            handleChange(change: change)
+            undoStack.append(currentIdentifier)
+            redoStack = []
+        }
+
     }
     
     func handleChange(change: Change) {
@@ -94,6 +107,11 @@ class DrawView: UIView {
             return
         }
         drawColour = chosen.colour
+    }
+    
+    @IBAction func eraserChosen(_ sender: UIButton) {
+        let chosen = sender.tag
+        isEraser = chosen == 20
     }
     
     @IBAction func clearCanvas(_ sender: Any) {
