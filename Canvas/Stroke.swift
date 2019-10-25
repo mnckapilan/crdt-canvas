@@ -85,6 +85,11 @@ class Stroke: Codable {
         case colour
     }
     
+    enum StrokeType: String {
+        case add
+        case remove
+    }
+    
     required init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         points = try container.decode([Point].self, forKey: CodingKeys.points)

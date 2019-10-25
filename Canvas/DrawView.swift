@@ -19,8 +19,9 @@ class DrawView: UIView {
     var pointsToWrite: [Point] = []
     var c = 0
     
-    var undoStack: [String] = []
-    var redoStack: [Stroke] = []
+    var undoStack: [(String, Stroke.StrokeType)] = []
+    var redoStack: [(Stroke, Stroke.StrokeType)] = []
+    var removedLines: [String: Stroke] = [:]
     
     var isEraser = false
     
@@ -50,17 +51,17 @@ class DrawView: UIView {
         
         if (isEraser) {
             let strokeId = lookUpStroke(point)
-            print("*********************************")
-            print(strokeId)
             let change = Change.removeStroke(strokeId)
+            removedLines[strokeId] = lines[strokeId]
             handleChange(change: change)
+            undoStack.append((strokeId, Stroke.StrokeType.remove))
         } else {
             let stroke = Stroke(points: [point], colour: drawColour)
             currentIdentifier = getIdentifier()
             pointsToWrite = [point]
             let change = Change.addStroke(stroke, currentIdentifier)
             handleChange(change: change)
-            undoStack.append(currentIdentifier)
+            undoStack.append((currentIdentifier, Stroke.StrokeType.add))
             redoStack = []
         }
 
@@ -114,6 +115,7 @@ class DrawView: UIView {
             return
         }
         drawColour = chosen.colour
+        isEraser = false
     }
     
     @IBAction func eraserChosen(_ sender: UIButton) {
@@ -130,18 +132,25 @@ class DrawView: UIView {
     }
 
     @IBAction func undoLastStroke(_ sender: Any) {
-        if let id = undoStack.popLast() {
-            let stroke = lines[id]!
-            handleChange(change: Change.removeStroke(id))
-            redoStack.append(stroke)
+        if let (id, strokeType) = undoStack.popLast() {
+            if (strokeType == Stroke.StrokeType.add) {
+                let stroke = lines[id]!
+                handleChange(change: Change.removeStroke(id))
+                redoStack.append((stroke, strokeType))
+            } else if (strokeType == Stroke.StrokeType.remove) {
+                let stroke = removedLines[id]!
+                handleChange(change: Change.addStroke(stroke, id))
+                redoStack.append((stroke, strokeType))
+            }
+            
         }
     }
     
     @IBAction func redoLastStroke(_ sender: Any) {
-        if let stroke = redoStack.popLast() {
+        if let (stroke, strokeType) = redoStack.popLast() {
             let id = getIdentifier()
             handleChange(change: Change.addStroke(stroke, id))
-            undoStack.append(id)
+            undoStack.append((id, strokeType))
         }
     }
 
