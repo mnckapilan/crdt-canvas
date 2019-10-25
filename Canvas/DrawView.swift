@@ -35,10 +35,13 @@ class DrawView: UIView {
         return UUID().uuidString
     }
     
-    func lookUpStroke(_ point: Point) {
-        for stroke in lines {
-            
+    func lookUpStroke(_ point: Point) -> String{
+        for (str, stroke) in lines {
+            if (stroke.contains(givenPoint: point)) {
+                return str;
+            }
         }
+        return ""
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -46,7 +49,11 @@ class DrawView: UIView {
         let point = Point(fromCGPoint: Array(touches)[0].location(in: self))
         
         if (isEraser) {
-            let stroke = lookUpStroke(point)
+            let strokeId = lookUpStroke(point)
+            print("*********************************")
+            print(strokeId)
+            let change = Change.removeStroke(strokeId)
+            handleChange(change: change)
         } else {
             let stroke = Stroke(points: [point], colour: drawColour)
             currentIdentifier = getIdentifier()
@@ -146,7 +153,7 @@ class DrawView: UIView {
     }
     
     func sendPath(_ change: String) {
-        print(change)
+//        print(change)
         if let m = self.mcSession {
             if m.connectedPeers.count > 0 {
                 do {

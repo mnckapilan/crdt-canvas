@@ -121,6 +121,15 @@ class Stroke: Codable {
         try nested.encode(alpha, forKey: ColourCodingKeys.alpha)
     }
     
+    func contains(givenPoint: Point) -> Bool {
+        for point in points {
+            if ((givenPoint.x <= point.x + 10 && givenPoint.x >= point.x - 10) && (givenPoint.y <= point.y + 10 && givenPoint.y >= point.y - 10)) {
+                return true;
+            }
+        }
+        return false;
+    }
+    
     var cgPath: CGPath {
         get {
             var pPrevPoint: CGPoint!
