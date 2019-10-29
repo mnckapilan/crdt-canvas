@@ -124,6 +124,7 @@
     <resources>
         <image name="arrowshape.turn.up.left.fill" catalog="system" width="64" height="52"/>
         <image name="arrowshape.turn.up.right.fill" catalog="system" width="64" height="52"/>
+        <image name="bandage.fill" catalog="system" width="64" height="58"/>
         <image name="clear.fill" catalog="system" width="64" height="56"/>
         <image name="paintbrush.fill" catalog="system" width="64" height="62"/>
         <image name="pencil.tip.crop.circle.badge.minus" catalog="system" width="64" height="50"/>

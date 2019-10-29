@@ -172,6 +172,7 @@
 			inputFileListPaths = (
 			);
 			inputPaths = (
+				"$(SRCROOT)/newInputFile",
 			);
 			outputFileListPaths = (
 			);
