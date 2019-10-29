@@ -11,11 +11,11 @@ import UIKit
 class ViewController: UIViewController, MCSessionDelegate, MCBrowserViewControllerDelegate {
     
     @IBOutlet var drawView: DrawView!
-    @IBOutlet var blueBtn: UIButton!
-    @IBOutlet var greenBtn: UIButton!
-    @IBOutlet var yellowBtn: UIButton!
-    @IBOutlet var redBtn: UIButton!
-    @IBOutlet var whiteBtn: UIButton!
+    @IBOutlet var blueBtn: UIBarButtonItem!
+    @IBOutlet var greenBtn: UIBarButtonItem!
+    @IBOutlet var yellowBtn: UIBarButtonItem!
+    @IBOutlet var redBtn: UIBarButtonItem!
+    @IBOutlet var whiteBtn: UIBarButtonItem!
 
     var peerID: MCPeerID!
     var mcSession: MCSession!
@@ -45,15 +45,15 @@ class ViewController: UIViewController, MCSessionDelegate, MCBrowserViewControll
         present(ac, animated: true)
     }
     
-    @IBAction func btnClicked(_ sender: UIButton) {
+    @IBAction func btnClicked(_ sender: UIBarButtonItem) {
         let btnTag = sender.tag
-        let buttons: [UIButton] = [blueBtn, greenBtn, yellowBtn, redBtn, whiteBtn]
+        let buttons: [UIBarButtonItem] = [blueBtn, greenBtn, yellowBtn, redBtn, whiteBtn]
         for i in 1...5 {
-            if (i == btnTag) {
-                buttons[i - 1].isSelected = true
-            } else {
-                buttons[i - 1].isSelected = false
-            }
+//            if (i == btnTag) {
+//                buttons[i - 1].isSelected = true
+//            } else {
+//                buttons[i - 1].isSelected = false
+//            }
         }
     }
 

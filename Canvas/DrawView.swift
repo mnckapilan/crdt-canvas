@@ -89,7 +89,7 @@ class DrawView: UIView {
         }
     }
     
-    @IBAction func colourChosen(_ sender: UIButton) {
+    @IBAction func colourChosen(_ sender: UIBarButtonItem) {
         guard let chosen = Colour(tag: sender.tag) else {
             return
         }
