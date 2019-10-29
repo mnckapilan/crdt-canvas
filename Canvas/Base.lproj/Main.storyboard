@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="15400" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
-    <device id="ipad12_9rounded" orientation="portrait" layout="fullscreen" appearance="light"/>
+    <device id="retina6_5" orientation="portrait" appearance="dark"/>
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15404"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
@@ -12,143 +12,94 @@
             <objects>
                 <viewController id="BYZ-38-t0r" customClass="ViewController" customModule="Canvas" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
-                        <rect key="frame" x="0.0" y="0.0" width="1024" height="1366"/>
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Nsp-Ud-L6L" customClass="DrawView" customModule="Canvas" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="96.5" width="1024" height="1199.5"/>
+                                <rect key="frame" x="0.0" y="140.66666666666669" width="414" height="672.33333333333326"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                             </view>
-                            <button opaque="NO" tag="1" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="dfW-sZ-Tsp">
-                                <rect key="frame" x="20" y="49.5" width="50" height="50"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <accessibility key="accessibilityConfiguration">
-                                    <accessibilityTraits key="traits" button="YES" selected="YES"/>
-                                </accessibility>
-                                <fontDescription key="fontDescription" name=".AppleSystemUIFont" family=".AppleSystemUIFont" pointSize="11"/>
-                                <color key="tintColor" systemColor="systemBlueColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                <state key="normal" backgroundImage="pencil.circle.fill" catalog="system">
-                                    <color key="titleShadowColor" cocoaTouchSystemColor="darkTextColor"/>
-                                </state>
-                                <state key="selected" backgroundImage="pencil.and.outline" catalog="system"/>
-                                <connections>
-                                    <action selector="btnClicked:" destination="BYZ-38-t0r" eventType="touchUpInside" id="qD2-Ra-itS"/>
-                                    <action selector="colourChosen:" destination="Nsp-Ud-L6L" eventType="touchUpInside" id="SkC-d3-hTd"/>
-                                </connections>
-                            </button>
-                            <button opaque="NO" tag="2" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="Poy-w5-MT3">
-                                <rect key="frame" x="78" y="49.5" width="50" height="50"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="tintColor" systemColor="systemGreenColor" red="0.20392156859999999" green="0.78039215689999997" blue="0.34901960780000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                <state key="normal" backgroundImage="pencil.circle.fill" catalog="system">
-                                    <color key="titleShadowColor" cocoaTouchSystemColor="darkTextColor"/>
-                                </state>
-                                <state key="selected" backgroundImage="pencil.and.outline" catalog="system"/>
-                                <connections>
-                                    <action selector="btnClicked:" destination="BYZ-38-t0r" eventType="touchUpInside" id="PcY-uX-OZ0"/>
-                                    <action selector="colourChosen:" destination="Nsp-Ud-L6L" eventType="touchUpInside" id="7oa-n3-lOA"/>
-                                </connections>
-                            </button>
-                            <button opaque="NO" tag="3" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="JRo-e1-BVV">
-                                <rect key="frame" x="136" y="49.5" width="50" height="50"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="tintColor" systemColor="systemYellowColor" red="1" green="0.80000000000000004" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                <state key="normal" backgroundImage="pencil.circle.fill" catalog="system">
-                                    <color key="titleShadowColor" cocoaTouchSystemColor="darkTextColor"/>
-                                </state>
-                                <state key="selected" backgroundImage="pencil.and.outline" catalog="system"/>
-                                <connections>
-                                    <action selector="btnClicked:" destination="BYZ-38-t0r" eventType="touchUpInside" id="JgF-O9-1SD"/>
-                                    <action selector="colourChosen:" destination="Nsp-Ud-L6L" eventType="touchUpInside" id="i9t-0y-SdW"/>
-                                </connections>
-                            </button>
-                            <button opaque="NO" tag="4" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="yvS-i9-QLe">
-                                <rect key="frame" x="194" y="49.5" width="50" height="50"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="tintColor" systemColor="systemRedColor" red="1" green="0.23137254900000001" blue="0.18823529410000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                <state key="normal" backgroundImage="pencil.circle.fill" catalog="system">
-                                    <color key="titleShadowColor" cocoaTouchSystemColor="darkTextColor"/>
-                                </state>
-                                <state key="selected" backgroundImage="pencil.and.outline" catalog="system"/>
-                                <connections>
-                                    <action selector="btnClicked:" destination="BYZ-38-t0r" eventType="touchUpInside" id="se3-lW-XsF"/>
-                                    <action selector="colourChosen:" destination="Nsp-Ud-L6L" eventType="touchUpInside" id="tvx-tv-0c7"/>
-                                </connections>
-                            </button>
-                            <button opaque="NO" tag="5" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="z2C-wA-q3M">
-                                <rect key="frame" x="251" y="49" width="50" height="50"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="tintColor" systemColor="labelColor" cocoaTouchSystemColor="darkTextColor"/>
-                                <state key="normal" backgroundImage="pencil.circle" catalog="system">
-                                    <color key="titleShadowColor" cocoaTouchSystemColor="darkTextColor"/>
-                                </state>
-                                <state key="selected" backgroundImage="pencil.and.outline" catalog="system"/>
-                                <connections>
-                                    <action selector="btnClicked:" destination="BYZ-38-t0r" eventType="touchUpInside" id="7Sv-y0-5u3"/>
-                                    <action selector="colourChosen:" destination="Nsp-Ud-L6L" eventType="touchUpInside" id="RX7-N8-vHS"/>
-                                </connections>
-                            </button>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" showsTouchWhenHighlighted="YES" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="daC-hb-Hsk">
-                                <rect key="frame" x="372" y="48.5" width="51" height="50"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="tintColor" systemColor="labelColor" cocoaTouchSystemColor="darkTextColor"/>
-                                <state key="normal" backgroundImage="person.badge.plus.fill" catalog="system"/>
-                                <connections>
-                                    <action selector="showConnectionPrompt" destination="BYZ-38-t0r" eventType="touchUpInside" id="W0x-QA-ewP"/>
-                                </connections>
-                            </button>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" showsTouchWhenHighlighted="YES" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Jxa-2k-TZ7">
-                                <rect key="frame" x="309" y="49" width="55" height="50"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="tintColor" systemColor="labelColor" cocoaTouchSystemColor="darkTextColor"/>
-                                <state key="normal" backgroundImage="clear.fill" catalog="system">
-                                    <color key="titleColor" systemColor="labelColor" cocoaTouchSystemColor="darkTextColor"/>
-                                </state>
-                                <connections>
-                                    <action selector="clearCanvas:" destination="Nsp-Ud-L6L" eventType="touchUpInside" id="FWQ-Jo-Gju"/>
-                                </connections>
-                            </button>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9ke-aS-7NE">
-                                <rect key="frame" x="431" y="47" width="46" height="44"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="tintColor" systemColor="labelColor" cocoaTouchSystemColor="darkTextColor"/>
-                                <state key="normal" backgroundImage="arrowshape.turn.up.left.fill" catalog="system"/>
-                                <connections>
-                                    <action selector="undoLastStroke:" destination="Nsp-Ud-L6L" eventType="touchUpInside" id="quh-k9-LUO"/>
-                                </connections>
-                            </button>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="wif-xu-BzE">
-                                <rect key="frame" x="489" y="47" width="46" height="44"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="tintColor" systemColor="labelColor" cocoaTouchSystemColor="darkTextColor"/>
-                                <state key="normal" backgroundImage="arrowshape.turn.up.right.fill" catalog="system"/>
-                                <connections>
-                                    <action selector="redoLastStroke:" destination="Nsp-Ud-L6L" eventType="touchUpInside" id="FSY-QE-cgJ"/>
-                                </connections>
-                            </button>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="w79-A3-Lk3">
-                                <rect key="frame" x="543" y="48.5" width="46" height="44"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="tintColor" systemColor="labelColor" cocoaTouchSystemColor="darkTextColor"/>
-                                <state key="normal" backgroundImage="wifi.slash" catalog="system"/>
-                                <connections>
-                                    <action selector="disconnectSession" destination="BYZ-38-t0r" eventType="touchUpInside" id="dFC-dq-lYb"/>
-                                </connections>
-                            </button>
-                            <button opaque="NO" tag="20" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="HFN-Z7-zqL">
-                                <rect key="frame" x="597" y="50" width="50" height="45"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <state key="normal" image="trash.fill" catalog="system"/>
-                                <connections>
-                                    <action selector="eraserChosen:" destination="Nsp-Ud-L6L" eventType="touchUpInside" id="MV7-ab-OR3"/>
-                                </connections>
-                            </button>
+                            <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translucent="NO" translatesAutoresizingMaskIntoConstraints="NO" id="aDU-cP-kvP">
+                                <rect key="frame" x="0.0" y="44" width="414" height="44"/>
+                                <items>
+                                    <barButtonItem tag="1" title="Blue" image="paintbrush.fill" catalog="system" id="hfy-2q-m2t">
+                                        <color key="tintColor" systemColor="systemBlueColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <connections>
+                                            <action selector="colourChosen:" destination="Nsp-Ud-L6L" id="rOh-Ed-Ae7"/>
+                                        </connections>
+                                    </barButtonItem>
+                                    <barButtonItem tag="2" title="Green" image="paintbrush.fill" catalog="system" id="Eh5-5c-w9t">
+                                        <color key="tintColor" systemColor="systemGreenColor" red="0.20392156859999999" green="0.78039215689999997" blue="0.34901960780000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <connections>
+                                            <action selector="colourChosen:" destination="Nsp-Ud-L6L" id="Ans-9A-qt4"/>
+                                        </connections>
+                                    </barButtonItem>
+                                    <barButtonItem tag="3" title="Yellow" image="paintbrush.fill" catalog="system" id="Aba-wg-qlK">
+                                        <color key="tintColor" systemColor="systemYellowColor" red="1" green="0.80000000000000004" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <connections>
+                                            <action selector="colourChosen:" destination="Nsp-Ud-L6L" id="nWw-4R-685"/>
+                                        </connections>
+                                    </barButtonItem>
+                                    <barButtonItem tag="4" title="Red" image="paintbrush.fill" catalog="system" id="RCA-5v-v7h">
+                                        <color key="tintColor" systemColor="systemRedColor" red="1" green="0.23137254900000001" blue="0.18823529410000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <connections>
+                                            <action selector="colourChosen:" destination="Nsp-Ud-L6L" id="eNY-p4-p0B"/>
+                                        </connections>
+                                    </barButtonItem>
+                                    <barButtonItem tag="5" title="White" image="paintbrush.fill" catalog="system" id="xBO-vf-HV2">
+                                        <color key="tintColor" systemColor="labelColor" cocoaTouchSystemColor="darkTextColor"/>
+                                        <connections>
+                                            <action selector="colourChosen:" destination="Nsp-Ud-L6L" id="UaL-I8-IKZ"/>
+                                        </connections>
+                                    </barButtonItem>
+                                    <barButtonItem tag="20" title="Eraser" image="pencil.tip.crop.circle.badge.minus" catalog="system" id="liX-JY-aM9">
+                                        <color key="tintColor" systemColor="labelColor" cocoaTouchSystemColor="darkTextColor"/>
+                                        <connections>
+                                            <action selector="eraserChosen:" destination="Nsp-Ud-L6L" id="PR2-qG-tdJ"/>
+                                        </connections>
+                                    </barButtonItem>
+                                    <barButtonItem title="Clear" image="clear.fill" catalog="system" id="NR0-eZ-rAE">
+                                        <color key="tintColor" systemColor="labelColor" cocoaTouchSystemColor="darkTextColor"/>
+                                        <connections>
+                                            <action selector="clearCanvas:" destination="Nsp-Ud-L6L" id="dyC-A1-IBJ"/>
+                                        </connections>
+                                    </barButtonItem>
+                                    <barButtonItem title="Undo" image="arrowshape.turn.up.left.fill" catalog="system" id="Taj-rG-sdE">
+                                        <color key="tintColor" systemColor="labelColor" cocoaTouchSystemColor="darkTextColor"/>
+                                        <connections>
+                                            <action selector="undoLastStroke:" destination="Nsp-Ud-L6L" id="4HP-HM-Zpe"/>
+                                        </connections>
+                                    </barButtonItem>
+                                    <barButtonItem title="Redo" image="arrowshape.turn.up.right.fill" catalog="system" id="fPk-ef-x3O">
+                                        <color key="tintColor" systemColor="labelColor" cocoaTouchSystemColor="darkTextColor"/>
+                                        <connections>
+                                            <action selector="redoLastStroke:" destination="Nsp-Ud-L6L" id="fHt-B9-3CL"/>
+                                        </connections>
+                                    </barButtonItem>
+                                    <barButtonItem title="Connect" image="person.badge.plus.fill" catalog="system" id="8KT-OI-qLK">
+                                        <color key="tintColor" systemColor="labelColor" cocoaTouchSystemColor="darkTextColor"/>
+                                        <connections>
+                                            <action selector="showConnectionPrompt" destination="BYZ-38-t0r" id="rxE-fD-Cxg"/>
+                                        </connections>
+                                    </barButtonItem>
+                                    <barButtonItem title="Disconnect" image="wifi.slash" catalog="system" id="P2N-dE-ERN">
+                                        <color key="tintColor" systemColor="labelColor" cocoaTouchSystemColor="darkTextColor"/>
+                                        <connections>
+                                            <action selector="disconnectSession" destination="BYZ-38-t0r" id="RE1-Z9-sCf"/>
+                                        </connections>
+                                    </barButtonItem>
+                                </items>
+                            </toolbar>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <constraints>
+                            <constraint firstItem="aDU-cP-kvP" firstAttribute="trailing" secondItem="6Tk-OE-BBY" secondAttribute="trailing" id="7Do-cG-VDT"/>
                             <constraint firstItem="Nsp-Ud-L6L" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="96.5" id="LOk-lB-MVz"/>
+                            <constraint firstItem="aDU-cP-kvP" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" id="g9v-Gs-RiF"/>
+                            <constraint firstItem="aDU-cP-kvP" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="izU-zx-57g"/>
                             <constraint firstItem="Nsp-Ud-L6L" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="lfT-G1-WBT"/>
                             <constraint firstItem="Nsp-Ud-L6L" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="mqt-R4-Znl"/>
+                            <constraint firstItem="aDU-cP-kvP" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="xlY-es-dpW"/>
                             <constraint firstItem="Nsp-Ud-L6L" firstAttribute="bottom" secondItem="6Tk-OE-BBY" secondAttribute="bottom" id="zt2-Zb-2p5"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
@@ -156,12 +107,13 @@
                     <toolbarItems/>
                     <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
-                        <outlet property="blueBtn" destination="dfW-sZ-Tsp" id="qHF-jY-hAW"/>
+                        <outlet property="blueBtn" destination="hfy-2q-m2t" id="clP-Vb-IuF"/>
                         <outlet property="drawView" destination="Nsp-Ud-L6L" id="SGm-pC-uOW"/>
-                        <outlet property="greenBtn" destination="Poy-w5-MT3" id="7j5-2v-fZ5"/>
-                        <outlet property="redBtn" destination="yvS-i9-QLe" id="zze-2m-lBG"/>
-                        <outlet property="whiteBtn" destination="z2C-wA-q3M" id="ysB-Kk-Me5"/>
-                        <outlet property="yellowBtn" destination="JRo-e1-BVV" id="9bW-ac-mlk"/>
+                        <outlet property="eraser" destination="liX-JY-aM9" id="hZq-vE-aca"/>
+                        <outlet property="greenBtn" destination="Eh5-5c-w9t" id="eNt-OJ-wdY"/>
+                        <outlet property="redBtn" destination="RCA-5v-v7h" id="MaB-Vw-B96"/>
+                        <outlet property="whiteBtn" destination="xBO-vf-HV2" id="1Dh-Tl-se6"/>
+                        <outlet property="yellowBtn" destination="Aba-wg-qlK" id="XUY-3V-eQv"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
@@ -173,11 +125,9 @@
         <image name="arrowshape.turn.up.left.fill" catalog="system" width="64" height="52"/>
         <image name="arrowshape.turn.up.right.fill" catalog="system" width="64" height="52"/>
         <image name="clear.fill" catalog="system" width="64" height="56"/>
-        <image name="pencil.and.outline" catalog="system" width="64" height="58"/>
-        <image name="pencil.circle" catalog="system" width="64" height="60"/>
-        <image name="pencil.circle.fill" catalog="system" width="64" height="60"/>
+        <image name="paintbrush.fill" catalog="system" width="64" height="62"/>
+        <image name="pencil.tip.crop.circle.badge.minus" catalog="system" width="64" height="50"/>
         <image name="person.badge.plus.fill" catalog="system" width="64" height="58"/>
-        <image name="trash.fill" catalog="system" width="60" height="64"/>
         <image name="wifi.slash" catalog="system" width="64" height="56"/>
     </resources>
 </document>

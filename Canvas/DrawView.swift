@@ -19,10 +19,10 @@ class DrawView: UIView {
     var pointsToWrite: [Point] = []
     var c = 0
     
-    var undoStack: [String] = []
-    var redoStack: [Stroke] = []
+    var undoStack: [(String, Stroke, Stroke.ActionType)] = []
+    var redoStack: [(String, Stroke, Stroke.ActionType)] = []
     
-    var isEraser = false
+    var rubberActive = false
     
     public var mcSession: MCSession?
     
@@ -35,25 +35,32 @@ class DrawView: UIView {
         return UUID().uuidString
     }
     
-    func lookUpStroke(_ point: Point) {
-        for stroke in lines {
-            
+    func lookUpStroke(_ point: Point) -> String {
+        for (str, stroke) in lines {
+            if (stroke.contains(givenPoint: point)) {
+                return str;
+            }
         }
+        return ""
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
 //        print("start")
         let point = Point(fromCGPoint: Array(touches)[0].location(in: self))
         
-        if (isEraser) {
-            let stroke = lookUpStroke(point)
+        if (rubberActive) {
+            let strokeId = lookUpStroke(point)
+            if (strokeId != "") {
+                let stroke = lines[strokeId]!
+                handleChange(change: Change.removeStroke(strokeId))
+                undoStack.append((strokeId, stroke, Stroke.ActionType.remove))
+            }
         } else {
             let stroke = Stroke(points: [point], colour: drawColour)
             currentIdentifier = getIdentifier()
             pointsToWrite = [point]
-            let change = Change.addStroke(stroke, currentIdentifier)
-            handleChange(change: change)
-            undoStack.append(currentIdentifier)
+            handleChange(change: Change.addStroke(stroke, currentIdentifier))
+            undoStack.append((currentIdentifier, stroke, Stroke.ActionType.add))
             redoStack = []
         }
 
@@ -102,16 +109,18 @@ class DrawView: UIView {
         }
     }
     
-    @IBAction func colourChosen(_ sender: UIButton) {
+    @IBAction func colourChosen(_ sender: UIBarButtonItem) {
         guard let chosen = Colour(tag: sender.tag) else {
             return
         }
         drawColour = chosen.colour
+        rubberActive = false
     }
     
-    @IBAction func eraserChosen(_ sender: UIButton) {
+    @IBAction func eraserChosen(_ sender: UIBarButtonItem) {
         let chosen = sender.tag
-        isEraser = chosen == 20
+        print(chosen)
+        rubberActive = chosen == 20
     }
     
     @IBAction func clearCanvas(_ sender: Any) {
@@ -123,18 +132,35 @@ class DrawView: UIView {
     }
 
     @IBAction func undoLastStroke(_ sender: Any) {
-        if let id = undoStack.popLast() {
-            let stroke = lines[id]!
-            handleChange(change: Change.removeStroke(id))
-            redoStack.append(stroke)
+        if let (id, stroke, actionType) = undoStack.popLast() {
+            if (actionType == Stroke.ActionType.add) {
+                print("reached 1")
+                handleChange(change: Change.removeStroke(id))
+                redoStack.append((id, stroke, actionType))
+                print("appended")
+                print (redoStack)
+            } else if (actionType == Stroke.ActionType.remove) {
+                print("reached 1A")
+                handleChange(change: Change.addStroke(stroke, id))
+                redoStack.append((id, stroke, actionType))
+            }
+            
         }
     }
     
     @IBAction func redoLastStroke(_ sender: Any) {
-        if let stroke = redoStack.popLast() {
-            let id = getIdentifier()
-            handleChange(change: Change.addStroke(stroke, id))
-            undoStack.append(id)
+        if let (id, stroke, actionType) = redoStack.popLast() {
+            if (actionType == Stroke.ActionType.add) {
+                print("reached 2")
+                handleChange(change: Change.addStroke(stroke, id))
+                undoStack.append((id, stroke, actionType))
+                print("3")
+                
+            }
+            else if (actionType == Stroke.ActionType.remove) {
+                handleChange(change: Change.removeStroke(id))
+                undoStack.append((id, stroke, actionType))
+            }
         }
     }
 
