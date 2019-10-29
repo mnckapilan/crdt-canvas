@@ -120,6 +120,7 @@ class DrawView: UIView {
     @IBAction func clearCanvas(_ sender: Any) {
         // TODO FIX THIS
         lines = [:]
+        undoStack = []
         handleChange(change: Change.clearCanvas)
         self.setNeedsDisplay()
         
