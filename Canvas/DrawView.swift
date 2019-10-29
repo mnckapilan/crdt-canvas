@@ -46,7 +46,6 @@ class DrawView: UIView {
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-//        print("start")
         let point = Point(fromCGPoint: Array(touches)[0].location(in: self))
         
         if (rubberActive) {
@@ -62,7 +61,6 @@ class DrawView: UIView {
             pointsToWrite = [point]
             handleChange(change: Change.addStroke(stroke, currentIdentifier))
             undoStack.append((currentIdentifier, stroke, Stroke.ActionType.add))
-            print(undoStack)
             redoStack = []
         }
 
@@ -80,9 +78,6 @@ class DrawView: UIView {
         let point = Point(fromCGPoint: Array(touches)[0].location(in: self))
         if pointsToWrite.count > 0 && pointsToWrite.last! != point {
             pointsToWrite.append(point)
-        } else {
-            //print(pointsToWrite.last!)
-            //print(point)
         }
         if pointsToWrite.count >= 5 {
             pointsToWrite.remove(at: 0)
@@ -93,7 +88,6 @@ class DrawView: UIView {
     
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
         currentIdentifier = nil
-//        print(pointsToWrite.count)
         pointsToWrite = []
         c = 0
     }
@@ -105,7 +99,6 @@ class DrawView: UIView {
                 
         for (_, stroke) in lines {
             context.setStrokeColor(stroke.colour.cgColor)
-//            print(stroke.points.count)
             context.addPath(stroke.cgPath)
             context.strokePath()
         }
@@ -135,13 +128,9 @@ class DrawView: UIView {
     @IBAction func undoLastStroke(_ sender: Any) {
         if let (id, stroke, actionType) = undoStack.popLast() {
             if (actionType == Stroke.ActionType.add) {
-                print("reached 1")
                 handleChange(change: Change.removeStroke(id))
                 redoStack.append((id, lines[id]!, actionType))
-                print("appended")
-                print (redoStack)
             } else if (actionType == Stroke.ActionType.remove) {
-                print("reached 1A")
                 handleChange(change: Change.addStroke(stroke, id))
                 redoStack.append((id, stroke, actionType))
             }
@@ -152,13 +141,8 @@ class DrawView: UIView {
     @IBAction func redoLastStroke(_ sender: Any) {
         if let (id, stroke, actionType) = redoStack.popLast() {
             if (actionType == Stroke.ActionType.add) {
-                print(stroke.points)
-                print("reached 2")
                 handleChange(change: Change.addStroke(stroke, id))
-                //print(undoStack)
                 undoStack.append((id, stroke, actionType))
-                //print(undoStack)
-                print("3")
                 
             }
             else if (actionType == Stroke.ActionType.remove) {
@@ -176,7 +160,6 @@ class DrawView: UIView {
     }
     
     func sendPath(_ change: String) {
-//        print(change)
         if let m = self.mcSession {
             if m.connectedPeers.count > 0 {
                 do {
