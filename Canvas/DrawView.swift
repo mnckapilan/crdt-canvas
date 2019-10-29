@@ -62,6 +62,7 @@ class DrawView: UIView {
             pointsToWrite = [point]
             handleChange(change: Change.addStroke(stroke, currentIdentifier))
             undoStack.append((currentIdentifier, stroke, Stroke.ActionType.add))
+            print(undoStack)
             redoStack = []
         }
 
@@ -83,7 +84,7 @@ class DrawView: UIView {
             //print(pointsToWrite.last!)
             //print(point)
         }
-        if pointsToWrite.count >= 10 {
+        if pointsToWrite.count >= 5 {
             pointsToWrite.remove(at: 0)
             handleChange(change: Change.addPoint(pointsToWrite, currentIdentifier))
             pointsToWrite = [pointsToWrite.last!]
@@ -136,7 +137,7 @@ class DrawView: UIView {
             if (actionType == Stroke.ActionType.add) {
                 print("reached 1")
                 handleChange(change: Change.removeStroke(id))
-                redoStack.append((id, stroke, actionType))
+                redoStack.append((id, lines[id]!, actionType))
                 print("appended")
                 print (redoStack)
             } else if (actionType == Stroke.ActionType.remove) {
@@ -151,9 +152,12 @@ class DrawView: UIView {
     @IBAction func redoLastStroke(_ sender: Any) {
         if let (id, stroke, actionType) = redoStack.popLast() {
             if (actionType == Stroke.ActionType.add) {
+                print(stroke.points)
                 print("reached 2")
                 handleChange(change: Change.addStroke(stroke, id))
+                //print(undoStack)
                 undoStack.append((id, stroke, actionType))
+                //print(undoStack)
                 print("3")
                 
             }

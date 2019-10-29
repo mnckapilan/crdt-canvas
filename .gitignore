@@ -206,3 +206,5 @@ dist
 Carthage/Build/
 
 Carthage/Checkouts
+
+.vscode/
