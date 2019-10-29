@@ -104,7 +104,7 @@ class DrawView: UIView {
         }
     }
     
-    @IBAction func colourChosen(_ sender: UIButton) {
+    @IBAction func colourChosen(_ sender: UIBarButtonItem) {
         guard let chosen = Colour(tag: sender.tag) else {
             return
         }
@@ -112,7 +112,7 @@ class DrawView: UIView {
         rubberActive = false
     }
     
-    @IBAction func eraserChosen(_ sender: UIButton) {
+    @IBAction func eraserChosen(_ sender: UIBarButtonItem) {
         let chosen = sender.tag
         rubberActive = chosen == 20
     }
