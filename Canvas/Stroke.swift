@@ -85,6 +85,11 @@ class Stroke: Codable {
         case colour
     }
     
+    enum ActionType: String {
+        case add
+        case remove
+    }
+    
     required init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         points = try container.decode([Point].self, forKey: CodingKeys.points)
@@ -119,6 +124,15 @@ class Stroke: Codable {
         try nested.encode(green, forKey: ColourCodingKeys.green)
         try nested.encode(blue, forKey: ColourCodingKeys.blue)
         try nested.encode(alpha, forKey: ColourCodingKeys.alpha)
+    }
+    
+    func contains(givenPoint: Point) -> Bool {
+        for point in points {
+            if ((givenPoint.x <= point.x + 10 && givenPoint.x >= point.x - 10) && (givenPoint.y <= point.y + 10 && givenPoint.y >= point.y - 10)) {
+                return true;
+            }
+        }
+        return false;
     }
     
     var cgPath: CGPath {

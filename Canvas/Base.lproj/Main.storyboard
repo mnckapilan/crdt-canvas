@@ -25,31 +25,37 @@
                                     <barButtonItem tag="1" title="Blue" image="paintbrush.fill" catalog="system" id="hfy-2q-m2t">
                                         <color key="tintColor" systemColor="systemBlueColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <connections>
-                                            <action selector="btnClicked:" destination="BYZ-38-t0r" id="lTe-DU-0hU"/>
+                                            <action selector="colourChosen:" destination="Nsp-Ud-L6L" id="rOh-Ed-Ae7"/>
                                         </connections>
                                     </barButtonItem>
                                     <barButtonItem tag="2" title="Green" image="paintbrush.fill" catalog="system" id="Eh5-5c-w9t">
                                         <color key="tintColor" systemColor="systemGreenColor" red="0.20392156859999999" green="0.78039215689999997" blue="0.34901960780000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <connections>
-                                            <action selector="btnClicked:" destination="BYZ-38-t0r" id="1p0-rx-NLd"/>
+                                            <action selector="colourChosen:" destination="Nsp-Ud-L6L" id="Ans-9A-qt4"/>
                                         </connections>
                                     </barButtonItem>
                                     <barButtonItem tag="3" title="Yellow" image="paintbrush.fill" catalog="system" id="Aba-wg-qlK">
                                         <color key="tintColor" systemColor="systemYellowColor" red="1" green="0.80000000000000004" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <connections>
-                                            <action selector="btnClicked:" destination="BYZ-38-t0r" id="9H7-8a-ORS"/>
+                                            <action selector="colourChosen:" destination="Nsp-Ud-L6L" id="nWw-4R-685"/>
                                         </connections>
                                     </barButtonItem>
                                     <barButtonItem tag="4" title="Red" image="paintbrush.fill" catalog="system" id="RCA-5v-v7h">
                                         <color key="tintColor" systemColor="systemRedColor" red="1" green="0.23137254900000001" blue="0.18823529410000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <connections>
-                                            <action selector="btnClicked:" destination="BYZ-38-t0r" id="1nd-NF-YdV"/>
+                                            <action selector="colourChosen:" destination="Nsp-Ud-L6L" id="eNY-p4-p0B"/>
                                         </connections>
                                     </barButtonItem>
                                     <barButtonItem tag="5" title="White" image="paintbrush.fill" catalog="system" id="xBO-vf-HV2">
-                                        <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <color key="tintColor" systemColor="labelColor" cocoaTouchSystemColor="darkTextColor"/>
                                         <connections>
-                                            <action selector="btnClicked:" destination="BYZ-38-t0r" id="md5-FQ-Chk"/>
+                                            <action selector="colourChosen:" destination="Nsp-Ud-L6L" id="UaL-I8-IKZ"/>
+                                        </connections>
+                                    </barButtonItem>
+                                    <barButtonItem tag="20" title="Eraser" image="pencil.tip.crop.circle.badge.minus" catalog="system" id="liX-JY-aM9">
+                                        <color key="tintColor" systemColor="labelColor" cocoaTouchSystemColor="darkTextColor"/>
+                                        <connections>
+                                            <action selector="eraserChosen:" destination="Nsp-Ud-L6L" id="PR2-qG-tdJ"/>
                                         </connections>
                                     </barButtonItem>
                                     <barButtonItem title="Clear" image="clear.fill" catalog="system" id="NR0-eZ-rAE">
@@ -103,6 +109,7 @@
                     <connections>
                         <outlet property="blueBtn" destination="hfy-2q-m2t" id="clP-Vb-IuF"/>
                         <outlet property="drawView" destination="Nsp-Ud-L6L" id="SGm-pC-uOW"/>
+                        <outlet property="eraser" destination="liX-JY-aM9" id="hZq-vE-aca"/>
                         <outlet property="greenBtn" destination="Eh5-5c-w9t" id="eNt-OJ-wdY"/>
                         <outlet property="redBtn" destination="RCA-5v-v7h" id="MaB-Vw-B96"/>
                         <outlet property="whiteBtn" destination="xBO-vf-HV2" id="1Dh-Tl-se6"/>
@@ -117,8 +124,10 @@
     <resources>
         <image name="arrowshape.turn.up.left.fill" catalog="system" width="64" height="52"/>
         <image name="arrowshape.turn.up.right.fill" catalog="system" width="64" height="52"/>
+        <image name="bandage.fill" catalog="system" width="64" height="58"/>
         <image name="clear.fill" catalog="system" width="64" height="56"/>
         <image name="paintbrush.fill" catalog="system" width="64" height="62"/>
+        <image name="pencil.tip.crop.circle.badge.minus" catalog="system" width="64" height="50"/>
         <image name="person.badge.plus.fill" catalog="system" width="64" height="58"/>
         <image name="wifi.slash" catalog="system" width="64" height="56"/>
     </resources>
