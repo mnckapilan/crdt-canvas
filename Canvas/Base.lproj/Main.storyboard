@@ -135,6 +135,18 @@
                                     <action selector="disconnectSession" destination="BYZ-38-t0r" eventType="touchUpInside" id="dFC-dq-lYb"/>
                                 </connections>
                             </button>
+                            <button opaque="NO" tag="20" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="HFN-Z7-zqL">
+                                <rect key="frame" x="597" y="50" width="50" height="45"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="tintColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <state key="normal" backgroundImage="bandage.fill" catalog="system">
+                                    <color key="titleColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
+                                </state>
+                                <connections>
+                                    <action selector="btnClicked:" destination="BYZ-38-t0r" eventType="touchUpInside" id="92D-D8-R37"/>
+                                    <action selector="eraserChosen:" destination="Nsp-Ud-L6L" eventType="touchUpInside" id="MV7-ab-OR3"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <constraints>
@@ -150,6 +162,7 @@
                     <connections>
                         <outlet property="blueBtn" destination="dfW-sZ-Tsp" id="qHF-jY-hAW"/>
                         <outlet property="drawView" destination="Nsp-Ud-L6L" id="SGm-pC-uOW"/>
+                        <outlet property="eraser" destination="HFN-Z7-zqL" id="iC5-h5-vMd"/>
                         <outlet property="greenBtn" destination="Poy-w5-MT3" id="7j5-2v-fZ5"/>
                         <outlet property="redBtn" destination="yvS-i9-QLe" id="zze-2m-lBG"/>
                         <outlet property="whiteBtn" destination="z2C-wA-q3M" id="ysB-Kk-Me5"/>
@@ -164,6 +177,7 @@
     <resources>
         <image name="arrowshape.turn.up.left.fill" catalog="system" width="64" height="52"/>
         <image name="arrowshape.turn.up.right.fill" catalog="system" width="64" height="52"/>
+        <image name="bandage.fill" catalog="system" width="64" height="58"/>
         <image name="clear.fill" catalog="system" width="64" height="56"/>
         <image name="pencil.and.outline" catalog="system" width="64" height="58"/>
         <image name="pencil.circle" catalog="system" width="64" height="60"/>

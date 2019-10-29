@@ -16,6 +16,7 @@ class ViewController: UIViewController, MCSessionDelegate, MCBrowserViewControll
     @IBOutlet var yellowBtn: UIButton!
     @IBOutlet var redBtn: UIButton!
     @IBOutlet var whiteBtn: UIButton!
+    @IBOutlet var eraser: UIButton!
 
     var peerID: MCPeerID!
     var mcSession: MCSession!
@@ -48,12 +49,19 @@ class ViewController: UIViewController, MCSessionDelegate, MCBrowserViewControll
     @IBAction func btnClicked(_ sender: UIButton) {
         let btnTag = sender.tag
         let buttons: [UIButton] = [blueBtn, greenBtn, yellowBtn, redBtn, whiteBtn]
+        
         for i in 1...5 {
             if (i == btnTag) {
                 buttons[i - 1].isSelected = true
             } else {
                 buttons[i - 1].isSelected = false
             }
+        }
+        
+        if (btnTag == 20) {
+            eraser.isSelected = true
+        } else {
+            eraser.isSelected = false
         }
     }
 
