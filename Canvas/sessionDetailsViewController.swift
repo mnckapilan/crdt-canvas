@@ -27,11 +27,14 @@ class sessionDetailsViewController: UIViewController {
 }
 extension sessionDetailsViewController:UITableViewDelegate, UITableViewDataSource {
 
-
+    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        return "Active Users"
+    }
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         print(datasourceArray)
         return datasourceArray!.count
-        }
+    }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         var cell = tableView.dequeueReusableCell(withIdentifier: sessionDetailsViewController.CELL_RESUE_ID)
