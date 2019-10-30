@@ -17,6 +17,8 @@ class ViewController: UIViewController, MCSessionDelegate, MCBrowserViewControll
     @IBOutlet var redBtn: UIBarButtonItem!
     @IBOutlet var whiteBtn: UIBarButtonItem!
     @IBOutlet var eraser: UIBarButtonItem!
+    @IBOutlet var sessionDetails: UIBarButtonItem!
+    
 
     var peerID: MCPeerID!
     var mcSession: MCSession!
@@ -45,6 +47,31 @@ class ViewController: UIViewController, MCSessionDelegate, MCBrowserViewControll
         
         present(ac, animated: true)
     }
+    
+    @IBAction func showSessionDetails() {
+        print(mcSession.connectedPeers)
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        let sessionDetailsVC = storyboard.instantiateViewController(
+            withIdentifier: "sessionDetailsViewController") as! sessionDetailsViewController
+        // Use the popover presentation style for your view controller.
+        sessionDetailsVC.modalPresentationStyle = .popover
+
+        // Specify the anchor point for the popover.
+        sessionDetailsVC.popoverPresentationController?.barButtonItem =
+                   sessionDetails
+        
+        sessionDetailsVC.datasourceArray = mcSession.connectedPeers
+        
+
+        // Present the view controller (in a popover).
+        self.present(sessionDetailsVC, animated: true) {
+           // The popover is visible.
+        }
+    }
+    
+    
+    
+    
     
     @IBAction func btnClicked(_ sender: UIBarButtonItem) {
         let btnTag = sender.tag

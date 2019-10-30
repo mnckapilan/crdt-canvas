@@ -7,6 +7,37 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
+        <!--Session Details View Controller-->
+        <scene sceneID="gyH-gE-yLI">
+            <objects>
+                <viewController storyboardIdentifier="sessionDetailsViewController" modalTransitionStyle="crossDissolve" useStoryboardIdentifierAsRestorationIdentifier="YES" id="Eku-Qk-D68" customClass="sessionDetailsViewController" customModule="Canvas" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="7XA-E9-kUS">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="4Kb-JJ-06e">
+                                <rect key="frame" x="0.0" y="44" width="414" height="818"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                                <connections>
+                                    <outlet property="dataSource" destination="Eku-Qk-D68" id="9RU-lk-tnv"/>
+                                    <outlet property="delegate" destination="Eku-Qk-D68" id="XHi-HI-8fD"/>
+                                </connections>
+                            </tableView>
+                        </subviews>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <constraints>
+                            <constraint firstItem="1Ni-w7-pap" firstAttribute="trailing" secondItem="4Kb-JJ-06e" secondAttribute="trailing" id="NCt-VG-mF1"/>
+                            <constraint firstItem="4Kb-JJ-06e" firstAttribute="top" secondItem="1Ni-w7-pap" secondAttribute="top" id="SPE-KV-Ijn"/>
+                            <constraint firstItem="1Ni-w7-pap" firstAttribute="bottom" secondItem="4Kb-JJ-06e" secondAttribute="bottom" id="cKT-E3-Zm6"/>
+                            <constraint firstItem="4Kb-JJ-06e" firstAttribute="leading" secondItem="1Ni-w7-pap" secondAttribute="leading" id="goi-tz-v32"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="1Ni-w7-pap"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Cmw-kx-JrQ" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="869.56521739130437" y="110.49107142857143"/>
+        </scene>
         <!--View Controller-->
         <scene sceneID="tne-QT-ifu">
             <objects>
@@ -15,6 +46,11 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
+                            <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translucent="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ACt-1Y-oKJ">
+                                <rect key="frame" x="0.0" y="0.0" width="414" height="44"/>
+                                <items/>
+                                <color key="barTintColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            </toolbar>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Nsp-Ud-L6L" customClass="DrawView" customModule="Canvas" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="140.66666666666669" width="414" height="672.33333333333326"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
@@ -88,18 +124,28 @@
                                             <action selector="disconnectSession" destination="BYZ-38-t0r" id="RE1-Z9-sCf"/>
                                         </connections>
                                     </barButtonItem>
+                                    <barButtonItem title="Session Details" image="person.3.fill" catalog="system" id="0bf-Rv-UNg">
+                                        <color key="tintColor" systemColor="labelColor" cocoaTouchSystemColor="darkTextColor"/>
+                                        <connections>
+                                            <action selector="showSessionDetails" destination="BYZ-38-t0r" id="hOv-5k-wIB"/>
+                                        </connections>
+                                    </barButtonItem>
                                 </items>
+                                <color key="barTintColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             </toolbar>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <constraints>
-                            <constraint firstItem="aDU-cP-kvP" firstAttribute="trailing" secondItem="6Tk-OE-BBY" secondAttribute="trailing" id="7Do-cG-VDT"/>
+                            <constraint firstItem="aDU-cP-kvP" firstAttribute="trailing" secondItem="8bC-Xf-vdC" secondAttribute="trailing" id="7Do-cG-VDT"/>
+                            <constraint firstItem="ACt-1Y-oKJ" firstAttribute="trailing" secondItem="8bC-Xf-vdC" secondAttribute="trailing" id="F8g-Wt-Tes"/>
+                            <constraint firstItem="ACt-1Y-oKJ" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="LMI-SW-J8h"/>
                             <constraint firstItem="Nsp-Ud-L6L" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="96.5" id="LOk-lB-MVz"/>
+                            <constraint firstItem="ACt-1Y-oKJ" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" id="fPE-eE-fuI"/>
                             <constraint firstItem="aDU-cP-kvP" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" id="g9v-Gs-RiF"/>
                             <constraint firstItem="aDU-cP-kvP" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="izU-zx-57g"/>
                             <constraint firstItem="Nsp-Ud-L6L" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="lfT-G1-WBT"/>
                             <constraint firstItem="Nsp-Ud-L6L" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="mqt-R4-Znl"/>
-                            <constraint firstItem="aDU-cP-kvP" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="xlY-es-dpW"/>
+                            <constraint firstItem="aDU-cP-kvP" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="xlY-es-dpW"/>
                             <constraint firstItem="Nsp-Ud-L6L" firstAttribute="bottom" secondItem="6Tk-OE-BBY" secondAttribute="bottom" id="zt2-Zb-2p5"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
@@ -112,22 +158,23 @@
                         <outlet property="eraser" destination="liX-JY-aM9" id="hZq-vE-aca"/>
                         <outlet property="greenBtn" destination="Eh5-5c-w9t" id="eNt-OJ-wdY"/>
                         <outlet property="redBtn" destination="RCA-5v-v7h" id="MaB-Vw-B96"/>
+                        <outlet property="sessionDetails" destination="0bf-Rv-UNg" id="00s-WS-XUR"/>
                         <outlet property="whiteBtn" destination="xBO-vf-HV2" id="1Dh-Tl-se6"/>
                         <outlet property="yellowBtn" destination="Aba-wg-qlK" id="XUY-3V-eQv"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="136.5234375" y="112.00585651537334"/>
+            <point key="canvasLocation" x="135.9375" y="111.59420289855073"/>
         </scene>
     </scenes>
     <resources>
         <image name="arrowshape.turn.up.left.fill" catalog="system" width="64" height="52"/>
         <image name="arrowshape.turn.up.right.fill" catalog="system" width="64" height="52"/>
-        <image name="bandage.fill" catalog="system" width="64" height="58"/>
         <image name="clear.fill" catalog="system" width="64" height="56"/>
         <image name="paintbrush.fill" catalog="system" width="64" height="62"/>
         <image name="pencil.tip.crop.circle.badge.minus" catalog="system" width="64" height="50"/>
+        <image name="person.3.fill" catalog="system" width="71" height="34"/>
         <image name="person.badge.plus.fill" catalog="system" width="64" height="58"/>
         <image name="wifi.slash" catalog="system" width="64" height="56"/>
     </resources>
