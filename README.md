@@ -1,6 +1,4 @@
-# Canvas, a CRDT-powered collaborative whiteboard.
-
-Meet Canvas, a resilient collaborative drawing app using CRDTs.
+![banner](https://i.imgur.com/7B2y6rJ.png)
 
 ## Development
 
