@@ -18,20 +18,20 @@
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Canvas" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hAO-uj-WSD">
                                 <rect key="frame" x="163" y="450" width="88" height="30"/>
                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="25"/>
-                                <nil key="textColor"/>
+                                <color key="textColor" red="1" green="0.78506779670000004" blue="0.22855973239999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="A CRDT-powered collaborative drawing app" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QbP-Vd-6qm">
                                 <rect key="frame" x="40.666666666666657" y="488" width="332.66666666666674" height="18"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="15"/>
-                                <nil key="textColor"/>
+                                <color key="textColor" red="1" green="0.78506779670000004" blue="0.22855973239999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="LaunchScreenLogo" translatesAutoresizingMaskIntoConstraints="NO" id="cuL-65-iKa">
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="LaunchIcon" translatesAutoresizingMaskIntoConstraints="NO" id="cuL-65-iKa">
                                 <rect key="frame" x="77" y="168" width="260" height="260"/>
                             </imageView>
                         </subviews>
-                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <color key="backgroundColor" red="0.1124242619" green="0.13902366159999999" blue="0.2344205976" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstItem="QbP-Vd-6qm" firstAttribute="top" secondItem="hAO-uj-WSD" secondAttribute="bottom" constant="8" id="4W0-vM-gBu"/>
                             <constraint firstItem="QbP-Vd-6qm" firstAttribute="top" secondItem="hAO-uj-WSD" secondAttribute="bottom" constant="8" id="97O-U0-4FD"/>
@@ -54,6 +54,6 @@
         </scene>
     </scenes>
     <resources>
-        <image name="LaunchScreenLogo" width="512" height="512"/>
+        <image name="LaunchIcon" width="600" height="600"/>
     </resources>
 </document>
