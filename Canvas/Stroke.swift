@@ -88,6 +88,7 @@ class Stroke: Codable {
     enum ActionType: String {
         case add
         case remove
+        case redraw
     }
     
     required init(from decoder: Decoder) throws {

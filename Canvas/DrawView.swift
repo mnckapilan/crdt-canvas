@@ -91,7 +91,7 @@ class DrawView: UIView {
             let isStraight = isStraightLine(currentLine.points)
             if (isStraight) {
                 print("redrawing")
-                redrawStraightLine(currentLine)
+                redrawStraightLine(currentIdentifier)
             }
          }
         currentIdentifier = nil
@@ -110,16 +110,30 @@ class DrawView: UIView {
         }
     }
     
-    func redrawStraightLine(_ line: Stroke) {
+    func redrawStraightLine(_ id: String) {
+        let line = lines[id]!
         let count = line.points.count
         let start = line.points[0]
         let end = line.points[count - 1]
         
-        handleChange(change: Change.removeStroke(currentIdentifier))
-        let new_points = [start, end, end, end]
+        handleChange(change: Change.removeStroke(id))
+        var new_points = [start, start, end, end]
+        
+        if (start.cgPoint.x - end.cgPoint.x != 0) {
+            let grad = (start.cgPoint.y - end.cgPoint.y) / (start.cgPoint.x - end.cgPoint.x)
+            let nextY1 = (grad * (start.cgPoint.x + 0.5 - start.cgPoint.x)) + start.cgPoint.y
+            let nextY2 = (grad * (start.cgPoint.x + 1 - start.cgPoint.x)) + start.cgPoint.y
+            let nextPt1 = Point(x: Float(start.cgPoint.x + 0.5), y: Float(nextY1))
+            let nextPt2 = Point(x: Float(start.cgPoint.x + 1), y: Float(nextY2))
+            
+            new_points = [start, nextPt1, nextPt2, end]
+        }
+
         let stroke = Stroke(points: new_points, colour: line.colour)
-        currentIdentifier = getIdentifier()
-        handleChange(change: Change.addStroke(stroke, currentIdentifier))
+        handleChange(change: Change.addStroke(stroke, id))
+        
+        undoStack.append((id, line, Stroke.ActionType.redraw))
+
     }
     
     func isStraightLine(_ points: [Point]) -> Bool {
@@ -172,9 +186,10 @@ class DrawView: UIView {
     }
     
     @IBAction func clearCanvas(_ sender: Any) {
-        // TODO FIX THIS
+        // TODO: be able to undo a clear
         lines = [:]
         undoStack = []
+        redoStack = []
         handleChange(change: Change.clearCanvas)
         self.setNeedsDisplay()
         
@@ -188,6 +203,11 @@ class DrawView: UIView {
             } else if (actionType == Stroke.ActionType.remove) {
                 handleChange(change: Change.addStroke(stroke, id))
                 redoStack.append((id, stroke, actionType))
+            } else if (actionType == Stroke.ActionType.redraw) {
+                let s = lines[id]
+                handleChange(change: Change.removeStroke(id))
+                handleChange(change: Change.addStroke(stroke, id))
+                redoStack.append((id, s!, actionType))
             }
             
         }
@@ -198,11 +218,12 @@ class DrawView: UIView {
             if (actionType == Stroke.ActionType.add) {
                 handleChange(change: Change.addStroke(stroke, id))
                 undoStack.append((id, stroke, actionType))
-                
             }
             else if (actionType == Stroke.ActionType.remove) {
                 handleChange(change: Change.removeStroke(id))
                 undoStack.append((id, stroke, actionType))
+            } else if (actionType == Stroke.ActionType.redraw) {
+                 redrawStraightLine(id)
             }
         }
     }
