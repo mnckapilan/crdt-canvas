@@ -87,9 +87,9 @@ class DrawView: UIView {
     
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
         if (shapeRecognition) {
-            let isStraight = isStraightLine(pointsToWrite)
-            print("I just drew a straight line", isStraight)
-        }
+             let isStraight = isStraightLine(lines[currentIdentifier]!.points)
+             print("I just drew a straight line", isStraight)
+         }
         currentIdentifier = nil
         pointsToWrite = []
     }
@@ -114,7 +114,6 @@ class DrawView: UIView {
         var almostStraightLine = true
         for point in points {
             let res = isInLine(point.cgPoint, startPt, endPt)
-            print("point is in straight line", point, res)
             if (!res) {
                 almostStraightLine = res
                 break
@@ -128,7 +127,7 @@ class DrawView: UIView {
         let grad = (startPt.y - endPt.y) / (startPt.x - endPt.x)
         let yOnLineForGivenX = (grad * (coords.x - startPt.x)) + startPt.y
         
-        if (coords.y <= yOnLineForGivenX + 0.5 && coords.y >= yOnLineForGivenX - 0.5) {
+        if (coords.y <= yOnLineForGivenX + 5 && coords.y >= yOnLineForGivenX - 5) {
             return true
         } else {
             return false
