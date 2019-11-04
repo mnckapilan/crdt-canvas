@@ -17,8 +17,7 @@ class DrawView: UIView {
     var drawColour = UIColor.white
     var currentIdentifier: String!
     var pointsToWrite: [Point] = []
-    var c = 0
-    
+    var shapeRecognition = false
     
     var undoStack: [(String, Stroke, Stroke.ActionType)] = []
     var redoStack: [(String, Stroke, Stroke.ActionType)] = []
@@ -87,9 +86,12 @@ class DrawView: UIView {
     }
     
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
+        if (shapeRecognition) {
+            let isStraight = isStraightLine(pointsToWrite)
+            print("I just drew a straight line", isStraight)
+        }
         currentIdentifier = nil
         pointsToWrite = []
-        c = 0
     }
     
     override func draw(_ rect: CGRect) {
@@ -102,6 +104,40 @@ class DrawView: UIView {
             context.addPath(stroke.cgPath)
             context.strokePath()
         }
+    }
+    
+    func isStraightLine(_ points: [Point]) -> Bool {
+        let startPt = points[0].cgPoint
+        let endPt = points[points.count - 1].cgPoint
+        print(startPt, endPt, points.count)
+        
+        var almostStraightLine = true
+        for point in points {
+            let res = isInLine(point.cgPoint, startPt, endPt)
+            print("point is in straight line", point, res)
+            if (!res) {
+                almostStraightLine = res
+                break
+            }
+        }
+        
+        return almostStraightLine
+    }
+    
+    func isInLine(_ coords: CGPoint, _ startPt: CGPoint, _ endPt: CGPoint) -> Bool {
+        let grad = (startPt.y - endPt.y) / (startPt.x - endPt.x)
+        let yOnLineForGivenX = (grad * (coords.x - startPt.x)) + startPt.y
+        
+        if (coords.y <= yOnLineForGivenX + 0.5 && coords.y >= yOnLineForGivenX - 0.5) {
+            return true
+        } else {
+            return false
+        }
+    }
+    
+    @IBAction func toggleShapeRecognition(_ sender: UIBarButtonItem) {
+        shapeRecognition = !shapeRecognition
+        print("shape recognition = ", shapeRecognition)
     }
     
     @IBAction func colourChosen(_ sender: UIBarButtonItem) {

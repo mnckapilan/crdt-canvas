@@ -18,8 +18,8 @@ class ViewController: UIViewController, MCSessionDelegate, MCBrowserViewControll
     @IBOutlet var whiteBtn: UIBarButtonItem!
     @IBOutlet var eraser: UIBarButtonItem!
     @IBOutlet var sessionDetails: UIBarButtonItem!
+    @IBOutlet var shapeRecognition: UIBarButtonItem!
     
-
     var peerID: MCPeerID!
     var mcSession: MCSession!
     var mcAdvertiserAssistant: MCAdvertiserAssistant!
