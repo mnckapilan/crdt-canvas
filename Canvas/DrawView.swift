@@ -140,14 +140,17 @@ class DrawView: UIView {
     }
     
     func isInLine(_ coords: CGPoint, _ startPt: CGPoint, _ endPt: CGPoint) -> Bool {
-        let grad = (startPt.y - endPt.y) / (startPt.x - endPt.x)
-        let yOnLineForGivenX = (grad * (coords.x - startPt.x)) + startPt.y
         
-        if (coords.y <= yOnLineForGivenX + 15 && coords.y >= yOnLineForGivenX - 15) {
-            return true
+        if (endPt.x <= startPt.x + 15 && endPt.x >= startPt.x - 15) {
+            let verticalLineEqn = startPt.x
+            return coords.x <= verticalLineEqn + 15 && coords.x >= verticalLineEqn - 15
         } else {
-            return false
+            let grad = (startPt.y - endPt.y) / (startPt.x - endPt.x)
+            let yOnLineForGivenX = (grad * (coords.x - startPt.x)) + startPt.y
+            
+            return coords.y <= yOnLineForGivenX + 15 && coords.y >= yOnLineForGivenX - 15
         }
+
     }
     
     @IBAction func toggleShapeRecognition(_ sender: UIBarButtonItem) {
