@@ -86,9 +86,13 @@ class DrawView: UIView {
     }
     
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
+        let currentLine = lines[currentIdentifier]!
         if (shapeRecognition) {
-             let isStraight = isStraightLine(lines[currentIdentifier]!.points)
-             print("I just drew a straight line", isStraight)
+            let isStraight = isStraightLine(currentLine.points)
+            if (isStraight) {
+                print("redrawing")
+                redrawStraightLine(currentLine)
+            }
          }
         currentIdentifier = nil
         pointsToWrite = []
@@ -104,6 +108,18 @@ class DrawView: UIView {
             context.addPath(stroke.cgPath)
             context.strokePath()
         }
+    }
+    
+    func redrawStraightLine(_ line: Stroke) {
+        let count = line.points.count
+        let start = line.points[0]
+        let end = line.points[count - 1]
+        
+        handleChange(change: Change.removeStroke(currentIdentifier))
+        let new_points = [start, end, end, end]
+        let stroke = Stroke(points: new_points, colour: line.colour)
+        currentIdentifier = getIdentifier()
+        handleChange(change: Change.addStroke(stroke, currentIdentifier))
     }
     
     func isStraightLine(_ points: [Point]) -> Bool {
@@ -127,7 +143,7 @@ class DrawView: UIView {
         let grad = (startPt.y - endPt.y) / (startPt.x - endPt.x)
         let yOnLineForGivenX = (grad * (coords.x - startPt.x)) + startPt.y
         
-        if (coords.y <= yOnLineForGivenX + 5 && coords.y >= yOnLineForGivenX - 5) {
+        if (coords.y <= yOnLineForGivenX + 15 && coords.y >= yOnLineForGivenX - 15) {
             return true
         } else {
             return false
