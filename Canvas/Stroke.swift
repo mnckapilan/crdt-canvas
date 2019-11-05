@@ -137,24 +137,33 @@ class Stroke: Codable {
     
     var cgPath: CGPath {
         get {
-            var pPrevPoint: CGPoint!
-            var prevPoint: CGPoint!
-            var c = 0
+            var pPrevPoint: Point!
+            var prevPoint: Point!
             let path = UIBezierPath.init()
             path.lineCapStyle = CGLineCap.round
             path.lineWidth = 3
-            for point in points {
-                if c == 0 {
+            for i in 0...points.count - 1 {
+                let point = points[i]
+                if i == 0 {
                     path.move(to: point.cgPoint)
-                } else if c == 1 {
-                    pPrevPoint = point.cgPoint
-                } else if c == 2 {
-                    prevPoint = point.cgPoint
-                } else  if c == 3 {
-                    path.addCurve(to: point.cgPoint, controlPoint1: pPrevPoint, controlPoint2: prevPoint)
-                    c = 0
+                } else if i >= 2 {
+                    let cp1 = Point(
+                        x: (2 * pPrevPoint.x + prevPoint.x) / 3,
+                        y: (2 * pPrevPoint.y + prevPoint.y) / 3
+                    )
+                    let cp2 = Point(
+                        x: (pPrevPoint.x + 2 * prevPoint.x) / 3,
+                        y: (pPrevPoint.y + 2 * prevPoint.y) / 3
+                    )
+                    let end = Point(
+                        x: (pPrevPoint.x + 4 * prevPoint.x + point.x) / 6,
+                        y: (pPrevPoint.y + 4 * prevPoint.y + point.y) / 6
+                    )
+                    path.addCurve(to: end.cgPoint, controlPoint1: cp1.cgPoint, controlPoint2: cp2.cgPoint)
                 }
-                c += 1
+                
+                pPrevPoint = prevPoint
+                prevPoint = point
             }
             return path.cgPath
         }
