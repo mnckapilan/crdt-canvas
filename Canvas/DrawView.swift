@@ -53,7 +53,12 @@ class DrawView: UIView {
         }
         return nil
     }
-    
+    func partialRemove(_ point: Point) {
+        let t = lookUpStroke2(point)
+        if let (strokeId, index) = t {
+            handleChange(change: Change.partialRemoveStroke(strokeId, index))
+        }
+    }
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         let point = Point(fromCGPoint: Array(touches)[0].location(in: self))
         
@@ -73,10 +78,7 @@ class DrawView: UIView {
                 undoStack.append((strokeId, stroke, Stroke.ActionType.remove))
             }
         case .PARTIAL_REMOVE:
-            let t = lookUpStroke2(point)
-            if let (strokeId, index) = t {
-                handleChange(change: Change.partialRemoveStroke(strokeId, index))
-            }
+            partialRemove(point)
         }
     }
     
@@ -90,14 +92,23 @@ class DrawView: UIView {
     
     override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
         let point = Point(fromCGPoint: Array(touches)[0].location(in: self))
-        if pointsToWrite.count > 0 && pointsToWrite.last! != point {
-            pointsToWrite.append(point)
+        switch mode {
+        case .DRAWING:
+            if pointsToWrite.count > 0 && pointsToWrite.last! != point {
+                pointsToWrite.append(point)
+            }
+            if pointsToWrite.count >= 5 {
+                pointsToWrite.remove(at: 0)
+                handleChange(change: Change.addPoint(pointsToWrite, currentIdentifier))
+                pointsToWrite = [pointsToWrite.last!]
+            }
+    
+        case .PARTIAL_REMOVE:
+            partialRemove(point)
+        case .COMPLETE_REMOVE:
+            break
         }
-        if pointsToWrite.count >= 5 {
-            pointsToWrite.remove(at: 0)
-            handleChange(change: Change.addPoint(pointsToWrite, currentIdentifier))
-            pointsToWrite = [pointsToWrite.last!]
-        }
+        
     }
     
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
