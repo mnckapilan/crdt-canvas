@@ -53,12 +53,14 @@ class DrawView: UIView {
         }
         return nil
     }
+
     func partialRemove(_ point: Point) {
         let t = lookUpStroke2(point)
         if let (strokeId, index) = t {
             handleChange(change: Change.partialRemoveStroke(strokeId, index))
         }
     }
+    
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         let point = Point(fromCGPoint: Array(touches)[0].location(in: self))
         
