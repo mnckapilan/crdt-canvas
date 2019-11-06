@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import SwiftyJSON
 import MultipeerConnectivity
 
 class DrawView: UIView {
@@ -104,11 +103,8 @@ class DrawView: UIView {
         }
     }
     
-    @IBAction func colourChosen(_ sender: UIBarButtonItem) {
-        guard let chosen = Colour(tag: sender.tag) else {
-            return
-        }
-        drawColour = chosen.colour
+    func colourChosen(_ chosenColour: UIColor) {
+        drawColour = chosenColour
         rubberActive = false
     }
     

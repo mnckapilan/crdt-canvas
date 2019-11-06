@@ -32,7 +32,6 @@ extension sessionDetailsViewController:UITableViewDelegate, UITableViewDataSourc
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        print(datasourceArray)
         return datasourceArray!.count
     }
     
