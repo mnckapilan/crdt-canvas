@@ -22,7 +22,7 @@ class DrawView: UIView {
     var undoStack: [(String, Stroke, Stroke.ActionType)] = []
     var redoStack: [(String, Stroke, Stroke.ActionType)] = []
     
-    var rubberActive = false
+    var mode = Mode.DRAWING
     
     public var mcSession: MCSession?
     
@@ -44,25 +44,40 @@ class DrawView: UIView {
         return ""
     }
     
+    func lookUpStroke2(_ point: Point) -> (String, Int)? {
+        for (str, stroke) in lines {
+            let p = stroke.indexOf(givenPoint: point)
+            if let t = p {
+                return (str, t)
+            }
+        }
+        return nil
+    }
+    
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         let point = Point(fromCGPoint: Array(touches)[0].location(in: self))
         
-        if (rubberActive) {
-            let strokeId = lookUpStroke(point)
-            if (strokeId != "") {
-                let stroke = lines[strokeId]!
-                handleChange(change: Change.removeStroke(strokeId))
-                undoStack.append((strokeId, stroke, Stroke.ActionType.remove))
-            }
-        } else {
+        switch mode {
+        case .DRAWING:
             let stroke = Stroke(points: [point], colour: drawColour)
             currentIdentifier = getIdentifier()
             pointsToWrite = [point]
             handleChange(change: Change.addStroke(stroke, currentIdentifier))
             undoStack.append((currentIdentifier, stroke, Stroke.ActionType.add))
             redoStack = []
+        case .COMPLETE_REMOVE:
+            let strokeId = lookUpStroke(point)
+            if (strokeId != "") {
+                let stroke = lines[strokeId]!
+                handleChange(change: Change.removeStroke(strokeId))
+                undoStack.append((strokeId, stroke, Stroke.ActionType.remove))
+            }
+        case .PARTIAL_REMOVE:
+            let t = lookUpStroke2(point)
+            if let (strokeId, index) = t {
+                handleChange(change: Change.partialRemoveStroke(strokeId, index))
+            }
         }
-
     }
     
     func handleChange(change: Change) {
@@ -103,15 +118,21 @@ class DrawView: UIView {
         }
     }
     
+
     func colourChosen(_ chosenColour: UIColor) {
         drawColour = chosenColour
-        rubberActive = false
+        mode = .DRAWING
     }
     
     @IBAction func eraserChosen(_ sender: UIBarButtonItem) {
         let chosen = sender.tag
-        rubberActive = chosen == 20
+        mode = chosen == 20 ? .COMPLETE_REMOVE : .DRAWING
     }
+  
+    @IBAction func partialChosen(_ sender: UIBarButtonItem) {
+          let chosen = sender.tag
+          mode = chosen == 21 ? .PARTIAL_REMOVE : .DRAWING
+      }
     
     @IBAction func clearCanvas(_ sender: Any) {
         // TODO FIX THIS

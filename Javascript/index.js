@@ -40,7 +40,15 @@ export class Automerger {
           var nDoc = Automerge.change(cheekyGlobalVariable, "LOL1", doc => {
             delete doc.strokes[change.identifier];
           });
-        } 
+        } else if (type === "PARTIAL_REMOVE_STROKE") {
+          var nDoc = Automerge.change(cheekyGlobalVariable, "LOL1", doc => {
+            var stroke = doc.strokes[change.identifier];
+            var endIndex = Math.min(stroke.points.length, change.index + 2);
+            for (var i = change.index; i < endIndex; i++) {
+              stroke.points[i] = null; 
+            }
+          });
+        }
         var retValue = [JSON.stringify(nDoc.strokes), JSON.stringify(Automerge.getChanges(cheekyGlobalVariable, nDoc))];
         cheekyGlobalVariable = nDoc;
         return retValue;
