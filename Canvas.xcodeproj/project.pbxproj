@@ -9,11 +9,13 @@
 /* Begin PBXBuildFile section */
 		15F9B347235E068600A6F790 /* Stroke.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15F9B346235E068600A6F790 /* Stroke.swift */; };
 		B20695EF2357547800380182 /* Colour.swift in Sources */ = {isa = PBXBuildFile; fileRef = B20695EE2357547800380182 /* Colour.swift */; };
-		C130AABC2358C3450073644B /* SwiftyJSON.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C130AABB2358C3450073644B /* SwiftyJSON.framework */; };
 		C1C1C0F32350E3E2006DED27 /* AutomergeJavaScript.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1C1C0F22350E3E2006DED27 /* AutomergeJavaScript.swift */; };
 		C1C1C0F52350E404006DED27 /* Canvas.bundle.js in Resources */ = {isa = PBXBuildFile; fileRef = C1C1C0F42350E404006DED27 /* Canvas.bundle.js */; };
 		E009D221235520EB00B55EA0 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E009D220235520EB00B55EA0 /* ViewController.swift */; };
 		E01B0BB12369F66600545F83 /* sessionDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E01B0BB02369F66600545F83 /* sessionDetailsViewController.swift */; };
+		E097F43E237314C200050137 /* FlexColorPicker.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E097F43D237314C200050137 /* FlexColorPicker.framework */; };
+		E097F43F237314C200050137 /* FlexColorPicker.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = E097F43D237314C200050137 /* FlexColorPicker.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		E097F4422373203D00050137 /* ColourPickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E097F4412373203D00050137 /* ColourPickerViewController.swift */; };
 		E0BE81FB2350C3A100D93BF1 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0BE81FA2350C3A100D93BF1 /* AppDelegate.swift */; };
 		E0BE82002350C3A100D93BF1 /* Canvas.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = E0BE81FE2350C3A100D93BF1 /* Canvas.xcdatamodeld */; };
 		E0BE82042350C3A300D93BF1 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E0BE82032350C3A300D93BF1 /* Assets.xcassets */; };
@@ -22,14 +24,29 @@
 		E0EEA233235495350076D540 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E0EEA231235495350076D540 /* Main.storyboard */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXCopyFilesBuildPhase section */
+		E097F440237314C200050137 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				E097F43F237314C200050137 /* FlexColorPicker.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
 		15F9B346235E068600A6F790 /* Stroke.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Stroke.swift; sourceTree = "<group>"; };
 		B20695EE2357547800380182 /* Colour.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Colour.swift; sourceTree = "<group>"; };
-		C130AABB2358C3450073644B /* SwiftyJSON.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftyJSON.framework; path = Carthage/Build/iOS/SwiftyJSON.framework; sourceTree = "<group>"; };
 		C1C1C0F22350E3E2006DED27 /* AutomergeJavaScript.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AutomergeJavaScript.swift; sourceTree = "<group>"; };
 		C1C1C0F42350E404006DED27 /* Canvas.bundle.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; name = Canvas.bundle.js; path = Javascript/dist/Canvas.bundle.js; sourceTree = SOURCE_ROOT; };
 		E009D220235520EB00B55EA0 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		E01B0BB02369F66600545F83 /* sessionDetailsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = sessionDetailsViewController.swift; sourceTree = "<group>"; };
+		E097F43D237314C200050137 /* FlexColorPicker.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FlexColorPicker.framework; path = Carthage/Build/iOS/FlexColorPicker.framework; sourceTree = "<group>"; };
+		E097F4412373203D00050137 /* ColourPickerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ColourPickerViewController.swift; sourceTree = "<group>"; };
 		E0BE81F72350C3A100D93BF1 /* Canvas.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Canvas.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E0BE81FA2350C3A100D93BF1 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		E0BE81FF2350C3A100D93BF1 /* Canvas.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Canvas.xcdatamodel; sourceTree = "<group>"; };
@@ -45,7 +62,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C130AABC2358C3450073644B /* SwiftyJSON.framework in Frameworks */,
+				E097F43E237314C200050137 /* FlexColorPicker.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -55,7 +72,7 @@
 		C130AABA2358C3450073644B /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				C130AABB2358C3450073644B /* SwiftyJSON.framework */,
+				E097F43D237314C200050137 /* FlexColorPicker.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -80,6 +97,7 @@
 		E0BE81F92350C3A100D93BF1 /* Canvas */ = {
 			isa = PBXGroup;
 			children = (
+				E097F4412373203D00050137 /* ColourPickerViewController.swift */,
 				B20695EE2357547800380182 /* Colour.swift */,
 				E0BE81FA2350C3A100D93BF1 /* AppDelegate.swift */,
 				C1C1C0F22350E3E2006DED27 /* AutomergeJavaScript.swift */,
@@ -109,6 +127,8 @@
 				C1B527BC2354F45300DB4DCA /* ShellScript */,
 				E0BE81F52350C3A100D93BF1 /* Resources */,
 				F453F4887EA3533DB42CCAF4 /* Carthage */,
+				E097F43C237311B900050137 /* ShellScript */,
+				E097F440237314C200050137 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -186,6 +206,24 @@
 			shellScript = "
 ";
 		};
+		E097F43C237311B900050137 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"$(SRCROOT)/Carthage/Build/iOS/FlexColorPicker.framework",
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "/usr/local/bin/carthage copy-frameworks\n";
+		};
 		F453F4887EA3533DB42CCAF4 /* Carthage */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -215,6 +253,7 @@
 			files = (
 				C1C1C0F32350E3E2006DED27 /* AutomergeJavaScript.swift in Sources */,
 				E0EEA22E235494C10076D540 /* DrawView.swift in Sources */,
+				E097F4422373203D00050137 /* ColourPickerViewController.swift in Sources */,
 				E0BE81FB2350C3A100D93BF1 /* AppDelegate.swift in Sources */,
 				B20695EF2357547800380182 /* Colour.swift in Sources */,
 				E0BE82002350C3A100D93BF1 /* Canvas.xcdatamodeld in Sources */,
