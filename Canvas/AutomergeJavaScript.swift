@@ -7,7 +7,6 @@
 //
 
 import JavaScriptCore
-import SwiftyJSON
 
 class AutomergeJavaScript: NSObject {
     
