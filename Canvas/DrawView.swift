@@ -53,6 +53,7 @@ class DrawView: UIView {
                 let stroke = lines[strokeId]!
                 handleChange(change: Change.removeStroke(strokeId))
                 undoStack.append((strokeId, stroke, Stroke.ActionType.remove))
+                redoStack = []
             }
         } else {
             let stroke = Stroke(points: [point], colour: drawColour)
@@ -71,6 +72,7 @@ class DrawView: UIView {
             self.sendPath(returnValue.1)
             self.setNeedsDisplay()
         }
+        
     }
     
     override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -86,14 +88,21 @@ class DrawView: UIView {
     }
     
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
+        if (rubberActive) {
+            currentIdentifier = nil
+            pointsToWrite = []
+            return
+        }
+        
         let currentLine = lines[currentIdentifier]!
-        if (shapeRecognition) {
-            let isStraight = isStraightLine(currentLine.points)
-            if (isStraight) {
-                print("redrawing")
-                redrawStraightLine(currentIdentifier)
-            }
-         }
+           if (shapeRecognition) {
+               let isStraight = isStraightLine(currentLine.points)
+               if (isStraight) {
+                  print("redrawing")
+                  redrawStraightLine(currentIdentifier)
+               }
+        }
+       
         currentIdentifier = nil
         pointsToWrite = []
     }
@@ -154,7 +163,6 @@ class DrawView: UIView {
     }
     
     func isInLine(_ coords: CGPoint, _ startPt: CGPoint, _ endPt: CGPoint) -> Bool {
-        
         if (endPt.x <= startPt.x + 15 && endPt.x >= startPt.x - 15) {
             let verticalLineEqn = startPt.x
             return coords.x <= verticalLineEqn + 15 && coords.x >= verticalLineEqn - 15
