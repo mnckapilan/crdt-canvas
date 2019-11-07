@@ -12,11 +12,11 @@
             <objects>
                 <viewController storyboardIdentifier="sessionDetailsViewController" modalTransitionStyle="crossDissolve" useStoryboardIdentifierAsRestorationIdentifier="YES" id="Eku-Qk-D68" customClass="sessionDetailsViewController" customModule="Canvas" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="7XA-E9-kUS">
-                        <rect key="frame" x="0.0" y="0.0" width="1024" height="1366"/>
+                        <rect key="frame" x="0.0" y="0.0" width="768" height="1024"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="4Kb-JJ-06e">
-                                <rect key="frame" x="0.0" y="0.0" width="1024" height="1366"/>
+                                <rect key="frame" x="0.0" y="0.0" width="768" height="1024"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                                 <connections>
                                     <outlet property="dataSource" destination="Eku-Qk-D68" id="9RU-lk-tnv"/>
@@ -38,60 +38,57 @@
             </objects>
             <point key="canvasLocation" x="869.56521739130437" y="110.49107142857143"/>
         </scene>
+        <!--Colour Picker View Controller-->
+        <scene sceneID="zSd-Y9-nTK">
+            <objects>
+                <viewController storyboardIdentifier="colourPickerViewController" id="YXA-Cp-nnx" customClass="ColourPickerViewController" customModule="Canvas" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="C6o-tt-C6Q">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <viewLayoutGuide key="safeArea" id="8AN-bH-PHi"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="zQh-pb-qn4" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1583" y="110"/>
+        </scene>
         <!--View Controller-->
         <scene sceneID="tne-QT-ifu">
             <objects>
-                <viewController id="BYZ-38-t0r" customClass="ViewController" customModule="Canvas" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="viewController" id="BYZ-38-t0r" customClass="ViewController" customModule="Canvas" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
-                        <rect key="frame" x="0.0" y="0.0" width="1024" height="1366"/>
+                        <rect key="frame" x="0.0" y="0.0" width="768" height="1024"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translucent="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ACt-1Y-oKJ">
-                                <rect key="frame" x="0.0" y="0.0" width="1024" height="50"/>
+                                <rect key="frame" x="0.0" y="0.0" width="768" height="50"/>
                                 <items/>
                                 <color key="barTintColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             </toolbar>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Nsp-Ud-L6L" customClass="DrawView" customModule="Canvas" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="96.5" width="1024" height="1219.5"/>
+                                <rect key="frame" x="0.0" y="96.5" width="768" height="877.5"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                             </view>
                             <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translucent="NO" translatesAutoresizingMaskIntoConstraints="NO" id="aDU-cP-kvP">
-                                <rect key="frame" x="0.0" y="0.0" width="1024" height="50"/>
+                                <rect key="frame" x="0.0" y="0.0" width="768" height="50"/>
                                 <items>
-                                    <barButtonItem tag="1" title="Blue" image="paintbrush.fill" catalog="system" id="hfy-2q-m2t">
-                                        <color key="tintColor" systemColor="systemBlueColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                        <connections>
-                                            <action selector="colourChosen:" destination="Nsp-Ud-L6L" id="rOh-Ed-Ae7"/>
-                                        </connections>
-                                    </barButtonItem>
-                                    <barButtonItem tag="2" title="Green" image="paintbrush.fill" catalog="system" id="Eh5-5c-w9t">
-                                        <color key="tintColor" systemColor="systemGreenColor" red="0.20392156859999999" green="0.78039215689999997" blue="0.34901960780000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                        <connections>
-                                            <action selector="colourChosen:" destination="Nsp-Ud-L6L" id="Ans-9A-qt4"/>
-                                        </connections>
-                                    </barButtonItem>
-                                    <barButtonItem tag="3" title="Yellow" image="paintbrush.fill" catalog="system" id="Aba-wg-qlK">
-                                        <color key="tintColor" systemColor="systemYellowColor" red="1" green="0.80000000000000004" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                        <connections>
-                                            <action selector="colourChosen:" destination="Nsp-Ud-L6L" id="nWw-4R-685"/>
-                                        </connections>
-                                    </barButtonItem>
-                                    <barButtonItem tag="4" title="Red" image="paintbrush.fill" catalog="system" id="RCA-5v-v7h">
-                                        <color key="tintColor" systemColor="systemRedColor" red="1" green="0.23137254900000001" blue="0.18823529410000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                        <connections>
-                                            <action selector="colourChosen:" destination="Nsp-Ud-L6L" id="eNY-p4-p0B"/>
-                                        </connections>
-                                    </barButtonItem>
-                                    <barButtonItem tag="5" title="White" image="paintbrush.fill" catalog="system" id="xBO-vf-HV2">
+                                    <barButtonItem title="Colour Picker" image="paintbrush.fill" catalog="system" id="k9m-Gf-FRz">
                                         <color key="tintColor" systemColor="labelColor" cocoaTouchSystemColor="darkTextColor"/>
                                         <connections>
-                                            <action selector="colourChosen:" destination="Nsp-Ud-L6L" id="UaL-I8-IKZ"/>
+                                            <action selector="showColorPicker" destination="BYZ-38-t0r" id="adS-tF-9Dv"/>
                                         </connections>
                                     </barButtonItem>
                                     <barButtonItem tag="20" title="Eraser" image="pencil.tip.crop.circle.badge.minus" catalog="system" id="liX-JY-aM9">
                                         <color key="tintColor" systemColor="labelColor" cocoaTouchSystemColor="darkTextColor"/>
                                         <connections>
                                             <action selector="eraserChosen:" destination="Nsp-Ud-L6L" id="PR2-qG-tdJ"/>
+                                        </connections>
+                                    </barButtonItem>
+                                    <barButtonItem tag="21" title="Eraser" image="pencil.slash" catalog="system" id="b40-Ek-mUS" userLabel="Partial">
+                                        <color key="tintColor" systemColor="labelColor" cocoaTouchSystemColor="darkTextColor"/>
+                                        <connections>
+                                            <action selector="partialChosen:" destination="Nsp-Ud-L6L" id="WT1-HD-QYB"/>
                                         </connections>
                                     </barButtonItem>
                                     <barButtonItem title="Clear" image="clear.fill" catalog="system" id="NR0-eZ-rAE">
@@ -159,14 +156,10 @@
                     <toolbarItems/>
                     <simulatedTabBarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
-                        <outlet property="blueBtn" destination="hfy-2q-m2t" id="clP-Vb-IuF"/>
+                        <outlet property="colourPicker" destination="k9m-Gf-FRz" id="cxc-vw-H9O"/>
                         <outlet property="drawView" destination="Nsp-Ud-L6L" id="SGm-pC-uOW"/>
                         <outlet property="eraser" destination="liX-JY-aM9" id="hZq-vE-aca"/>
-                        <outlet property="greenBtn" destination="Eh5-5c-w9t" id="eNt-OJ-wdY"/>
-                        <outlet property="redBtn" destination="RCA-5v-v7h" id="MaB-Vw-B96"/>
                         <outlet property="sessionDetails" destination="0bf-Rv-UNg" id="00s-WS-XUR"/>
-                        <outlet property="whiteBtn" destination="xBO-vf-HV2" id="1Dh-Tl-se6"/>
-                        <outlet property="yellowBtn" destination="Aba-wg-qlK" id="XUY-3V-eQv"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
@@ -179,6 +172,7 @@
         <image name="arrowshape.turn.up.right.fill" catalog="system" width="64" height="52"/>
         <image name="clear.fill" catalog="system" width="64" height="56"/>
         <image name="paintbrush.fill" catalog="system" width="64" height="62"/>
+        <image name="pencil.slash" catalog="system" width="64" height="56"/>
         <image name="pencil.tip.crop.circle.badge.minus" catalog="system" width="64" height="50"/>
         <image name="person.3.fill" catalog="system" width="71" height="34"/>
         <image name="person.badge.plus.fill" catalog="system" width="64" height="58"/>

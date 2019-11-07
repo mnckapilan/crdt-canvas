@@ -7,22 +7,21 @@
 
 import MultipeerConnectivity
 import UIKit
+import FlexColorPicker
 
 class ViewController: UIViewController, MCSessionDelegate, MCBrowserViewControllerDelegate {
     
     @IBOutlet var drawView: DrawView!
-    @IBOutlet var blueBtn: UIBarButtonItem!
-    @IBOutlet var greenBtn: UIBarButtonItem!
-    @IBOutlet var yellowBtn: UIBarButtonItem!
-    @IBOutlet var redBtn: UIBarButtonItem!
-    @IBOutlet var whiteBtn: UIBarButtonItem!
     @IBOutlet var eraser: UIBarButtonItem!
     @IBOutlet var sessionDetails: UIBarButtonItem!
     @IBOutlet var shapeRecognition: UIBarButtonItem!
+    @IBOutlet var colourPicker: UIBarButtonItem!
     
     var peerID: MCPeerID!
     var mcSession: MCSession!
     var mcAdvertiserAssistant: MCAdvertiserAssistant!
+    let sb = UIStoryboard(name: "Main", bundle: nil)
+    var colourPickerVC : ColourPickerViewController!
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -31,6 +30,8 @@ class ViewController: UIViewController, MCSessionDelegate, MCBrowserViewControll
         mcSession = MCSession(peer: peerID, securityIdentity: nil, encryptionPreference: .required)
         mcSession.delegate = self
         drawView.mcSession = mcSession
+        colourPickerVC = sb.instantiateViewController(
+            withIdentifier: "colourPickerViewController") as? ColourPickerViewController
     }
 
     @IBAction func showConnectionPrompt() {
@@ -50,8 +51,7 @@ class ViewController: UIViewController, MCSessionDelegate, MCBrowserViewControll
     
     @IBAction func showSessionDetails() {
         print(mcSession.connectedPeers)
-        let storyboard = UIStoryboard(name: "Main", bundle: nil)
-        let sessionDetailsVC = storyboard.instantiateViewController(
+        let sessionDetailsVC = sb.instantiateViewController(
             withIdentifier: "sessionDetailsViewController") as! sessionDetailsViewController
         // Use the popover presentation style for your view controller.
         sessionDetailsVC.modalPresentationStyle = .popover
@@ -69,28 +69,31 @@ class ViewController: UIViewController, MCSessionDelegate, MCBrowserViewControll
         }
     }
     
-    
-    
-    
-    
-    @IBAction func btnClicked(_ sender: UIBarButtonItem) {
-        let btnTag = sender.tag
-        let buttons: [UIBarButtonItem] = [blueBtn, greenBtn, yellowBtn, redBtn, whiteBtn]
+    @IBAction func showColorPicker() {
+        // Use the popover presentation style for your view controller.
+        colourPickerVC.modalPresentationStyle = .popover
+
+        // Specify the anchor point for the popover.
+        colourPickerVC.popoverPresentationController?.barButtonItem =
+                   colourPicker
         
-//        for i in 1...5 {
-//            if (i == btnTag) {
-//                buttons[i - 1].isSelected = true
-//            } else {
-//                buttons[i - 1].isSelected = false
-//            }
-//        }
-//
-//        if (btnTag == 20) {
-//            eraser.isSelected = true
-//        } else {
-//            eraser.isSelected = false
-//        }
+        //colourPickerVC.datasourceArray = mcSession.connectedPeers
+        colourPickerVC.mainViewController = self
+        // Present the view controller (in a popover).
+        self.present(colourPickerVC, animated: true) {
+           // The popover is visible.
+        }
+        
+        
     }
+    
+    func colourChange(_ sender: ColourPickerViewController) {
+        let chosenColour = sender.selectedColor
+        drawView.colourChosen(chosenColour)
+        colourPicker.tintColor = chosenColour
+
+    }
+    
 
     func startHosting(action: UIAlertAction) {
         mcAdvertiserAssistant = MCAdvertiserAssistant(serviceType: "hws-project25", discoveryInfo: nil, session: mcSession)

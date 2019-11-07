@@ -42,6 +42,7 @@ enum Change: Encodable {
         case stroke
         case point
         case identifier
+        case index
     }
     
     func encode(to encoder: Encoder) throws {
@@ -60,6 +61,10 @@ enum Change: Encodable {
         case let .removeStroke(i):
             try container.encode("REMOVE_STROKE", forKey: CodingKeys.type)
             try container.encode(i, forKey: CodingKeys.identifier)
+        case let .partialRemoveStroke(str, i):
+            try container.encode("PARTIAL_REMOVE_STROKE", forKey: CodingKeys.type)
+            try container.encode(str, forKey: CodingKeys.identifier)
+            try container.encode(i, forKey: CodingKeys.index)
         }
     }
     
@@ -67,10 +72,17 @@ enum Change: Encodable {
     case removeStroke(String)
     case addPoint([Point], String)
     case clearCanvas
+    case partialRemoveStroke(String, Int)
+}
+
+enum Mode {
+    case DRAWING
+    case COMPLETE_REMOVE
+    case PARTIAL_REMOVE
 }
 
 class Stroke: Codable {
-    var points: [Point]
+    var points: [Point?]
     var colour: UIColor
 
     enum ColourCodingKeys: String, CodingKey {
@@ -93,7 +105,7 @@ class Stroke: Codable {
     
     required init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
-        points = try container.decode([Point].self, forKey: CodingKeys.points)
+        points = try container.decode([Point?].self, forKey: CodingKeys.points)
         
         let nested = try container.nestedContainer(keyedBy: ColourCodingKeys.self, forKey: CodingKeys.colour)
         let red = try nested.decode(CGFloat.self, forKey: ColourCodingKeys.red)
@@ -128,7 +140,10 @@ class Stroke: Codable {
     }
     
     func contains(givenPoint: Point) -> Bool {
-        for point in points {
+        for point2 in points {
+            guard let point = point2 else {
+                continue
+            }
             if ((givenPoint.x <= point.x + 10 && givenPoint.x >= point.x - 10) && (givenPoint.y <= point.y + 10 && givenPoint.y >= point.y - 10)) {
                 return true;
             }
@@ -136,26 +151,52 @@ class Stroke: Codable {
         return false;
     }
     
+    func indexOf(givenPoint: Point) -> Int? {
+        for i in 0...points.count-1 {
+              guard let point = points[i] else {
+                 continue
+              }
+              if ((givenPoint.x <= point.x + 10 && givenPoint.x >= point.x - 10) && (givenPoint.y <= point.y + 10 && givenPoint.y >= point.y - 10)) {
+                  return i;
+              }
+          }
+          return nil;
+      }
+    
     var cgPath: CGPath {
         get {
-            var pPrevPoint: CGPoint!
-            var prevPoint: CGPoint!
-            var c = 0
+            var pPrevPoint: Point!
+            var prevPoint: Point!
             let path = UIBezierPath.init()
             path.lineCapStyle = CGLineCap.round
             path.lineWidth = 3
-            for point in points {
-                if c == 0 {
-                    path.move(to: point.cgPoint)
-                } else if c == 1 {
-                    pPrevPoint = point.cgPoint
-                } else if c == 2 {
-                    prevPoint = point.cgPoint
-                } else  if c == 3 {
-                    path.addCurve(to: point.cgPoint, controlPoint1: pPrevPoint, controlPoint2: prevPoint)
-                    c = 0
+            var s = 0
+            for i in 0...points.count - 1 {
+                guard let point = points[i] else {
+                    s = 0
+                    continue
                 }
-                c += 1
+                if s == 0 {
+                    path.move(to: point.cgPoint)
+                } else if s >= 2 {
+                    let cp1 = Point(
+                        x: (2 * pPrevPoint.x + prevPoint.x) / 3,
+                        y: (2 * pPrevPoint.y + prevPoint.y) / 3
+                    )
+                    let cp2 = Point(
+                        x: (pPrevPoint.x + 2 * prevPoint.x) / 3,
+                        y: (pPrevPoint.y + 2 * prevPoint.y) / 3
+                    )
+                    let end = Point(
+                        x: (pPrevPoint.x + 4 * prevPoint.x + point.x) / 6,
+                        y: (pPrevPoint.y + 4 * prevPoint.y + point.y) / 6
+                    )
+                    path.addCurve(to: end.cgPoint, controlPoint1: cp1.cgPoint, controlPoint2: cp2.cgPoint)
+                }
+                
+                pPrevPoint = prevPoint
+                prevPoint = point
+                s += 1
             }
             return path.cgPath
         }

@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import SwiftyJSON
 import MultipeerConnectivity
 
 class DrawView: UIView {
@@ -22,7 +21,7 @@ class DrawView: UIView {
     var undoStack: [(String, Stroke, Stroke.ActionType)] = []
     var redoStack: [(String, Stroke, Stroke.ActionType)] = []
     
-    var rubberActive = false
+    var mode = Mode.DRAWING
     
     public var mcSession: MCSession?
     
@@ -44,26 +43,44 @@ class DrawView: UIView {
         return ""
     }
     
+    func lookUpStroke2(_ point: Point) -> (String, Int)? {
+        for (str, stroke) in lines {
+            let p = stroke.indexOf(givenPoint: point)
+            if let t = p {
+                return (str, t)
+            }
+        }
+        return nil
+    }
+
+    func partialRemove(_ point: Point) {
+        let t = lookUpStroke2(point)
+        if let (strokeId, index) = t {
+            handleChange(change: Change.partialRemoveStroke(strokeId, index))
+        }
+    }
+    
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         let point = Point(fromCGPoint: Array(touches)[0].location(in: self))
         
-        if (rubberActive) {
-            let strokeId = lookUpStroke(point)
-            if (strokeId != "") {
-                let stroke = lines[strokeId]!
-                handleChange(change: Change.removeStroke(strokeId))
-                undoStack.append((strokeId, stroke, Stroke.ActionType.remove))
-                redoStack = []
-            }
-        } else {
+        switch mode {
+        case .DRAWING:
             let stroke = Stroke(points: [point], colour: drawColour)
             currentIdentifier = getIdentifier()
             pointsToWrite = [point]
             handleChange(change: Change.addStroke(stroke, currentIdentifier))
             undoStack.append((currentIdentifier, stroke, Stroke.ActionType.add))
             redoStack = []
+        case .COMPLETE_REMOVE:
+            let strokeId = lookUpStroke(point)
+            if (strokeId != "") {
+                let stroke = lines[strokeId]!
+                handleChange(change: Change.removeStroke(strokeId))
+                undoStack.append((strokeId, stroke, Stroke.ActionType.remove))
+            }
+        case .PARTIAL_REMOVE:
+            partialRemove(point)
         }
-
     }
     
     func handleChange(change: Change) {
@@ -77,26 +94,30 @@ class DrawView: UIView {
     
     override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
         let point = Point(fromCGPoint: Array(touches)[0].location(in: self))
-        if pointsToWrite.count > 0 && pointsToWrite.last! != point {
-            pointsToWrite.append(point)
+        switch mode {
+        case .DRAWING:
+            if pointsToWrite.count > 0 && pointsToWrite.last! != point {
+                pointsToWrite.append(point)
+            }
+            if pointsToWrite.count >= 5 {
+                pointsToWrite.remove(at: 0)
+                handleChange(change: Change.addPoint(pointsToWrite, currentIdentifier))
+                pointsToWrite = [pointsToWrite.last!]
+            }
+    
+        case .PARTIAL_REMOVE:
+            partialRemove(point)
+        case .COMPLETE_REMOVE:
+            break
         }
-        if pointsToWrite.count >= 5 {
-            pointsToWrite.remove(at: 0)
-            handleChange(change: Change.addPoint(pointsToWrite, currentIdentifier))
-            pointsToWrite = [pointsToWrite.last!]
-        }
+        
     }
     
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
-        if (rubberActive) {
-            currentIdentifier = nil
-            pointsToWrite = []
-            return
-        }
         
         let currentLine = lines[currentIdentifier]!
            if (shapeRecognition) {
-               let isStraight = isStraightLine(currentLine.points)
+            let isStraight = isStraightLine(currentLine.points)
                if (isStraight) {
                   print("redrawing")
                   redrawStraightLine(currentIdentifier)
@@ -122,37 +143,43 @@ class DrawView: UIView {
     func redrawStraightLine(_ id: String) {
         let line = lines[id]!
         let count = line.points.count
-        let start = line.points[0]
-        let end = line.points[count - 1]
+        let start = line.points[0]!
+        let end = line.points[count - 1]!
         
         handleChange(change: Change.removeStroke(id))
         var new_points = [start, start, end, end]
         
         if (start.cgPoint.x - end.cgPoint.x != 0) {
             let grad = (start.cgPoint.y - end.cgPoint.y) / (start.cgPoint.x - end.cgPoint.x)
-            let nextY1 = (grad * (start.cgPoint.x + 0.5 - start.cgPoint.x)) + start.cgPoint.y
-            let nextY2 = (grad * (start.cgPoint.x + 1 - start.cgPoint.x)) + start.cgPoint.y
-            let nextPt1 = Point(x: Float(start.cgPoint.x + 0.5), y: Float(nextY1))
-            let nextPt2 = Point(x: Float(start.cgPoint.x + 1), y: Float(nextY2))
+            let nextX1 = (start.cgPoint.x + end.cgPoint.x) / 3
+            let nextX2 = (start.cgPoint.x + end.cgPoint.x) * 2 / 3
+            let nextY1 = (grad * (nextX1 - start.cgPoint.x)) + start.cgPoint.y
+            let nextY2 = (grad * (nextX2 - start.cgPoint.x)) + start.cgPoint.y
+            let nextPt1 = Point(x: Float(nextX1), y: Float(nextY1))
+            let nextPt2 = Point(x: Float(nextX2), y: Float(nextY2))
             
             new_points = [start, nextPt1, nextPt2, end]
         }
+        
+        print(new_points)
 
         let stroke = Stroke(points: new_points, colour: line.colour)
         handleChange(change: Change.addStroke(stroke, id))
+        let test = lines[id]!
+        print(test.cgPath)
         
         undoStack.append((id, line, Stroke.ActionType.redraw))
 
     }
     
-    func isStraightLine(_ points: [Point]) -> Bool {
-        let startPt = points[0].cgPoint
-        let endPt = points[points.count - 1].cgPoint
-        print(startPt, endPt, points.count)
+    func isStraightLine(_ points: [Point?]) -> Bool {
+        let startPt = points[0]!.cgPoint
+        let endPt = points[points.count - 1]!.cgPoint
+        print(startPt, endPt)
         
         var almostStraightLine = true
         for point in points {
-            let res = isInLine(point.cgPoint, startPt, endPt)
+            let res = isInLine(point!.cgPoint, startPt, endPt)
             if (!res) {
                 almostStraightLine = res
                 break
@@ -179,19 +206,21 @@ class DrawView: UIView {
         shapeRecognition = !shapeRecognition
         print("shape recognition = ", shapeRecognition)
     }
-    
-    @IBAction func colourChosen(_ sender: UIBarButtonItem) {
-        guard let chosen = Colour(tag: sender.tag) else {
-            return
-        }
-        drawColour = chosen.colour
-        rubberActive = false
+
+    func colourChosen(_ chosenColour: UIColor) {
+        drawColour = chosenColour
+        mode = .DRAWING
     }
     
     @IBAction func eraserChosen(_ sender: UIBarButtonItem) {
         let chosen = sender.tag
-        rubberActive = chosen == 20
+        mode = chosen == 20 ? .COMPLETE_REMOVE : .DRAWING
     }
+  
+    @IBAction func partialChosen(_ sender: UIBarButtonItem) {
+          let chosen = sender.tag
+          mode = chosen == 21 ? .PARTIAL_REMOVE : .DRAWING
+      }
     
     @IBAction func clearCanvas(_ sender: Any) {
         // TODO: be able to undo a clear
