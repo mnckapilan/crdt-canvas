@@ -116,12 +116,16 @@ class DrawView: UIView {
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
         
         let currentLine = lines[currentIdentifier]!
-           if (shapeRecognition) {
+        
+        if (shapeRecognition) {
             let isStraight = isStraightLine(currentLine.points)
-               if (isStraight) {
-                  print("redrawing")
-                  redrawStraightLine(currentIdentifier)
-               }
+            let rectangle = isRectangle(currentLine.points)
+            if (isStraight) {
+                print("redrawing")
+                redrawStraightLine(currentIdentifier)
+            } else if (rectangle) {
+                print("found rectangle")
+            }
         }
        
         currentIdentifier = nil
@@ -150,7 +154,7 @@ class DrawView: UIView {
         var new_points = [start, start, end, end]
         
         if (start.cgPoint.x - end.cgPoint.x != 0) {
-            let grad = (start.cgPoint.y - end.cgPoint.y) / (start.cgPoint.x - end.cgPoint.x)
+            let grad = calc_gradient(line.points)
             let nextX1 = (start.cgPoint.x + end.cgPoint.x) / 3
             let nextX2 = (start.cgPoint.x + end.cgPoint.x) * 2 / 3
             let nextY1 = (grad * (nextX1 - start.cgPoint.x)) + start.cgPoint.y
@@ -160,13 +164,9 @@ class DrawView: UIView {
             
             new_points = [start, nextPt1, nextPt2, end]
         }
-        
-        print(new_points)
 
         let stroke = Stroke(points: new_points, colour: line.colour)
         handleChange(change: Change.addStroke(stroke, id))
-        let test = lines[id]!
-        print(test.cgPath)
         
         undoStack.append((id, line, Stroke.ActionType.redraw))
 
@@ -175,7 +175,6 @@ class DrawView: UIView {
     func isStraightLine(_ points: [Point?]) -> Bool {
         let startPt = points[0]!.cgPoint
         let endPt = points[points.count - 1]!.cgPoint
-        print(startPt, endPt)
         
         var almostStraightLine = true
         for point in points {
@@ -189,17 +188,64 @@ class DrawView: UIView {
         return almostStraightLine
     }
     
+    func isRectangle(_ points: [Point?]) -> Bool {
+        
+        var i = 0
+        var sides : [[Point?]] = []
+        for _ in (1...4) {
+            var curSegment : [Point?] = [points[i]]
+
+            while(isStraightLine(curSegment)) {
+                if (i >= points.count - 1) {
+                    break
+                }
+                i = i + 1
+                curSegment.append(points[i])
+            }
+            
+            sides.append(curSegment)
+        }
+        
+        var gradients : [CGFloat] = []
+        for side in sides {
+            gradients.append(calc_gradient(side))
+        }
+        print(gradients)
+        
+        if (is_perpendicular(gradients[0], gradients[1]) && is_perpendicular(gradients[2], gradients[3])) {
+            return true
+        }
+        
+        return false
+    }
+    
+    func is_perpendicular(_ grad1: CGFloat, _ grad2: CGFloat) -> Bool {
+        let mult = abs(grad1 * grad2)
+        print(mult)
+        
+        if (mult > 0.6 && mult < 1.4) {
+            return true
+        }
+        return false
+    }
+    
+    func calc_gradient(_ points: [Point?]) -> CGFloat {
+        let startPt = points[0]!.cgPoint
+        let endPt = points[points.count - 1]!.cgPoint
+        
+        let grad = (startPt.y - endPt.y) / (startPt.x - endPt.x)
+        return grad
+    }
+    
     func isInLine(_ coords: CGPoint, _ startPt: CGPoint, _ endPt: CGPoint) -> Bool {
-        if (endPt.x <= startPt.x + 15 && endPt.x >= startPt.x - 15) {
+        if (endPt.x <= startPt.x + 25 && endPt.x >= startPt.x - 25) {
             let verticalLineEqn = startPt.x
-            return coords.x <= verticalLineEqn + 15 && coords.x >= verticalLineEqn - 15
+            return coords.x <= verticalLineEqn + 25 && coords.x >= verticalLineEqn - 25
         } else {
             let grad = (startPt.y - endPt.y) / (startPt.x - endPt.x)
             let yOnLineForGivenX = (grad * (coords.x - startPt.x)) + startPt.y
-            
-            return coords.y <= yOnLineForGivenX + 15 && coords.y >= yOnLineForGivenX - 15
+            return coords.y <= yOnLineForGivenX + 25 && coords.y >= yOnLineForGivenX - 25
         }
-
     }
     
     @IBAction func toggleShapeRecognition(_ sender: UIBarButtonItem) {
