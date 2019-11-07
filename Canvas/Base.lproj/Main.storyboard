@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="15400" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
-    <device id="ipad9_7" orientation="portrait" layout="fullscreen" appearance="light"/>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="15505" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+    <device id="retina6_5" orientation="portrait" appearance="dark"/>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15404"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15509"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -12,31 +12,66 @@
             <objects>
                 <viewController storyboardIdentifier="sessionDetailsViewController" modalTransitionStyle="crossDissolve" useStoryboardIdentifierAsRestorationIdentifier="YES" id="Eku-Qk-D68" customClass="sessionDetailsViewController" customModule="Canvas" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="7XA-E9-kUS">
-                        <rect key="frame" x="0.0" y="0.0" width="768" height="1024"/>
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="4Kb-JJ-06e">
-                                <rect key="frame" x="0.0" y="0.0" width="768" height="1024"/>
+                                <rect key="frame" x="0.0" y="186" width="414" height="676"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                                 <connections>
                                     <outlet property="dataSource" destination="Eku-Qk-D68" id="9RU-lk-tnv"/>
                                     <outlet property="delegate" destination="Eku-Qk-D68" id="XHi-HI-8fD"/>
                                 </connections>
                             </tableView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1EZ-bi-h78">
+                                <rect key="frame" x="269" y="85" width="67" height="54"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="67" id="yyG-dT-dav"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="36"/>
+                                <color key="tintColor" systemColor="labelColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <state key="normal" backgroundImage="wifi.slash" catalog="system"/>
+                                <connections>
+                                    <action selector="disconnectSession" destination="Eku-Qk-D68" eventType="touchUpInside" id="7sa-tE-ExW"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Zio-9r-piA">
+                                <rect key="frame" x="89" y="89" width="59" height="52.999999999999986"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="59" id="2Z6-NH-55B"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="36"/>
+                                <color key="tintColor" systemColor="labelColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <state key="normal" backgroundImage="person.badge.plus.fill" catalog="system"/>
+                                <connections>
+                                    <action selector="showConnectionPrompt" destination="Eku-Qk-D68" eventType="touchUpInside" id="W6v-Ly-tD8"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <constraints>
+                            <constraint firstItem="Zio-9r-piA" firstAttribute="centerY" secondItem="1EZ-bi-h78" secondAttribute="centerY" id="9i8-7c-3Mo"/>
+                            <constraint firstItem="1Ni-w7-pap" firstAttribute="trailing" secondItem="1EZ-bi-h78" secondAttribute="trailing" constant="78" id="KmB-mK-M54"/>
                             <constraint firstItem="1Ni-w7-pap" firstAttribute="trailing" secondItem="4Kb-JJ-06e" secondAttribute="trailing" id="NCt-VG-mF1"/>
-                            <constraint firstItem="4Kb-JJ-06e" firstAttribute="top" secondItem="1Ni-w7-pap" secondAttribute="top" id="SPE-KV-Ijn"/>
+                            <constraint firstItem="Zio-9r-piA" firstAttribute="top" secondItem="1Ni-w7-pap" secondAttribute="top" constant="43" id="Oeg-cc-hRq"/>
+                            <constraint firstItem="4Kb-JJ-06e" firstAttribute="top" secondItem="1Ni-w7-pap" secondAttribute="top" constant="142" id="SPE-KV-Ijn"/>
+                            <constraint firstItem="4Kb-JJ-06e" firstAttribute="top" secondItem="Zio-9r-piA" secondAttribute="bottom" constant="45.666666666666686" id="Wjb-b6-WvI"/>
                             <constraint firstItem="1Ni-w7-pap" firstAttribute="bottom" secondItem="4Kb-JJ-06e" secondAttribute="bottom" id="cKT-E3-Zm6"/>
                             <constraint firstItem="4Kb-JJ-06e" firstAttribute="leading" secondItem="1Ni-w7-pap" secondAttribute="leading" id="goi-tz-v32"/>
+                            <constraint firstItem="1EZ-bi-h78" firstAttribute="top" secondItem="1Ni-w7-pap" secondAttribute="top" constant="41.999999999999929" id="lgu-My-yir"/>
+                            <constraint firstItem="Zio-9r-piA" firstAttribute="leading" secondItem="1Ni-w7-pap" secondAttribute="leading" constant="89" id="ntV-QI-sAd"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="1Ni-w7-pap"/>
                     </view>
+                    <connections>
+                        <outlet property="connectButton" destination="Zio-9r-piA" id="HuG-pU-ZmM"/>
+                        <outlet property="disconnectButton" destination="1EZ-bi-h78" id="3WY-cu-PNT"/>
+                        <outlet property="tableView" destination="4Kb-JJ-06e" id="bJ1-G5-2ql"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Cmw-kx-JrQ" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="869.56521739130437" y="110.49107142857143"/>
+            <point key="canvasLocation" x="868.11594202898561" y="109.82142857142857"/>
         </scene>
         <!--Colour Picker View Controller-->
         <scene sceneID="zSd-Y9-nTK">
@@ -58,21 +93,34 @@
             <objects>
                 <viewController storyboardIdentifier="viewController" id="BYZ-38-t0r" customClass="ViewController" customModule="Canvas" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
-                        <rect key="frame" x="0.0" y="0.0" width="768" height="1024"/>
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translucent="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ACt-1Y-oKJ">
-                                <rect key="frame" x="0.0" y="0.0" width="768" height="50"/>
+                                <rect key="frame" x="0.0" y="0.0" width="414" height="44"/>
                                 <items/>
-                                <color key="barTintColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <color key="barTintColor" cocoaTouchSystemColor="darkTextColor"/>
                             </toolbar>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Nsp-Ud-L6L" customClass="DrawView" customModule="Canvas" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="96.5" width="768" height="877.5"/>
+                                <rect key="frame" x="0.0" y="140.66666666666669" width="414" height="672.33333333333326"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                             </view>
                             <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translucent="NO" translatesAutoresizingMaskIntoConstraints="NO" id="aDU-cP-kvP">
-                                <rect key="frame" x="0.0" y="0.0" width="768" height="50"/>
+                                <rect key="frame" x="0.0" y="44" width="414" height="44"/>
                                 <items>
+                                    <barButtonItem title="Undo" image="arrowshape.turn.up.left.fill" catalog="system" id="Taj-rG-sdE">
+                                        <color key="tintColor" systemColor="labelColor" cocoaTouchSystemColor="darkTextColor"/>
+                                        <connections>
+                                            <action selector="undoLastStroke:" destination="Nsp-Ud-L6L" id="4HP-HM-Zpe"/>
+                                        </connections>
+                                    </barButtonItem>
+                                    <barButtonItem title="Redo" image="arrowshape.turn.up.right.fill" catalog="system" id="fPk-ef-x3O">
+                                        <color key="tintColor" systemColor="labelColor" cocoaTouchSystemColor="darkTextColor"/>
+                                        <connections>
+                                            <action selector="redoLastStroke:" destination="Nsp-Ud-L6L" id="fHt-B9-3CL"/>
+                                        </connections>
+                                    </barButtonItem>
+                                    <barButtonItem style="plain" systemItem="flexibleSpace" id="7Fn-Dr-7Hb"/>
                                     <barButtonItem title="Colour Picker" image="paintbrush.fill" catalog="system" id="k9m-Gf-FRz">
                                         <color key="tintColor" systemColor="labelColor" cocoaTouchSystemColor="darkTextColor"/>
                                         <connections>
@@ -97,18 +145,7 @@
                                             <action selector="clearCanvas:" destination="Nsp-Ud-L6L" id="dyC-A1-IBJ"/>
                                         </connections>
                                     </barButtonItem>
-                                    <barButtonItem title="Undo" image="arrowshape.turn.up.left.fill" catalog="system" id="Taj-rG-sdE">
-                                        <color key="tintColor" systemColor="labelColor" cocoaTouchSystemColor="darkTextColor"/>
-                                        <connections>
-                                            <action selector="undoLastStroke:" destination="Nsp-Ud-L6L" id="4HP-HM-Zpe"/>
-                                        </connections>
-                                    </barButtonItem>
-                                    <barButtonItem title="Redo" image="arrowshape.turn.up.right.fill" catalog="system" id="fPk-ef-x3O">
-                                        <color key="tintColor" systemColor="labelColor" cocoaTouchSystemColor="darkTextColor"/>
-                                        <connections>
-                                            <action selector="redoLastStroke:" destination="Nsp-Ud-L6L" id="fHt-B9-3CL"/>
-                                        </connections>
-                                    </barButtonItem>
+                                    <barButtonItem style="plain" systemItem="flexibleSpace" id="7Cy-Mm-Lj0"/>
                                     <barButtonItem title="Connect" image="person.badge.plus.fill" catalog="system" id="8KT-OI-qLK">
                                         <color key="tintColor" systemColor="labelColor" cocoaTouchSystemColor="darkTextColor"/>
                                         <connections>
@@ -128,7 +165,7 @@
                                         </connections>
                                     </barButtonItem>
                                 </items>
-                                <color key="barTintColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <color key="barTintColor" cocoaTouchSystemColor="darkTextColor"/>
                             </toolbar>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
