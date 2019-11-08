@@ -24,7 +24,7 @@
                                 </connections>
                             </tableView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1EZ-bi-h78">
-                                <rect key="frame" x="269" y="85" width="67" height="54"/>
+                                <rect key="frame" x="269" y="85.333333333333314" width="67" height="53.666666666666657"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="67" id="yyG-dT-dav"/>
                                 </constraints>
@@ -146,18 +146,6 @@
                                         </connections>
                                     </barButtonItem>
                                     <barButtonItem style="plain" systemItem="flexibleSpace" id="7Cy-Mm-Lj0"/>
-                                    <barButtonItem title="Connect" image="person.badge.plus.fill" catalog="system" id="8KT-OI-qLK">
-                                        <color key="tintColor" systemColor="labelColor" cocoaTouchSystemColor="darkTextColor"/>
-                                        <connections>
-                                            <action selector="showConnectionPrompt" destination="BYZ-38-t0r" id="rxE-fD-Cxg"/>
-                                        </connections>
-                                    </barButtonItem>
-                                    <barButtonItem title="Disconnect" image="wifi.slash" catalog="system" id="P2N-dE-ERN">
-                                        <color key="tintColor" systemColor="labelColor" cocoaTouchSystemColor="darkTextColor"/>
-                                        <connections>
-                                            <action selector="disconnectSession" destination="BYZ-38-t0r" id="RE1-Z9-sCf"/>
-                                        </connections>
-                                    </barButtonItem>
                                     <barButtonItem title="Session Details" image="person.3.fill" catalog="system" id="0bf-Rv-UNg">
                                         <color key="tintColor" systemColor="labelColor" cocoaTouchSystemColor="darkTextColor"/>
                                         <connections>
