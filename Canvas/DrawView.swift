@@ -35,29 +35,21 @@ class DrawView: UIView {
         return UUID().uuidString
     }
     
-    func lookUpStroke(_ point: Point) -> String {
+    func lookUpStroke(_ point: Point) -> (String, Int) {
         for (str, stroke) in lines {
-            if (stroke.contains(givenPoint: point)) {
-                return str;
+            if let t = stroke.indexOf(givenPoint: point) {
+                return (str, t);
             }
         }
-        return ""
+        return ("", -1)
     }
     
-    func lookUpStroke2(_ point: Point) -> (String, Int)? {
+    func partialRemove(_ point: Point) {
         for (str, stroke) in lines {
             let p = stroke.indexOf(givenPoint: point)
             if let t = p {
-                return (str, t)
+                handleChange(change: Change.partialRemoveStroke(str, t))
             }
-        }
-        return nil
-    }
-
-    func partialRemove(_ point: Point) {
-        let t = lookUpStroke2(point)
-        if let (strokeId, index) = t {
-            handleChange(change: Change.partialRemoveStroke(strokeId, index))
         }
     }
     
@@ -73,10 +65,10 @@ class DrawView: UIView {
             undoStack.append((currentIdentifier, stroke, Stroke.ActionType.add))
             redoStack = []
         case .COMPLETE_REMOVE:
-            let strokeId = lookUpStroke(point)
+            let (strokeId, t) = lookUpStroke(point)
             if (strokeId != "") {
                 let stroke = lines[strokeId]!
-                handleChange(change: Change.removeStroke(strokeId))
+                handleChange(change: Change.removeStroke(strokeId, t))
                 undoStack.append((strokeId, stroke, Stroke.ActionType.remove))
             }
         case .PARTIAL_REMOVE:
@@ -159,7 +151,7 @@ class DrawView: UIView {
     @IBAction func undoLastStroke(_ sender: Any) {
         if let (id, stroke, actionType) = undoStack.popLast() {
             if (actionType == Stroke.ActionType.add) {
-                handleChange(change: Change.removeStroke(id))
+                //handleChange(change: Change.removeStroke(id))
                 redoStack.append((id, lines[id]!, actionType))
             } else if (actionType == Stroke.ActionType.remove) {
                 handleChange(change: Change.addStroke(stroke, id))
@@ -177,7 +169,7 @@ class DrawView: UIView {
                 
             }
             else if (actionType == Stroke.ActionType.remove) {
-                handleChange(change: Change.removeStroke(id))
+                //handleChange(change: Change.removeStroke(id))
                 undoStack.append((id, stroke, actionType))
             }
         }
