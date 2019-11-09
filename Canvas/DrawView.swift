@@ -81,7 +81,6 @@ class DrawView: UIView {
             self.sendPath(returnValue.1)
             self.setNeedsDisplay()
         }
-        
     }
     
     override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -102,11 +101,9 @@ class DrawView: UIView {
         case .COMPLETE_REMOVE:
             break
         }
-        
     }
     
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
-        
         let currentLine = lines[currentIdentifier]!
         
         if (shapeRecognition) {
@@ -146,7 +143,7 @@ class DrawView: UIView {
         
         let (_, t) = lookUpStroke(start)
         handleChange(change: Change.removeStroke(id, t))
-        var new_points = [start, start, end, end]
+        var new_points = [start, end, end, end]
         
         if (start.cgPoint.x - end.cgPoint.x != 0) {
             let grad = calc_gradient(line.points)
@@ -158,11 +155,16 @@ class DrawView: UIView {
             let nextPt2 = Point(x: Float(nextX2), y: Float(nextY2))
             
             new_points = [start, nextPt1, nextPt2, end]
+        } else {
+            let nextY1 = (start.cgPoint.y + end.cgPoint.y) / 3
+            let nextY2 = (start.cgPoint.y + end.cgPoint.y) * 2 / 3
+            let nextPt1 = Point(x: Float(start.cgPoint.x), y: Float(nextY1))
+            let nextPt2 = Point(x: Float(start.cgPoint.x), y: Float(nextY2))
+            new_points = [start, nextPt1, nextPt2, end]
         }
 
         let stroke = Stroke(points: new_points, colour: line.colour)
         handleChange(change: Change.addStroke(stroke, id))
-        
         undoStack.append((id, line, Stroke.ActionType.redraw))
     }
     
@@ -254,6 +256,7 @@ class DrawView: UIView {
     @IBAction func toggleShapeRecognition(_ sender: UIBarButtonItem) {
         shapeRecognition = !shapeRecognition
         print("shape recognition = ", shapeRecognition)
+        mode = .DRAWING
     }
 
     func colourChosen(_ chosenColour: UIColor) {

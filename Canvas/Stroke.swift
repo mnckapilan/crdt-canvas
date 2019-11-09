@@ -198,7 +198,7 @@ class Stroke: Codable {
             path.lineWidth = 3
             
             for segment in segments {
-                print(segment.start, " ", segment.end)
+//                print(segment.start, " ", segment.end)
                 var s = 0
                 
                 if segment.start > segment.end {
