@@ -189,10 +189,11 @@ class DrawView: UIView {
     }
     
     func isRectangle(_ points: [Point?]) -> Bool {
-        
         var i = 0
         var sides : [[Point?]] = []
         for _ in (1...4) {
+            // maybe try arbitrarily splitting the list of points into 4 sets and then removing points from the end of the set until it forms a striahgt line?
+            
             var curSegment : [Point?] = [points[i]]
 
             while(isStraightLine(curSegment)) {
@@ -204,6 +205,14 @@ class DrawView: UIView {
             }
             
             sides.append(curSegment)
+        }
+        
+        print(sides)
+        print("Num points vs num points we looped through", points.count, i)
+        
+        // Haven't got 4 sides
+        if (i < points.count - 10) {
+            return false
         }
         
         var gradients : [CGFloat] = []
