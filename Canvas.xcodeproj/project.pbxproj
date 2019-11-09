@@ -124,7 +124,7 @@
 			buildPhases = (
 				E0BE81F32350C3A100D93BF1 /* Sources */,
 				E0BE81F42350C3A100D93BF1 /* Frameworks */,
-				C1B527BC2354F45300DB4DCA /* ShellScript */,
+				C1B527BC2354F45300DB4DCA /* Run Script */,
 				E0BE81F52350C3A100D93BF1 /* Resources */,
 				F453F4887EA3533DB42CCAF4 /* Carthage */,
 				E097F43C237311B900050137 /* ShellScript */,
@@ -187,7 +187,7 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		C1B527BC2354F45300DB4DCA /* ShellScript */ = {
+		C1B527BC2354F45300DB4DCA /* Run Script */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -197,6 +197,7 @@
 			inputPaths = (
 				"$(SRCROOT)/newInputFile",
 			);
+			name = "Run Script";
 			outputFileListPaths = (
 			);
 			outputPaths = (

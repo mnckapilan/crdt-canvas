@@ -34,29 +34,21 @@ class DrawView: UIView {
         return UUID().uuidString
     }
     
-    func lookUpStroke(_ point: Point) -> String {
+    func lookUpStroke(_ point: Point) -> (String, Int) {
         for (str, stroke) in lines {
-            if (stroke.contains(givenPoint: point)) {
-                return str;
+            if let t = stroke.indexOf(givenPoint: point) {
+                return (str, t);
             }
         }
-        return ""
+        return ("", -1)
     }
     
-    func lookUpStroke2(_ point: Point) -> (String, Int)? {
+    func partialRemove(_ point: Point) {
         for (str, stroke) in lines {
             let p = stroke.indexOf(givenPoint: point)
             if let t = p {
-                return (str, t)
+                handleChange(change: Change.partialRemoveStroke(str, t))
             }
-        }
-        return nil
-    }
-
-    func partialRemove(_ point: Point) {
-        let t = lookUpStroke2(point)
-        if let (strokeId, index) = t {
-            handleChange(change: Change.partialRemoveStroke(strokeId, index))
         }
     }
     
@@ -72,10 +64,10 @@ class DrawView: UIView {
             undoStack.append((currentIdentifier, stroke, Stroke.ActionType.add))
             redoStack = []
         case .COMPLETE_REMOVE:
-            let strokeId = lookUpStroke(point)
+            let (strokeId, t) = lookUpStroke(point)
             if (strokeId != "") {
                 let stroke = lines[strokeId]!
-                handleChange(change: Change.removeStroke(strokeId))
+                handleChange(change: Change.removeStroke(strokeId, t))
                 undoStack.append((strokeId, stroke, Stroke.ActionType.remove))
             }
         case .PARTIAL_REMOVE:
@@ -119,12 +111,14 @@ class DrawView: UIView {
         
         if (shapeRecognition) {
             let isStraight = isStraightLine(currentLine.points)
-            let rectangle = isRectangle(currentLine.points)
             if (isStraight) {
-                print("redrawing")
+                print("found straight line")
                 redrawStraightLine(currentIdentifier)
-            } else if (rectangle) {
-                print("found rectangle")
+            } else {
+                let rectangle = isRectangle(currentLine.points)
+                if (rectangle) {
+                    print("found rectangle")
+                }
             }
         }
        
@@ -147,10 +141,11 @@ class DrawView: UIView {
     func redrawStraightLine(_ id: String) {
         let line = lines[id]!
         let count = line.points.count
-        let start = line.points[0]!
-        let end = line.points[count - 1]!
+        let start = line.points[0]
+        let end = line.points[count - 1]
         
-        handleChange(change: Change.removeStroke(id))
+        let (_, t) = lookUpStroke(start)
+        handleChange(change: Change.removeStroke(id, t))
         var new_points = [start, start, end, end]
         
         if (start.cgPoint.x - end.cgPoint.x != 0) {
@@ -169,7 +164,6 @@ class DrawView: UIView {
         handleChange(change: Change.addStroke(stroke, id))
         
         undoStack.append((id, line, Stroke.ActionType.redraw))
-
     }
     
     func isStraightLine(_ points: [Point?]) -> Bool {
@@ -290,14 +284,14 @@ class DrawView: UIView {
     @IBAction func undoLastStroke(_ sender: Any) {
         if let (id, stroke, actionType) = undoStack.popLast() {
             if (actionType == Stroke.ActionType.add) {
-                handleChange(change: Change.removeStroke(id))
+                //handleChange(change: Change.removeStroke(id))
                 redoStack.append((id, lines[id]!, actionType))
             } else if (actionType == Stroke.ActionType.remove) {
                 handleChange(change: Change.addStroke(stroke, id))
                 redoStack.append((id, stroke, actionType))
             } else if (actionType == Stroke.ActionType.redraw) {
                 let s = lines[id]
-                handleChange(change: Change.removeStroke(id))
+//                handleChange(change: Change.removeStroke(id))
                 handleChange(change: Change.addStroke(stroke, id))
                 redoStack.append((id, s!, actionType))
             }
@@ -312,7 +306,7 @@ class DrawView: UIView {
                 undoStack.append((id, stroke, actionType))
             }
             else if (actionType == Stroke.ActionType.remove) {
-                handleChange(change: Change.removeStroke(id))
+                //handleChange(change: Change.removeStroke(id))
                 undoStack.append((id, stroke, actionType))
             } else if (actionType == Stroke.ActionType.redraw) {
                  redrawStraightLine(id)

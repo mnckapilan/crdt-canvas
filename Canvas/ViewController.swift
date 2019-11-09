@@ -61,6 +61,7 @@ class ViewController: UIViewController, MCSessionDelegate, MCBrowserViewControll
                    sessionDetails
         
         sessionDetailsVC.datasourceArray = mcSession.connectedPeers
+        sessionDetailsVC.mainViewController = self
         
 
         // Present the view controller (in a popover).
@@ -91,7 +92,6 @@ class ViewController: UIViewController, MCSessionDelegate, MCBrowserViewControll
         let chosenColour = sender.selectedColor
         drawView.colourChosen(chosenColour)
         colourPicker.tintColor = chosenColour
-
     }
     
 
@@ -159,7 +159,6 @@ class ViewController: UIViewController, MCSessionDelegate, MCBrowserViewControll
     
     @IBAction func disconnectSession() {
         mcSession.disconnect();
-        print("Disconnected");
     }
 }
 

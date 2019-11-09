@@ -26,6 +26,7 @@ export class Automerger {
             //console.log("start");
             var p = doc.strokes[change.identifier].points;
             change.point.forEach(x => p.push(x));
+            doc.strokes[change.identifier].segments[0].end += change.point.length;
             // console.log("end");
           });
         } else if (type === "ADD_STROKE") {
@@ -38,14 +39,41 @@ export class Automerger {
           });
         } else if (type === "REMOVE_STROKE") {
           var nDoc = Automerge.change(cheekyGlobalVariable, "LOL1", doc => {
-            delete doc.strokes[change.identifier];
+            var stroke = doc.strokes[change.identifier];
+            var index = change.index;
+            if (stroke.segments.length == 1) {
+              delete doc.strokes[change.identifier];
+            } else {
+              for (var j = 0; j < stroke.segments.length; j++) {
+                var segment = stroke.segments[j];
+                if (segment.start <= index && index <= segment.end) {
+                  stroke.segments.splice(j, 1);
+                  break;
+                }
+              }
+            }
           });
         } else if (type === "PARTIAL_REMOVE_STROKE") {
           var nDoc = Automerge.change(cheekyGlobalVariable, "LOL1", doc => {
             var stroke = doc.strokes[change.identifier];
-            var endIndex = Math.min(stroke.points.length, change.index + 2);
-            for (var i = change.index; i < endIndex; i++) {
-              stroke.points[i] = null; 
+            var index = change.index;
+            for (var j = 0; j < stroke.segments.length; j++) {
+              var segment = stroke.segments[j];
+              if (segment.start <= index && index <= segment.end) {
+                if (index + 1 < segment.end) {
+                  stroke.segments.push({
+                    start: index + 1,
+                    end: segment.end
+                  });
+                }
+
+                if (segment.start < index - 1) {
+                  segment.end = index - 1;
+                } else {
+                  stroke.segments.splice(j, 1);
+                  j--;
+                }
+              } 
             }
           });
         }
