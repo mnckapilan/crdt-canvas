@@ -114,6 +114,7 @@ class Stroke: Codable {
     var points: [Point]
     var colour: UIColor
     var segments: [Segment]
+    var isLine: Bool
 
     enum ColourCodingKeys: String, CodingKey {
         case red
@@ -126,17 +127,20 @@ class Stroke: Codable {
         case points
         case colour
         case segments
+        case isLine
     }
     
     enum ActionType: String {
         case add
         case remove
+        case redraw
     }
     
     required init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         points = try container.decode([Point].self, forKey: CodingKeys.points)
         segments = try container.decode([Segment].self, forKey: CodingKeys.segments)
+        isLine = try container.decode(Bool.self, forKey: CodingKeys.isLine)
         
         let nested = try container.nestedContainer(keyedBy: ColourCodingKeys.self, forKey: CodingKeys.colour)
         let red = try nested.decode(CGFloat.self, forKey: ColourCodingKeys.red)
@@ -146,16 +150,18 @@ class Stroke: Codable {
         colour = UIColor(red: red, green: green, blue: blue, alpha: alpha)
     }
     
-    init(points: [Point], colour: UIColor) {
+    init(points: [Point], colour: UIColor, isLine: Bool = false) {
         self.points = points
         self.colour = colour
         self.segments = [Segment(0, self.points.count - 1)]
+        self.isLine = isLine
     }
     
     func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(points, forKey: CodingKeys.points)
         try container.encode(segments, forKey: CodingKeys.segments)
+        try container.encode(isLine, forKey: CodingKeys.isLine)
         
         var nested = container.nestedContainer(keyedBy: ColourCodingKeys.self, forKey: CodingKeys.colour)
         
@@ -190,49 +196,58 @@ class Stroke: Codable {
     
     var cgPath: CGPath {
         get {
-            var pPrevPoint: Point!
-            var prevPoint: Point!
-            let path = UIBezierPath.init()
-            path.lineCapStyle = CGLineCap.round
-            path.lineWidth = 3
-            
-            for segment in segments {
-                print(segment.start, " ", segment.end)
-                var s = 0
+            if (isLine) {
+                let path = UIBezierPath.init()
+                path.lineCapStyle = CGLineCap.round
+                path.lineWidth = 3
+                path.move(to: points[0].cgPoint)
+                path.addLine(to: points[1].cgPoint)
+                return path.cgPath
+            } else {
+                var pPrevPoint: Point!
+                var prevPoint: Point!
+                let path = UIBezierPath.init()
+                path.lineCapStyle = CGLineCap.round
+                path.lineWidth = 3
                 
-                if segment.start > segment.end {
-                    continue
-                }
-                
-                for i in segment.start...segment.end {
-                    let point = points[i]
+                for segment in segments {
+    //                print(segment.start, " ", segment.end)
+                    var s = 0
                     
-                    if s == 0 {
-                        path.move(to: point.cgPoint)
-                    } else if s >= 2 {
-                        let cp1 = Point(
-                            x: (2 * pPrevPoint.x + prevPoint.x) / 3,
-                            y: (2 * pPrevPoint.y + prevPoint.y) / 3
-                        )
-                        let cp2 = Point(
-                            x: (pPrevPoint.x + 2 * prevPoint.x) / 3,
-                            y: (pPrevPoint.y + 2 * prevPoint.y) / 3
-                        )
-                        let end = Point(
-                            x: (pPrevPoint.x + 4 * prevPoint.x + point.x) / 6,
-                            y: (pPrevPoint.y + 4 * prevPoint.y + point.y) / 6
-                        )
-                        path.addCurve(to: end.cgPoint, controlPoint1: cp1.cgPoint, controlPoint2: cp2.cgPoint)
+                    if segment.start > segment.end {
+                        continue
                     }
                     
-                    pPrevPoint = prevPoint
-                    prevPoint = point
-                    s += 1
+                    for i in segment.start...segment.end {
+                        let point = points[i]
+                        
+                        if s == 0 {
+                            path.move(to: point.cgPoint)
+                        } else if s >= 2 {
+                            let cp1 = Point(
+                                x: (2 * pPrevPoint.x + prevPoint.x) / 3,
+                                y: (2 * pPrevPoint.y + prevPoint.y) / 3
+                            )
+                            let cp2 = Point(
+                                x: (pPrevPoint.x + 2 * prevPoint.x) / 3,
+                                y: (pPrevPoint.y + 2 * prevPoint.y) / 3
+                            )
+                            let end = Point(
+                                x: (pPrevPoint.x + 4 * prevPoint.x + point.x) / 6,
+                                y: (pPrevPoint.y + 4 * prevPoint.y + point.y) / 6
+                            )
+                            path.addCurve(to: end.cgPoint, controlPoint1: cp1.cgPoint, controlPoint2: cp2.cgPoint)
+                        }
+                        
+                        pPrevPoint = prevPoint
+                        prevPoint = point
+                        s += 1
 
+                    }
                 }
+                
+                return path.cgPath
             }
-            
-            return path.cgPath
-        }
+            }
     }
 }

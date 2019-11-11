@@ -14,6 +14,7 @@ class ViewController: UIViewController, MCSessionDelegate, MCBrowserViewControll
     @IBOutlet var drawView: DrawView!
     @IBOutlet var eraser: UIBarButtonItem!
     @IBOutlet var sessionDetails: UIBarButtonItem!
+    @IBOutlet var shapeRecognition: UIBarButtonItem!
     @IBOutlet var colourPicker: UIBarButtonItem!
     
     var peerID: MCPeerID!
