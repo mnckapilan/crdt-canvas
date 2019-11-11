@@ -80,6 +80,7 @@ enum Mode {
     case DRAWING
     case COMPLETE_REMOVE
     case PARTIAL_REMOVE
+    case SHAPE_RECOGNITION
 }
 
 class Segment: Codable {
