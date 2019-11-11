@@ -141,31 +141,12 @@ class DrawView: UIView {
         let start = line.points[0]
         let end = line.points[count - 1]
         
-        let (_, t) = lookUpStroke(start)
-        handleChange(change: Change.removeStroke(id, t))
-        var new_points = [start, end, end, end]
-        
-        if (start.cgPoint.x - end.cgPoint.x != 0) {
-            let grad = calc_gradient(line.points)
-            let nextX1 = (start.cgPoint.x + end.cgPoint.x) / 3
-            let nextX2 = (start.cgPoint.x + end.cgPoint.x) * 2 / 3
-            let nextY1 = (grad * (nextX1 - start.cgPoint.x)) + start.cgPoint.y
-            let nextY2 = (grad * (nextX2 - start.cgPoint.x)) + start.cgPoint.y
-            let nextPt1 = Point(x: Float(nextX1), y: Float(nextY1))
-            let nextPt2 = Point(x: Float(nextX2), y: Float(nextY2))
-            
-            new_points = [start, nextPt1, nextPt2, end]
-        } else {
-            let nextY1 = (start.cgPoint.y + end.cgPoint.y) / 3
-            let nextY2 = (start.cgPoint.y + end.cgPoint.y) * 2 / 3
-            let nextPt1 = Point(x: Float(start.cgPoint.x), y: Float(nextY1))
-            let nextPt2 = Point(x: Float(start.cgPoint.x), y: Float(nextY2))
-            new_points = [start, nextPt1, nextPt2, end]
-        }
+        handleChange(change: Change.removeStroke(id, 0))
 
-        let stroke = Stroke(points: new_points, colour: line.colour)
-        handleChange(change: Change.addStroke(stroke, id))
-        undoStack.append((id, line, Stroke.ActionType.redraw))
+        let stroke = Stroke(points: [start, end], colour: line.colour, isLine: true)
+        let newId = getIdentifier()
+        handleChange(change: Change.addStroke(stroke, newId))
+        undoStack.append((newId, line, Stroke.ActionType.redraw))
     }
     
     func isStraightLine(_ points: [Point?]) -> Bool {
@@ -211,7 +192,7 @@ class DrawView: UIView {
             return false
         }
         
-        var gradients : [CGFloat] = []
+        var gradients : [Float] = []
         for side in sides {
             gradients.append(calc_gradient(side))
         }
@@ -224,7 +205,7 @@ class DrawView: UIView {
         return false
     }
     
-    func is_perpendicular(_ grad1: CGFloat, _ grad2: CGFloat) -> Bool {
+    func is_perpendicular(_ grad1: Float, _ grad2: Float) -> Bool {
         let mult = abs(grad1 * grad2)
         print(mult)
         
@@ -234,12 +215,12 @@ class DrawView: UIView {
         return false
     }
     
-    func calc_gradient(_ points: [Point?]) -> CGFloat {
+    func calc_gradient(_ points: [Point?]) -> Float {
         let startPt = points[0]!.cgPoint
         let endPt = points[points.count - 1]!.cgPoint
         
         let grad = (startPt.y - endPt.y) / (startPt.x - endPt.x)
-        return grad
+        return Float(grad)
     }
     
     func isInLine(_ coords: CGPoint, _ startPt: CGPoint, _ endPt: CGPoint) -> Bool {
