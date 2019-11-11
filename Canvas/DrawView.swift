@@ -16,8 +16,7 @@ class DrawView: UIView {
     var drawColour = UIColor.white
     var currentIdentifier: String!
     var pointsToWrite: [Point] = []
-    var c = 0
-    
+    var shapeRecognition = false
     
     var undoStack: [(String, Stroke, Stroke.ActionType)] = []
     var redoStack: [(String, Stroke, Stroke.ActionType)] = []
@@ -102,13 +101,26 @@ class DrawView: UIView {
         case .COMPLETE_REMOVE:
             break
         }
-        
     }
     
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
+        let currentLine = lines[currentIdentifier]!
+        
+        if (shapeRecognition) {
+            let isStraight = isStraightLine(currentLine.points)
+            if (isStraight) {
+                print("found straight line")
+                redrawStraightLine(currentIdentifier)
+            } else {
+                let rectangle = isRectangle(currentLine.points)
+                if (rectangle) {
+                    print("found rectangle")
+                }
+            }
+        }
+       
         currentIdentifier = nil
         pointsToWrite = []
-        c = 0
     }
     
     override func draw(_ rect: CGRect) {
@@ -123,6 +135,110 @@ class DrawView: UIView {
         }
     }
     
+    func redrawStraightLine(_ id: String) {
+        let line = lines[id]!
+        let count = line.points.count
+        let start = line.points[0]
+        let end = line.points[count - 1]
+        
+        handleChange(change: Change.removeStroke(id, 0))
+
+        let stroke = Stroke(points: [start, end], colour: line.colour, isLine: true)
+        let newId = getIdentifier()
+        handleChange(change: Change.addStroke(stroke, newId))
+        undoStack.append((newId, line, Stroke.ActionType.redraw))
+    }
+    
+    func isStraightLine(_ points: [Point?]) -> Bool {
+        let startPt = points[0]!.cgPoint
+        let endPt = points[points.count - 1]!.cgPoint
+        
+        var almostStraightLine = true
+        for point in points {
+            let res = isInLine(point!.cgPoint, startPt, endPt)
+            if (!res) {
+                almostStraightLine = res
+                break
+            }
+        }
+        
+        return almostStraightLine
+    }
+    
+    func isRectangle(_ points: [Point?]) -> Bool {
+        var i = 0
+        var sides : [[Point?]] = []
+        for _ in (1...4) {
+            // maybe try arbitrarily splitting the list of points into 4 sets and then removing points from the end of the set until it forms a striahgt line?
+            
+            var curSegment : [Point?] = [points[i]]
+
+            while(isStraightLine(curSegment)) {
+                if (i >= points.count - 1) {
+                    break
+                }
+                i = i + 1
+                curSegment.append(points[i])
+            }
+            
+            sides.append(curSegment)
+        }
+        
+        print(sides)
+        print("Num points vs num points we looped through", points.count, i)
+        
+        // Haven't got 4 sides
+        if (i < points.count - 10) {
+            return false
+        }
+        
+        var gradients : [Float] = []
+        for side in sides {
+            gradients.append(calc_gradient(side))
+        }
+        print(gradients)
+        
+        if (is_perpendicular(gradients[0], gradients[1]) && is_perpendicular(gradients[2], gradients[3])) {
+            return true
+        }
+        
+        return false
+    }
+    
+    func is_perpendicular(_ grad1: Float, _ grad2: Float) -> Bool {
+        let mult = abs(grad1 * grad2)
+        print(mult)
+        
+        if (mult > 0.6 && mult < 1.4) {
+            return true
+        }
+        return false
+    }
+    
+    func calc_gradient(_ points: [Point?]) -> Float {
+        let startPt = points[0]!.cgPoint
+        let endPt = points[points.count - 1]!.cgPoint
+        
+        let grad = (startPt.y - endPt.y) / (startPt.x - endPt.x)
+        return Float(grad)
+    }
+    
+    func isInLine(_ coords: CGPoint, _ startPt: CGPoint, _ endPt: CGPoint) -> Bool {
+        if (endPt.x <= startPt.x + 25 && endPt.x >= startPt.x - 25) {
+            let verticalLineEqn = startPt.x
+            return coords.x <= verticalLineEqn + 25 && coords.x >= verticalLineEqn - 25
+        } else {
+            let grad = (startPt.y - endPt.y) / (startPt.x - endPt.x)
+            let yOnLineForGivenX = (grad * (coords.x - startPt.x)) + startPt.y
+            return coords.y <= yOnLineForGivenX + 25 && coords.y >= yOnLineForGivenX - 25
+        }
+    }
+    
+    @IBAction func toggleShapeRecognition(_ sender: UIBarButtonItem) {
+        shapeRecognition = !shapeRecognition
+        print("shape recognition = ", shapeRecognition)
+        mode = .DRAWING
+    }
 
     func colourChosen(_ chosenColour: UIColor) {
         drawColour = chosenColour
@@ -140,9 +256,10 @@ class DrawView: UIView {
       }
     
     @IBAction func clearCanvas(_ sender: Any) {
-        // TODO FIX THIS
+        // TODO: be able to undo a clear
         lines = [:]
         undoStack = []
+        redoStack = []
         handleChange(change: Change.clearCanvas)
         self.setNeedsDisplay()
         
@@ -156,6 +273,11 @@ class DrawView: UIView {
             } else if (actionType == Stroke.ActionType.remove) {
                 handleChange(change: Change.addStroke(stroke, id))
                 redoStack.append((id, stroke, actionType))
+            } else if (actionType == Stroke.ActionType.redraw) {
+                let s = lines[id]
+//                handleChange(change: Change.removeStroke(id))
+                handleChange(change: Change.addStroke(stroke, id))
+                redoStack.append((id, s!, actionType))
             }
             
         }
@@ -166,11 +288,12 @@ class DrawView: UIView {
             if (actionType == Stroke.ActionType.add) {
                 handleChange(change: Change.addStroke(stroke, id))
                 undoStack.append((id, stroke, actionType))
-                
             }
             else if (actionType == Stroke.ActionType.remove) {
                 //handleChange(change: Change.removeStroke(id))
                 undoStack.append((id, stroke, actionType))
+            } else if (actionType == Stroke.ActionType.redraw) {
+                 redrawStraightLine(id)
             }
         }
     }
