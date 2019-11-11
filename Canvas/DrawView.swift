@@ -118,6 +118,9 @@ class DrawView: UIView {
                 }
             }
         }
+        
+        print("output from corner detection:")
+        print(attemptToBunchLines(currentLine.points))
        
         currentIdentifier = nil
         pointsToWrite = []
@@ -149,6 +152,7 @@ class DrawView: UIView {
         undoStack.append((newId, line, Stroke.ActionType.redraw))
     }
     
+    
     func isStraightLine(_ points: [Point?]) -> Bool {
         let startPt = points[0]!.cgPoint
         let endPt = points[points.count - 1]!.cgPoint
@@ -163,6 +167,35 @@ class DrawView: UIView {
         }
         
         return almostStraightLine
+    }
+    
+    func atan3(_ a: Point, _ b: Point) -> Float {
+        return atan2(a.y - b.y, a.x - b.x)
+    }
+    
+    func attemptToBunchLines(_ points: [Point]) -> [Int] {
+        var retValue: [Int] = []
+        
+        let m = 10
+        
+        var initialAngle: Float? = nil
+        var i = 0
+        while i < points.count - m {
+            let angle = atan3(points[i], points[i + m])
+            if let initialAngleNotNil = initialAngle {
+                if abs(initialAngleNotNil - angle) > 0.5 {
+                    retValue.append(i)
+                    initialAngle = atan3(points[i + m - 1], points[i + m])
+                    i += m
+                    continue
+                }
+            } else {
+                initialAngle = angle
+            }
+            i += 1
+        }
+            
+        return retValue
     }
     
     func isRectangle(_ points: [Point?]) -> Bool {
