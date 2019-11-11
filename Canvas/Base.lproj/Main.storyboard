@@ -104,6 +104,9 @@
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Nsp-Ud-L6L" customClass="DrawView" customModule="Canvas" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="140.66666666666669" width="414" height="672.33333333333326"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                                <connections>
+                                    <outlet property="shapeRecognitionButton" destination="F31-i6-jGh" id="64p-AC-ad2"/>
+                                </connections>
                             </view>
                             <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translucent="NO" translatesAutoresizingMaskIntoConstraints="NO" id="aDU-cP-kvP">
                                 <rect key="frame" x="0.0" y="44" width="414" height="44"/>
