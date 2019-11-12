@@ -145,7 +145,6 @@ class DrawView: UIView {
                 let (rectangle, corners) = isRectangle(currentLine.points)
                 if (rectangle) {
                     print("found rectangle")
-                    print(corners)
                     redrawRectangle(currentIdentifier, corners)
                 }
             }
@@ -189,13 +188,26 @@ class DrawView: UIView {
     func redrawRectangle(_ id: String, _ points: [Point]) {
         let line = lines[id]!
         
+        print("corners: ", points)
         handleChange(change: Change.removeStroke(id, 0))
-        let stroke = Stroke(points: points, colour: line.colour, isShape: true)
+        // User drew horizontal line first
+        let x1 = points[0].x
+        let y1 = points[0].y
+        let x2 = points[2].x
+        let y2 = points[2].y
+        var corners = [points[0], Point(x: x2, y: y1), Point(x: x2, y: y2), Point(x: x1, y: y2)]
+        
+        if (points[0].x <= points[1].x + 1 && points[0].x >= points[1].x - 1) {
+            // User drew a vertical line first
+            corners = [points[0], Point(x: x1, y: y2), Point(x: x2, y: y2), Point(x: x2, y: y1)]
+        }
+        
+
+        let stroke = Stroke(points: corners, colour: line.colour, isShape: true)
         print("quad to be redrawn:", stroke.points)
         currentIdentifier = getIdentifier()
         handleChange(change: Change.addStroke(stroke, currentIdentifier))
     }
-    
     
     func isStraightLine(_ points: [Point?]) -> Bool {
         let startPt = points[0]!.cgPoint
@@ -254,7 +266,8 @@ class DrawView: UIView {
             print("Too many corners")
             return (false, [])
         }
-        var rectanglePoints = [points[0]]
+//        var rectanglePoints = [points[0]]
+        var rectanglePoints : [Point?] = []
         for i in 0...corners.count - 2 {
             let side = [points[i], points[i + 1]]
             if (!isStraightLine(side)) {
