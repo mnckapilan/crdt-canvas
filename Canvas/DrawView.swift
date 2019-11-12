@@ -142,9 +142,11 @@ class DrawView: UIView {
                 print("found straight line")
                 redrawStraightLine(currentIdentifier)
             } else {
-                let rectangle = isRectangle(currentLine.points)
+                let (rectangle, corners) = isRectangle(currentLine.points)
                 if (rectangle) {
                     print("found rectangle")
+                    print(corners)
+                    redrawRectangle(currentIdentifier, corners)
                 }
             }
         }
@@ -177,11 +179,19 @@ class DrawView: UIView {
         
         handleChange(change: Change.removeStroke(id, 0))
 
-        let stroke = Stroke(points: [start, end], colour: line.colour, isLine: true)
-        let newId = getIdentifier()
-        handleChange(change: Change.addStroke(stroke, newId))
-        undoStack.append((newId, line, Stroke.ActionType.redraw))
+        let stroke = Stroke(points: [start, end], colour: line.colour, isShape: true)
+        handleChange(change: Change.addStroke(stroke, id))
+        undoStack.append((id, line, Stroke.ActionType.redraw))
     }
+    
+    func redrawRectangle(_ id: String, _ points: [Point]) {
+        let line = lines[id]!
+        
+        handleChange(change: Change.removeStroke(id, 0))
+        let stroke = Stroke(points: points, colour: line.colour, isShape: true)
+        handleChange(change: Change.addStroke(stroke, id))
+    }
+    
     
     func isStraightLine(_ points: [Point?]) -> Bool {
         let startPt = points[0]!.cgPoint
@@ -199,54 +209,57 @@ class DrawView: UIView {
         return almostStraightLine
     }
     
-    func isRectangle(_ points: [Point?]) -> Bool {
-        var i = 0
-        var sides : [[Point?]] = []
-        for _ in (1...4) {
-            // maybe try arbitrarily splitting the list of points into 4 sets and then removing points from the end of the set until it forms a striahgt line?
-            
-            var curSegment : [Point?] = [points[i]]
-
-            while(isStraightLine(curSegment)) {
-                if (i >= points.count - 1) {
-                    break
-                }
-                i = i + 1
-                curSegment.append(points[i])
-            }
-            
-            sides.append(curSegment)
-        }
-        
-        print(sides)
-        print("Num points vs num points we looped through", points.count, i)
-        
-        // Haven't got 4 sides
-        if (i < points.count - 10) {
-            return false
-        }
-        
-        var gradients : [Float] = []
-        for side in sides {
-            gradients.append(calc_gradient(side))
-        }
-        print(gradients)
-        
-        if (is_perpendicular(gradients[0], gradients[1]) && is_perpendicular(gradients[2], gradients[3])) {
-            return true
-        }
-        
-        return false
+    func atan3(_ a: Point, _ b: Point) -> Float {
+        return atan2(a.y - b.y, a.x - b.x)
     }
     
-    func is_perpendicular(_ grad1: Float, _ grad2: Float) -> Bool {
-        let mult = abs(grad1 * grad2)
-        print(mult)
+    func attemptToBunchLines(_ points: [Point]) -> [Int] {
+        var retValue: [Int] = []
         
-        if (mult > 0.6 && mult < 1.4) {
-            return true
+        let m = 10
+        
+        var initialAngle: Float? = nil
+        var start = 0
+        var i = 0
+        retValue.append(0)
+        while i < points.count - m {
+            let angle = atan3(points[start], points[i + m])
+            if let initialAngleNotNil = initialAngle {
+                if abs(initialAngleNotNil - angle) > 0.4 {
+                    retValue.append(i)
+                    initialAngle = atan3(points[i + m - 1], points[i + m])
+                    i += m
+                    start = i
+                    continue
+                }
+            } else {
+                initialAngle = angle
+            }
+            i += 1
         }
-        return false
+        retValue.append(0)
+        
+        print("output from corner detection:")
+        print(retValue)
+        return retValue
+    }
+    
+    func isRectangle(_ points: [Point?]) -> (Bool, [Point]) {
+        let corners = attemptToBunchLines(points as! [Point])
+        if (corners.count != 5) {
+            print("Too many corners")
+            return (false, [])
+        }
+        var rectanglePoints = [points[0]]
+        for i in 0...corners.count - 2 {
+            let side = [points[i], points[i + 1]]
+            if (!isStraightLine(side)) {
+                print("side is not a straight line")
+                return (false, [])
+            }
+            rectanglePoints.append(points[corners[i]])
+        }
+        return (true, rectanglePoints as! [Point])
     }
     
     func calc_gradient(_ points: [Point?]) -> Float {
