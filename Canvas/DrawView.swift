@@ -151,7 +151,7 @@ class DrawView: UIView {
             }
         }
         
-        if (mode == .PARTIAL_REMOVE){
+        if (mode == .PARTIAL_REMOVE) {
             tracker.isHidden = true
         }
        
@@ -176,24 +176,24 @@ class DrawView: UIView {
         let count = line.points.count
         let start = line.points[0]
         let end = line.points[count - 1]
-        
+        print("removing line...")
         handleChange(change: Change.removeStroke(id, 0))
-
-        let stroke = Stroke(points: [start, end], colour: line.colour, isShape: true, sides: 1)
-//        let newId = getIdentifier()
-        handleChange(change: Change.addStroke(stroke, id))
-        undoStack.append((id, line, Stroke.ActionType.redraw))
+        print("removed line ")
+        let stroke = Stroke(points: [start, end], colour: line.colour, isShape: true)
+        print("stroke to be redrawn:", stroke.points)
+        currentIdentifier = getIdentifier()
+        handleChange(change: Change.addStroke(stroke, currentIdentifier))
+        undoStack.append((currentIdentifier, line, Stroke.ActionType.redraw))
     }
     
     func redrawRectangle(_ id: String, _ points: [Point]) {
         let line = lines[id]!
         
-        print("remove ugly one")
         handleChange(change: Change.removeStroke(id, 0))
-        print("draw new rectangle")
-        let stroke = Stroke(points: points, colour: line.colour, isShape: true, sides: 4)
-//        let newId = getIdentifier()
-        handleChange(change: Change.addStroke(stroke, id))
+        let stroke = Stroke(points: points, colour: line.colour, isShape: true)
+        print("quad to be redrawn:", stroke.points)
+        currentIdentifier = getIdentifier()
+        handleChange(change: Change.addStroke(stroke, currentIdentifier))
     }
     
     
