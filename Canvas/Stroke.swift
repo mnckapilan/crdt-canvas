@@ -114,7 +114,8 @@ class Stroke: Codable {
     var points: [Point]
     var colour: UIColor
     var segments: [Segment]
-    var isLine: Bool
+    var isShape: Bool
+    var sides: Int
 
     enum ColourCodingKeys: String, CodingKey {
         case red
@@ -127,7 +128,8 @@ class Stroke: Codable {
         case points
         case colour
         case segments
-        case isLine
+        case isShape
+        case sides
     }
     
     enum ActionType: String {
@@ -140,7 +142,8 @@ class Stroke: Codable {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         points = try container.decode([Point].self, forKey: CodingKeys.points)
         segments = try container.decode([Segment].self, forKey: CodingKeys.segments)
-        isLine = try container.decode(Bool.self, forKey: CodingKeys.isLine)
+        isShape = try container.decode(Bool.self, forKey: CodingKeys.isShape)
+        sides = try container.decode(Int.self, forKey: CodingKeys.sides)
         
         let nested = try container.nestedContainer(keyedBy: ColourCodingKeys.self, forKey: CodingKeys.colour)
         let red = try nested.decode(CGFloat.self, forKey: ColourCodingKeys.red)
@@ -150,18 +153,20 @@ class Stroke: Codable {
         colour = UIColor(red: red, green: green, blue: blue, alpha: alpha)
     }
     
-    init(points: [Point], colour: UIColor, isLine: Bool = false) {
+    init(points: [Point], colour: UIColor, isShape: Bool = false, sides: Int = -1) {
         self.points = points
         self.colour = colour
         self.segments = [Segment(0, self.points.count - 1)]
-        self.isLine = isLine
+        self.isShape = isShape
+        self.sides = sides
     }
     
     func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(points, forKey: CodingKeys.points)
         try container.encode(segments, forKey: CodingKeys.segments)
-        try container.encode(isLine, forKey: CodingKeys.isLine)
+        try container.encode(isShape, forKey: CodingKeys.isShape)
+        try container.encode(sides, forKey: CodingKeys.sides)
         
         var nested = container.nestedContainer(keyedBy: ColourCodingKeys.self, forKey: CodingKeys.colour)
         
@@ -196,13 +201,19 @@ class Stroke: Codable {
     
     var cgPath: CGPath {
         get {
-            if (isLine) {
+            if (isShape) {
                 let path = UIBezierPath.init()
                 path.lineCapStyle = CGLineCap.round
                 path.lineWidth = 3
                 path.move(to: points[0].cgPoint)
-                path.addLine(to: points[1].cgPoint)
+                for i in 1...points.count - 1 {
+                    print(points[i])
+                    path.addLine(to: points[i].cgPoint)
+                }
+                path.addLine(to: points[0].cgPoint)
+                
                 return path.cgPath
+
             } else {
                 var pPrevPoint: Point!
                 var prevPoint: Point!
