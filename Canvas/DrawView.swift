@@ -17,6 +17,7 @@ class DrawView: UIView {
     var currentIdentifier: String!
     var pointsToWrite: [Point] = []
     var shapeRecognition = false
+    @IBOutlet var tracker: UIImageView!
     
     @IBOutlet var shapeRecognitionButton: UIBarButtonItem!
     
@@ -26,6 +27,8 @@ class DrawView: UIView {
     var mode = Mode.DRAWING
     
     public var mcSession: MCSession?
+
+    
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
@@ -74,6 +77,13 @@ class DrawView: UIView {
             }
         case .PARTIAL_REMOVE:
             partialRemove(point)
+            tracker.isHidden = false
+            tracker.layer.borderWidth = 1
+            tracker.layer.masksToBounds = false
+            tracker.layer.borderColor = UIColor.black.cgColor
+            tracker.layer.cornerRadius = tracker.frame.height/2
+            tracker.clipsToBounds = true
+            tracker.center = point.cgPoint
         case .SHAPE_RECOGNITION:
             let stroke = Stroke(points: [point], colour: drawColour)
             currentIdentifier = getIdentifier()
@@ -107,6 +117,7 @@ class DrawView: UIView {
     
         case .PARTIAL_REMOVE:
             partialRemove(point)
+            tracker.center = point.cgPoint
         case .COMPLETE_REMOVE:
             break
         case .SHAPE_RECOGNITION:
@@ -136,6 +147,10 @@ class DrawView: UIView {
                     print("found rectangle")
                 }
             }
+        }
+        
+        if (mode == .PARTIAL_REMOVE){
+            tracker.isHidden = true
         }
        
         currentIdentifier = nil
