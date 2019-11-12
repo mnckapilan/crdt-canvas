@@ -116,6 +116,7 @@ class Stroke: Codable {
     var colour: UIColor
     var segments: [Segment]
     var isLine: Bool
+    var translated: [(Point, Point, Point)] = []
 
     enum ColourCodingKeys: String, CodingKey {
         case red
@@ -195,6 +196,52 @@ class Stroke: Codable {
         return nil;
     }
     
+    private func calculateQuad(t: Float, p1: Point, p2: Point, p3: Point) -> Point {
+        let mt = 1 - t
+        let mt2 = mt*mt
+        let t2 = t*t
+
+        let a = mt2
+        let b = mt*t*2
+        let c = t2
+
+        let x = a*p1.x + b*p2.x + c*p3.x
+        let y = a*p1.y + b*p2.y + c*p3.y
+        return Point(x: x, y: y)
+    }
+    
+    func computeTranslated() {
+        if (translated.count != 0) {
+            return
+        }
+        
+        if points.count < 2 {
+            return
+        }
+        
+        for i in 2...points.count - 1 {
+            let pPrevPoint = points[i - 2]
+            let prevPoint = points[i - 1]
+            let point = points[i]
+            
+            let cp1 = Point(
+                x: (2 * pPrevPoint.x + prevPoint.x) / 3,
+                y: (2 * pPrevPoint.y + prevPoint.y) / 3
+            )
+            let cp2 = Point(
+                x: (pPrevPoint.x + 2 * prevPoint.x) / 3,
+                y: (pPrevPoint.y + 2 * prevPoint.y) / 3
+            )
+            let end = Point(
+                x: (pPrevPoint.x + 4 * prevPoint.x + point.x) / 6,
+                y: (pPrevPoint.y + 4 * prevPoint.y + point.y) / 6
+            )
+            
+            translated.append((cp1, cp2, end))
+        }
+    }
+
+    
     var cgPath: CGPath {
         get {
             if (isLine) {
@@ -211,15 +258,24 @@ class Stroke: Codable {
                 path.lineCapStyle = CGLineCap.round
                 path.lineWidth = 3
                 
+                computeTranslated()
+                
                 for segment in segments {
     //                print(segment.start, " ", segment.end)
                     var s = 0
                     
-                    if segment.start > segment.end {
+                    if segment.start + 2 > segment.end {
                         continue
                     }
                     
-                    for i in segment.start...segment.end {
+                    path.move(to: points[segment.start].cgPoint)
+                    
+                    for i in segment.start...segment.end - 2 {
+                        let (cp1, cp2, end) = translated[i]
+                        path.addCurve(to: end.cgPoint, controlPoint1: cp1.cgPoint, controlPoint2: cp2.cgPoint)
+                    }
+                                        
+                    /*for i in segment.start...segment.end {
                         let point = points[i]
                         
                         if s == 0 {
@@ -244,7 +300,7 @@ class Stroke: Codable {
                         prevPoint = point
                         s += 1
 
-                    }
+                    }*/
                 }
                 
                 return path.cgPath
