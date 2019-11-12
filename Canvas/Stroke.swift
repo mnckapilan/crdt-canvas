@@ -115,7 +115,6 @@ class Stroke: Codable {
     var colour: UIColor
     var segments: [Segment]
     var isShape: Bool
-    var sides: Int
 
     enum ColourCodingKeys: String, CodingKey {
         case red
@@ -129,7 +128,6 @@ class Stroke: Codable {
         case colour
         case segments
         case isShape
-        case sides
     }
     
     enum ActionType: String {
@@ -143,7 +141,6 @@ class Stroke: Codable {
         points = try container.decode([Point].self, forKey: CodingKeys.points)
         segments = try container.decode([Segment].self, forKey: CodingKeys.segments)
         isShape = try container.decode(Bool.self, forKey: CodingKeys.isShape)
-        sides = try container.decode(Int.self, forKey: CodingKeys.sides)
         
         let nested = try container.nestedContainer(keyedBy: ColourCodingKeys.self, forKey: CodingKeys.colour)
         let red = try nested.decode(CGFloat.self, forKey: ColourCodingKeys.red)
@@ -153,12 +150,11 @@ class Stroke: Codable {
         colour = UIColor(red: red, green: green, blue: blue, alpha: alpha)
     }
     
-    init(points: [Point], colour: UIColor, isShape: Bool = false, sides: Int = -1) {
+    init(points: [Point], colour: UIColor, isShape: Bool = false) {
         self.points = points
         self.colour = colour
         self.segments = [Segment(0, self.points.count - 1)]
         self.isShape = isShape
-        self.sides = sides
     }
     
     func encode(to encoder: Encoder) throws {
@@ -166,7 +162,6 @@ class Stroke: Codable {
         try container.encode(points, forKey: CodingKeys.points)
         try container.encode(segments, forKey: CodingKeys.segments)
         try container.encode(isShape, forKey: CodingKeys.isShape)
-        try container.encode(sides, forKey: CodingKeys.sides)
         
         var nested = container.nestedContainer(keyedBy: ColourCodingKeys.self, forKey: CodingKeys.colour)
         
@@ -207,7 +202,7 @@ class Stroke: Codable {
                 path.lineWidth = 3
                 path.move(to: points[0].cgPoint)
                 for i in 1...points.count - 1 {
-                    print(points[i])
+//                    print(points[i])
                     path.addLine(to: points[i].cgPoint)
                 }
                 path.addLine(to: points[0].cgPoint)

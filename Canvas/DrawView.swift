@@ -145,8 +145,7 @@ class DrawView: UIView {
         
         handleChange(change: Change.removeStroke(id, 0))
 
-        let stroke = Stroke(points: [start, end], colour: line.colour, isShape: true, sides: 1)
-//        let newId = getIdentifier()
+        let stroke = Stroke(points: [start, end], colour: line.colour, isShape: true)
         handleChange(change: Change.addStroke(stroke, id))
         undoStack.append((id, line, Stroke.ActionType.redraw))
     }
@@ -154,11 +153,8 @@ class DrawView: UIView {
     func redrawRectangle(_ id: String, _ points: [Point]) {
         let line = lines[id]!
         
-        print("remove ugly one")
         handleChange(change: Change.removeStroke(id, 0))
-        print("draw new rectangle")
-        let stroke = Stroke(points: points, colour: line.colour, isShape: true, sides: 4)
-//        let newId = getIdentifier()
+        let stroke = Stroke(points: points, colour: line.colour, isShape: true)
         handleChange(change: Change.addStroke(stroke, id))
     }
     
