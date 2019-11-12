@@ -203,7 +203,6 @@ class Stroke: Codable {
                 path.lineWidth = 3
                 path.move(to: points[0].cgPoint)
                 for i in 1...points.count - 1 {
-//                    print(points[i])
                     path.addLine(to: points[i].cgPoint)
                 }
                 path.addLine(to: points[0].cgPoint)
@@ -218,7 +217,6 @@ class Stroke: Codable {
                 path.lineWidth = 3
                 
                 for segment in segments {
-    //                print(segment.start, " ", segment.end)
                     var s = 0
                     
                     if segment.start > segment.end {
