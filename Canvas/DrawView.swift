@@ -17,6 +17,9 @@ class DrawView: UIView {
     var currentIdentifier: String!
     var pointsToWrite: [Point] = []
     var shapeRecognition = false
+    @IBOutlet var tracker: UIImageView!
+    
+    @IBOutlet var shapeRecognitionButton: UIBarButtonItem!
     
     var undoStack: [(String, Stroke, Stroke.ActionType)] = []
     var redoStack: [(String, Stroke, Stroke.ActionType)] = []
@@ -24,6 +27,8 @@ class DrawView: UIView {
     var mode = Mode.DRAWING
     
     public var mcSession: MCSession?
+
+    
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
@@ -72,6 +77,20 @@ class DrawView: UIView {
             }
         case .PARTIAL_REMOVE:
             partialRemove(point)
+            tracker.isHidden = false
+            tracker.layer.borderWidth = 1
+            tracker.layer.masksToBounds = false
+            tracker.layer.borderColor = UIColor.black.cgColor
+            tracker.layer.cornerRadius = tracker.frame.height/2
+            tracker.clipsToBounds = true
+            tracker.center = point.cgPoint
+        case .SHAPE_RECOGNITION:
+            let stroke = Stroke(points: [point], colour: drawColour)
+            currentIdentifier = getIdentifier()
+            pointsToWrite = [point]
+            handleChange(change: Change.addStroke(stroke, currentIdentifier))
+            undoStack.append((currentIdentifier, stroke, Stroke.ActionType.add))
+            redoStack = []
         }
     }
     
@@ -98,15 +117,26 @@ class DrawView: UIView {
     
         case .PARTIAL_REMOVE:
             partialRemove(point)
+            tracker.center = point.cgPoint
         case .COMPLETE_REMOVE:
             break
+        case .SHAPE_RECOGNITION:
+            if pointsToWrite.count > 0 && pointsToWrite.last! != point {
+                pointsToWrite.append(point)
+            }
+            if pointsToWrite.count >= 5 {
+                pointsToWrite.remove(at: 0)
+                handleChange(change: Change.addPoint(pointsToWrite, currentIdentifier))
+                pointsToWrite = [pointsToWrite.last!]
+            }
+            
         }
     }
     
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
-        let currentLine = lines[currentIdentifier]!
         
-        if (shapeRecognition) {
+        if (mode == Mode.SHAPE_RECOGNITION) {
+            let currentLine = lines[currentIdentifier]!
             let isStraight = isStraightLine(currentLine.points)
             if (isStraight) {
                 print("found straight line")
@@ -119,6 +149,10 @@ class DrawView: UIView {
                     redrawRectangle(currentIdentifier, corners)
                 }
             }
+        }
+        
+        if (mode == .PARTIAL_REMOVE){
+            tracker.isHidden = true
         }
        
         currentIdentifier = nil
@@ -254,22 +288,34 @@ class DrawView: UIView {
     @IBAction func toggleShapeRecognition(_ sender: UIBarButtonItem) {
         shapeRecognition = !shapeRecognition
         print("shape recognition = ", shapeRecognition)
-        mode = .DRAWING
+        if (shapeRecognition) {
+            mode = .SHAPE_RECOGNITION
+            shapeRecognitionButton.tintColor = UIColor.red
+        } else {
+            mode = .DRAWING
+            shapeRecognitionButton.tintColor = UIColor.white
+        }
     }
 
     func colourChosen(_ chosenColour: UIColor) {
         drawColour = chosenColour
-        mode = .DRAWING
+        mode = mode == .SHAPE_RECOGNITION ? .SHAPE_RECOGNITION : .DRAWING
     }
     
     @IBAction func eraserChosen(_ sender: UIBarButtonItem) {
         let chosen = sender.tag
         mode = chosen == 20 ? .COMPLETE_REMOVE : .DRAWING
+        shapeRecognition = false
+        shapeRecognitionButton.tintColor = UIColor.white
+
     }
   
     @IBAction func partialChosen(_ sender: UIBarButtonItem) {
-          let chosen = sender.tag
-          mode = chosen == 21 ? .PARTIAL_REMOVE : .DRAWING
+        let chosen = sender.tag
+        mode = chosen == 21 ? .PARTIAL_REMOVE : .DRAWING
+        shapeRecognition = false
+        shapeRecognitionButton.tintColor = UIColor.white
+
       }
     
     @IBAction func clearCanvas(_ sender: Any) {
