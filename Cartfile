@@ -1,4 +1,3 @@
 github "RastislavMirek/FlexColorPicker"
-github "SwiftyJSON/SwiftyJSON" ~> 4.0
 github "robbiehanson/XMPPFramework"
 
