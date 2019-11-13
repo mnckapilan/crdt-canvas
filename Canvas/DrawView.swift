@@ -185,25 +185,28 @@ class DrawView: UIView {
     }
     
     func redrawRectangle(_ id: String, _ points: [Point]) {
-        // Currently only handles rectangles drawn relative to x, y axis.
-        // Will incorrectly render rectangles drawn at an angle.
         let line = lines[id]!
         
         print("corners: ", points)
         handleChange(change: Change.removeStroke(id, 0))
         
-        // User drew horizontal line first
         let x1 = points[0].x
         let y1 = points[0].y
         let x2 = points[2].x
         let y2 = points[2].y
-        var corners = [points[0], Point(x: x2, y: y1), Point(x: x2, y: y2), Point(x: x1, y: y2)]
         
-        if (points[0].x <= points[1].x + 1 && points[0].x >= points[1].x - 1) {
+        // User drew a rectangle at an angle (not relative to x, y axis)
+        var corners = points
+        
+        if (points[0].x <= points[1].x + 20 && points[0].x >= points[1].x - 20) {
             // User drew a vertical line first
+            print("User drew a vertical line first")
             corners = [points[0], Point(x: x1, y: y2), Point(x: x2, y: y2), Point(x: x2, y: y1)]
+        } else if (points[0].y <= points[1].y + 20 && points[0].y >= points[1].y - 20) {
+            // User drew a horizontal line first
+            print("User drew a horizontal line first")
+            corners = [points[0], Point(x: x2, y: y1), Point(x: x2, y: y2), Point(x: x1, y: y2)]
         }
-        
 
         let stroke = Stroke(points: corners, colour: line.colour, isShape: true)
         print("rectangle to be redrawn:", stroke.points)
@@ -234,7 +237,7 @@ class DrawView: UIView {
     func attemptToBunchLines(_ points: [Point]) -> [Int] {
         var retValue: [Int] = []
         
-        let m = 12
+        let m = 10
         
         var initialAngle: Float? = nil
         var start = 0
