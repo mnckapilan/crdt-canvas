@@ -24,6 +24,7 @@
 		C17D4ED3237C8085001AC415 /* CocoaAsyncSocket.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = C17D4EC6237C8085001AC415 /* CocoaAsyncSocket.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		C17D4ED4237C8085001AC415 /* XMPPFramework.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C17D4EC7237C8085001AC415 /* XMPPFramework.framework */; };
 		C17D4ED5237C8085001AC415 /* XMPPFramework.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = C17D4EC7237C8085001AC415 /* XMPPFramework.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		C17D4ED7237C8184001AC415 /* XMPPController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C17D4ED6237C8184001AC415 /* XMPPController.swift */; };
 		C1C1C0F32350E3E2006DED27 /* AutomergeJavaScript.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1C1C0F22350E3E2006DED27 /* AutomergeJavaScript.swift */; };
 		C1C1C0F52350E404006DED27 /* Canvas.bundle.js in Resources */ = {isa = PBXBuildFile; fileRef = C1C1C0F42350E404006DED27 /* Canvas.bundle.js */; };
 		E009D221235520EB00B55EA0 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E009D220235520EB00B55EA0 /* ViewController.swift */; };
@@ -68,6 +69,7 @@
 		C17D4EC5237C8085001AC415 /* libidn.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = libidn.framework; path = Carthage/Build/iOS/libidn.framework; sourceTree = "<group>"; };
 		C17D4EC6237C8085001AC415 /* CocoaAsyncSocket.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CocoaAsyncSocket.framework; path = Carthage/Build/iOS/CocoaAsyncSocket.framework; sourceTree = "<group>"; };
 		C17D4EC7237C8085001AC415 /* XMPPFramework.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XMPPFramework.framework; path = Carthage/Build/iOS/XMPPFramework.framework; sourceTree = "<group>"; };
+		C17D4ED6237C8184001AC415 /* XMPPController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = XMPPController.swift; sourceTree = "<group>"; };
 		C1C1C0F22350E3E2006DED27 /* AutomergeJavaScript.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AutomergeJavaScript.swift; sourceTree = "<group>"; };
 		C1C1C0F42350E404006DED27 /* Canvas.bundle.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; name = Canvas.bundle.js; path = Javascript/dist/Canvas.bundle.js; sourceTree = SOURCE_ROOT; };
 		E009D220235520EB00B55EA0 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -140,6 +142,7 @@
 			isa = PBXGroup;
 			children = (
 				E097F4412373203D00050137 /* ColourPickerViewController.swift */,
+				C17D4ED6237C8184001AC415 /* XMPPController.swift */,
 				E0BE81FA2350C3A100D93BF1 /* AppDelegate.swift */,
 				C1C1C0F22350E3E2006DED27 /* AutomergeJavaScript.swift */,
 				C1C1C0F42350E404006DED27 /* Canvas.bundle.js */,
@@ -295,6 +298,7 @@
 			files = (
 				C1C1C0F32350E3E2006DED27 /* AutomergeJavaScript.swift in Sources */,
 				E0EEA22E235494C10076D540 /* DrawView.swift in Sources */,
+				C17D4ED7237C8184001AC415 /* XMPPController.swift in Sources */,
 				E097F4422373203D00050137 /* ColourPickerViewController.swift in Sources */,
 				E0BE81FB2350C3A100D93BF1 /* AppDelegate.swift in Sources */,
 				E0BE82002350C3A100D93BF1 /* Canvas.xcdatamodeld in Sources */,
