@@ -2,7 +2,7 @@
 
 ## Development
 
-After cloning this repo, make sure you run `npm install` in the Javascript folder, and then `carthage update` in the source folder.
+After cloning this repo, make sure you run `npm install` in the Javascript folder, and then `carthage update --platform iOS` in the source folder.
 
 XCode's Build should take care of all the build steps (including the Webpack Bundler). If you run into any issues building the app - get in touch with Kapilan.
 
