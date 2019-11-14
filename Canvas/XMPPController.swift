@@ -44,27 +44,51 @@ class XMPPController: NSObject {
     }
     
     func connect() {
-//        if !self.xmppStream.isDisconnected() {
-//            return
-//        }
+        if !self.xmppStream.isDisconnected {
+            return
+        }
 
         try! self.xmppStream.connect(withTimeout: XMPPStreamTimeoutNone)
     }
 }
 
+extension XMPPController: XMPPRoomDelegate {
+    func xmppRoomDidJoin(_ sender: XMPPRoom) {
+        sender.sendMessage(withBody: "hello bitches")
+    }
+    
+    func xmppStream(_ sender: XMPPStream, didReceive message: XMPPMessage) {
+        print("received", message)
+    }
+    
+    func xmppRoom(_ sender: XMPPRoom, occupantDidJoin occupantJID: XMPPJID, with presence: XMPPPresence) {
+        //print("joined", occupantJID)
+    }
+}
+
 extension XMPPController: XMPPStreamDelegate {
     
-    func xmppStreamDidConnect(_ stream: XMPPStream!) {
+    func xmppStreamDidConnect(_ stream: XMPPStream) {
         print("Stream: Connected")
         try! stream.authenticate(withPassword: self.password)
     }
     
-    func xmppStreamDidAuthenticate(_ sender: XMPPStream!) {
+    func xmppStreamDidAuthenticate(_ sender: XMPPStream) {
         self.xmppStream.send(XMPPPresence())
+        let userID = XMPPJID(string: "test@conference.cloud-vm-41-92.doc.ic.ac.uk")!
+        let roomStorage = XMPPRoomCoreDataStorage.sharedInstance()!
+        let room = XMPPRoom(roomStorage: roomStorage, jid: userID)
+        room.addDelegate(self, delegateQueue: DispatchQueue.main)
+        room.activate(xmppStream)
+        room.join(usingNickname: "jack", history: nil)
+        //let message = XMPPMessage(messageType: XMPPMessage.MessageType.groupchat, to: userID, elementID: NSUUID().uuidString)
+        //message.addBody("what's up")
+        //self.xmppStream.send(message)
         print("Stream: Authenticated")
     }
+
     
-    func xmppStream(_ sender: XMPPStream!, didNotAuthenticate error: DDXMLElement!) {
+    func xmppStream(_ sender: XMPPStream, didNotAuthenticate error: DDXMLElement) {
         print("Stream: Fail to Authenticate")
     }
 }
