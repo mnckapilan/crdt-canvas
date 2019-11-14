@@ -13,16 +13,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
 
-    var xmppController : XMPPController?
-
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
-        try! self.xmppController = XMPPController(hostName: "cloud-vm-41-92.doc.ic.ac.uk",
-        userJIDString: "jack@cloud-vm-41-92.doc.ic.ac.uk",
-             password: "testtest")
-        
-        self.xmppController!.connect()
-        
         
         return true
     }

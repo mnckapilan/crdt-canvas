@@ -13,11 +13,13 @@ class DrawView: UIView {
 
     var lines: [String: Stroke] = [:]
     
+    
     var drawColour = UIColor.white
     var currentIdentifier: String!
     var pointsToWrite: [Point] = []
     var shapeRecognition = false
     @IBOutlet var tracker: UIImageView!
+    var xmppController : XMPPController?
     
     @IBOutlet var shapeRecognitionButton: UIBarButtonItem!
     
@@ -383,6 +385,7 @@ class DrawView: UIView {
                 }
             }
         }
+        xmppController!.room!.sendMessage(withBody: change)
         
     }
 }

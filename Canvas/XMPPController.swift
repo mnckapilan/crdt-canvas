@@ -20,6 +20,8 @@ class XMPPController: NSObject {
     let userJID: XMPPJID
     let hostPort: UInt16
     let password: String
+    var room: XMPPRoom?
+    var drawView: DrawView?
     
     init(hostName: String, userJIDString: String, hostPort: UInt16 = 5222, password: String) throws {
         guard let userJID = XMPPJID(string: userJIDString) else {
@@ -54,11 +56,10 @@ class XMPPController: NSObject {
 
 extension XMPPController: XMPPRoomDelegate {
     func xmppRoomDidJoin(_ sender: XMPPRoom) {
-        sender.sendMessage(withBody: "hello bitches")
     }
     
     func xmppStream(_ sender: XMPPStream, didReceive message: XMPPMessage) {
-        print("received", message)
+        drawView?.incomingChange(message.body!)
     }
     
     func xmppRoom(_ sender: XMPPRoom, occupantDidJoin occupantJID: XMPPJID, with presence: XMPPPresence) {
@@ -78,6 +79,7 @@ extension XMPPController: XMPPStreamDelegate {
         let userID = XMPPJID(string: "test@conference.cloud-vm-41-92.doc.ic.ac.uk")!
         let roomStorage = XMPPRoomCoreDataStorage.sharedInstance()!
         let room = XMPPRoom(roomStorage: roomStorage, jid: userID)
+        self.room = room
         room.addDelegate(self, delegateQueue: DispatchQueue.main)
         room.activate(xmppStream)
         room.join(usingNickname: "jack", history: nil)
