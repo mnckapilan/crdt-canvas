@@ -8,6 +8,7 @@
 import MultipeerConnectivity
 import UIKit
 import FlexColorPicker
+import XMPPFrameworkSwift
 
 class ViewController: UIViewController, MCSessionDelegate, MCBrowserViewControllerDelegate {
     
@@ -22,6 +23,7 @@ class ViewController: UIViewController, MCSessionDelegate, MCBrowserViewControll
     var mcAdvertiserAssistant: MCAdvertiserAssistant!
     let sb = UIStoryboard(name: "Main", bundle: nil)
     var colourPickerVC : ColourPickerViewController!
+    var xmppController : XMPPController?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -32,6 +34,14 @@ class ViewController: UIViewController, MCSessionDelegate, MCBrowserViewControll
         drawView.mcSession = mcSession
         colourPickerVC = sb.instantiateViewController(
             withIdentifier: "colourPickerViewController") as? ColourPickerViewController
+        
+        try! self.xmppController = XMPPController(hostName: "cloud-vm-41-92.doc.ic.ac.uk",
+        userJIDString: "jack@cloud-vm-41-92.doc.ic.ac.uk",
+             password: "testtest")
+        
+        self.xmppController!.connect()
+        drawView.xmppController = self.xmppController
+        self.xmppController!.drawView = drawView
     }
 
     @IBAction func showConnectionPrompt() {
