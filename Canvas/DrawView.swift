@@ -139,13 +139,13 @@ class DrawView: UIView {
             let currentLine = lines[currentIdentifier]!
             let isStraight = isStraightLine(currentLine.points)
             if (isStraight) {
+                // If your rectangle gets corrected to a straight line, it's because you drew a rectangle that was too small
                 print("found straight line")
                 redrawStraightLine(currentIdentifier)
             } else {
                 let (rectangle, corners) = isRectangle(currentLine.points)
                 if (rectangle) {
                     print("found rectangle")
-                    print(corners)
                     redrawRectangle(currentIdentifier, corners)
                 }
             }
@@ -176,9 +176,7 @@ class DrawView: UIView {
         let count = line.points.count
         let start = line.points[0]
         let end = line.points[count - 1]
-        print("removing line...")
         handleChange(change: Change.removeStroke(id, 0))
-        print("removed line ")
         let stroke = Stroke(points: [start, end], colour: line.colour, isShape: true)
         print("stroke to be redrawn:", stroke.points)
         currentIdentifier = getIdentifier()
@@ -189,13 +187,32 @@ class DrawView: UIView {
     func redrawRectangle(_ id: String, _ points: [Point]) {
         let line = lines[id]!
         
+        print("corners: ", points)
         handleChange(change: Change.removeStroke(id, 0))
-        let stroke = Stroke(points: points, colour: line.colour, isShape: true)
-        print("quad to be redrawn:", stroke.points)
+        
+        let x1 = points[0].x
+        let y1 = points[0].y
+        let x2 = points[2].x
+        let y2 = points[2].y
+        
+        // User drew a rectangle at an angle (not relative to x, y axis)
+        var corners = points
+        
+        if (points[0].x <= points[1].x + 20 && points[0].x >= points[1].x - 20) {
+            // User drew a vertical line first
+            print("User drew a vertical line first")
+            corners = [points[0], Point(x: x1, y: y2), Point(x: x2, y: y2), Point(x: x2, y: y1)]
+        } else if (points[0].y <= points[1].y + 20 && points[0].y >= points[1].y - 20) {
+            // User drew a horizontal line first
+            print("User drew a horizontal line first")
+            corners = [points[0], Point(x: x2, y: y1), Point(x: x2, y: y2), Point(x: x1, y: y2)]
+        }
+
+        let stroke = Stroke(points: corners, colour: line.colour, isShape: true)
+        print("rectangle to be redrawn:", stroke.points)
         currentIdentifier = getIdentifier()
         handleChange(change: Change.addStroke(stroke, currentIdentifier))
     }
-    
     
     func isStraightLine(_ points: [Point?]) -> Bool {
         let startPt = points[0]!.cgPoint
@@ -243,18 +260,18 @@ class DrawView: UIView {
         }
         retValue.append(0)
         
-        print("output from corner detection:")
-        print(retValue)
+        print("output from corner detection: ", retValue)
         return retValue
     }
     
     func isRectangle(_ points: [Point?]) -> (Bool, [Point]) {
         let corners = attemptToBunchLines(points as! [Point])
         if (corners.count != 5) {
-            print("Too many corners")
+            print("Too many/few corners")
             return (false, [])
         }
-        var rectanglePoints = [points[0]]
+        
+        var rectanglePoints : [Point?] = []
         for i in 0...corners.count - 2 {
             let side = [points[i], points[i + 1]]
             if (!isStraightLine(side)) {
@@ -266,28 +283,19 @@ class DrawView: UIView {
         return (true, rectanglePoints as! [Point])
     }
     
-    func calc_gradient(_ points: [Point?]) -> Float {
-        let startPt = points[0]!.cgPoint
-        let endPt = points[points.count - 1]!.cgPoint
-        
-        let grad = (startPt.y - endPt.y) / (startPt.x - endPt.x)
-        return Float(grad)
-    }
-    
     func isInLine(_ coords: CGPoint, _ startPt: CGPoint, _ endPt: CGPoint) -> Bool {
-        if (endPt.x <= startPt.x + 25 && endPt.x >= startPt.x - 25) {
+        if (endPt.x <= startPt.x + 20 && endPt.x >= startPt.x - 20) {
             let verticalLineEqn = startPt.x
-            return coords.x <= verticalLineEqn + 25 && coords.x >= verticalLineEqn - 25
+            return coords.x <= verticalLineEqn + 20 && coords.x >= verticalLineEqn - 20
         } else {
             let grad = (startPt.y - endPt.y) / (startPt.x - endPt.x)
             let yOnLineForGivenX = (grad * (coords.x - startPt.x)) + startPt.y
-            return coords.y <= yOnLineForGivenX + 25 && coords.y >= yOnLineForGivenX - 25
+            return coords.y <= yOnLineForGivenX + 20 && coords.y >= yOnLineForGivenX - 20
         }
     }
     
     @IBAction func toggleShapeRecognition(_ sender: UIBarButtonItem) {
         shapeRecognition = !shapeRecognition
-        print("shape recognition = ", shapeRecognition)
         if (shapeRecognition) {
             mode = .SHAPE_RECOGNITION
             shapeRecognitionButton.tintColor = UIColor.red
@@ -307,7 +315,6 @@ class DrawView: UIView {
         mode = chosen == 20 ? .COMPLETE_REMOVE : .DRAWING
         shapeRecognition = false
         shapeRecognitionButton.tintColor = UIColor.white
-
     }
   
     @IBAction func partialChosen(_ sender: UIBarButtonItem) {
@@ -315,8 +322,7 @@ class DrawView: UIView {
         mode = chosen == 21 ? .PARTIAL_REMOVE : .DRAWING
         shapeRecognition = false
         shapeRecognitionButton.tintColor = UIColor.white
-
-      }
+    }
     
     @IBAction func clearCanvas(_ sender: Any) {
         // TODO: be able to undo a clear
