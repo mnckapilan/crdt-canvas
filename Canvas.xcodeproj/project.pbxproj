@@ -12,6 +12,19 @@
 		C1C1C0F52350E404006DED27 /* Canvas.bundle.js in Resources */ = {isa = PBXBuildFile; fileRef = C1C1C0F42350E404006DED27 /* Canvas.bundle.js */; };
 		E009D221235520EB00B55EA0 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E009D220235520EB00B55EA0 /* ViewController.swift */; };
 		E01B0BB12369F66600545F83 /* sessionDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E01B0BB02369F66600545F83 /* sessionDetailsViewController.swift */; };
+		E095ED66237D66CC00D929D2 /* XMPPFrameworkSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E095ED64237D66CC00D929D2 /* XMPPFrameworkSwift.framework */; };
+		E095ED67237D66CC00D929D2 /* XMPPFrameworkSwift.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = E095ED64237D66CC00D929D2 /* XMPPFrameworkSwift.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		E095ED68237D66CC00D929D2 /* XMPPFramework.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E095ED65237D66CC00D929D2 /* XMPPFramework.framework */; };
+		E095ED69237D66CC00D929D2 /* XMPPFramework.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = E095ED65237D66CC00D929D2 /* XMPPFramework.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		E095ED6E237D674800D929D2 /* CocoaLumberjackSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E095ED6A237D674800D929D2 /* CocoaLumberjackSwift.framework */; };
+		E095ED6F237D674800D929D2 /* CocoaLumberjackSwift.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = E095ED6A237D674800D929D2 /* CocoaLumberjackSwift.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		E095ED70237D674800D929D2 /* CocoaLumberjack.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E095ED6B237D674800D929D2 /* CocoaLumberjack.framework */; };
+		E095ED71237D674800D929D2 /* CocoaLumberjack.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = E095ED6B237D674800D929D2 /* CocoaLumberjack.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		E095ED72237D674800D929D2 /* CocoaAsyncSocket.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E095ED6C237D674800D929D2 /* CocoaAsyncSocket.framework */; };
+		E095ED73237D674800D929D2 /* CocoaAsyncSocket.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = E095ED6C237D674800D929D2 /* CocoaAsyncSocket.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		E095ED74237D674800D929D2 /* libidn.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E095ED6D237D674800D929D2 /* libidn.framework */; };
+		E095ED75237D674800D929D2 /* libidn.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = E095ED6D237D674800D929D2 /* libidn.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		E095ED77237D67EE00D929D2 /* XMPPController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E095ED76237D67EE00D929D2 /* XMPPController.swift */; };
 		E097F43E237314C200050137 /* FlexColorPicker.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E097F43D237314C200050137 /* FlexColorPicker.framework */; };
 		E097F43F237314C200050137 /* FlexColorPicker.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = E097F43D237314C200050137 /* FlexColorPicker.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		E097F4422373203D00050137 /* ColourPickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E097F4412373203D00050137 /* ColourPickerViewController.swift */; };
@@ -30,7 +43,13 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
+				E095ED73237D674800D929D2 /* CocoaAsyncSocket.framework in Embed Frameworks */,
+				E095ED6F237D674800D929D2 /* CocoaLumberjackSwift.framework in Embed Frameworks */,
+				E095ED67237D66CC00D929D2 /* XMPPFrameworkSwift.framework in Embed Frameworks */,
+				E095ED71237D674800D929D2 /* CocoaLumberjack.framework in Embed Frameworks */,
+				E095ED69237D66CC00D929D2 /* XMPPFramework.framework in Embed Frameworks */,
 				E097F43F237314C200050137 /* FlexColorPicker.framework in Embed Frameworks */,
+				E095ED75237D674800D929D2 /* libidn.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -43,6 +62,13 @@
 		C1C1C0F42350E404006DED27 /* Canvas.bundle.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; name = Canvas.bundle.js; path = Javascript/dist/Canvas.bundle.js; sourceTree = SOURCE_ROOT; };
 		E009D220235520EB00B55EA0 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		E01B0BB02369F66600545F83 /* sessionDetailsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = sessionDetailsViewController.swift; sourceTree = "<group>"; };
+		E095ED64237D66CC00D929D2 /* XMPPFrameworkSwift.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XMPPFrameworkSwift.framework; path = Carthage/Build/iOS/XMPPFrameworkSwift.framework; sourceTree = "<group>"; };
+		E095ED65237D66CC00D929D2 /* XMPPFramework.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XMPPFramework.framework; path = Carthage/Build/iOS/XMPPFramework.framework; sourceTree = "<group>"; };
+		E095ED6A237D674800D929D2 /* CocoaLumberjackSwift.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CocoaLumberjackSwift.framework; path = Carthage/Build/iOS/CocoaLumberjackSwift.framework; sourceTree = "<group>"; };
+		E095ED6B237D674800D929D2 /* CocoaLumberjack.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CocoaLumberjack.framework; path = Carthage/Build/iOS/CocoaLumberjack.framework; sourceTree = "<group>"; };
+		E095ED6C237D674800D929D2 /* CocoaAsyncSocket.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CocoaAsyncSocket.framework; path = Carthage/Build/iOS/CocoaAsyncSocket.framework; sourceTree = "<group>"; };
+		E095ED6D237D674800D929D2 /* libidn.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = libidn.framework; path = Carthage/Build/iOS/libidn.framework; sourceTree = "<group>"; };
+		E095ED76237D67EE00D929D2 /* XMPPController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = XMPPController.swift; sourceTree = "<group>"; };
 		E097F43D237314C200050137 /* FlexColorPicker.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FlexColorPicker.framework; path = Carthage/Build/iOS/FlexColorPicker.framework; sourceTree = "<group>"; };
 		E097F4412373203D00050137 /* ColourPickerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ColourPickerViewController.swift; sourceTree = "<group>"; };
 		E0BE81F72350C3A100D93BF1 /* Canvas.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Canvas.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -60,7 +86,13 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E095ED72237D674800D929D2 /* CocoaAsyncSocket.framework in Frameworks */,
+				E095ED6E237D674800D929D2 /* CocoaLumberjackSwift.framework in Frameworks */,
+				E095ED66237D66CC00D929D2 /* XMPPFrameworkSwift.framework in Frameworks */,
+				E095ED70237D674800D929D2 /* CocoaLumberjack.framework in Frameworks */,
+				E095ED68237D66CC00D929D2 /* XMPPFramework.framework in Frameworks */,
 				E097F43E237314C200050137 /* FlexColorPicker.framework in Frameworks */,
+				E095ED74237D674800D929D2 /* libidn.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -70,6 +102,12 @@
 		C130AABA2358C3450073644B /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				E095ED6C237D674800D929D2 /* CocoaAsyncSocket.framework */,
+				E095ED6B237D674800D929D2 /* CocoaLumberjack.framework */,
+				E095ED6A237D674800D929D2 /* CocoaLumberjackSwift.framework */,
+				E095ED6D237D674800D929D2 /* libidn.framework */,
+				E095ED65237D66CC00D929D2 /* XMPPFramework.framework */,
+				E095ED64237D66CC00D929D2 /* XMPPFrameworkSwift.framework */,
 				E097F43D237314C200050137 /* FlexColorPicker.framework */,
 			);
 			name = Frameworks;
@@ -108,6 +146,7 @@
 				E009D220235520EB00B55EA0 /* ViewController.swift */,
 				15F9B346235E068600A6F790 /* Stroke.swift */,
 				E01B0BB02369F66600545F83 /* sessionDetailsViewController.swift */,
+				E095ED76237D67EE00D929D2 /* XMPPController.swift */,
 			);
 			path = Canvas;
 			sourceTree = "<group>";
@@ -212,6 +251,12 @@
 			);
 			inputPaths = (
 				"$(SRCROOT)/Carthage/Build/iOS/FlexColorPicker.framework",
+				"$(SRCROOT)/Carthage/Build/iOS/XMPPFramework.framework",
+				"$(SRCROOT)/Carthage/Build/iOS/XMPPFrameworkSwift.framework",
+				"$(SRCROOT)/Carthage/Build/iOS/CocoaAsyncSocket.framework",
+				"$(SRCROOT)/Carthage/Build/iOS/CocoaLumberjack.framework",
+				"$(SRCROOT)/Carthage/Build/iOS/CocoaLumberjackSwift.framework",
+				"$(SRCROOT)/Carthage/Build/iOS/KissXML.framework",
 			);
 			outputFileListPaths = (
 			);
@@ -250,6 +295,7 @@
 			files = (
 				C1C1C0F32350E3E2006DED27 /* AutomergeJavaScript.swift in Sources */,
 				E0EEA22E235494C10076D540 /* DrawView.swift in Sources */,
+				E095ED77237D67EE00D929D2 /* XMPPController.swift in Sources */,
 				E097F4422373203D00050137 /* ColourPickerViewController.swift in Sources */,
 				E0BE81FB2350C3A100D93BF1 /* AppDelegate.swift in Sources */,
 				E0BE82002350C3A100D93BF1 /* Canvas.xcdatamodeld in Sources */,
