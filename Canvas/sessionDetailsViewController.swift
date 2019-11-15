@@ -23,7 +23,7 @@ class sessionDetailsViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        if (mainViewController?.mcSession.connectedPeers.count == 0) {
+        if (((mainViewController!.isBluetooth)&&(mainViewController?.mcSession.connectedPeers.count == 0)) || (!mainViewController!.isBluetooth) && (!(mainViewController?.xmppController?.isConnected())!)) {
             disconnectButton.tintColor = UIColor.red
             disconnectButton.setBackgroundImage(UIImage(systemName: "wifi.slash"), for: .normal)
         } else {
@@ -65,6 +65,8 @@ class sessionDetailsViewController: UIViewController {
             //XMPP Leave Room
             print("** Disconnect XMPP")
             mainViewController!.xmppController!.disconnect()
+            disconnectButton.tintColor = UIColor.red
+            disconnectButton.setBackgroundImage(UIImage(systemName: "wifi.slash"), for: .normal)
         }
     }
     
