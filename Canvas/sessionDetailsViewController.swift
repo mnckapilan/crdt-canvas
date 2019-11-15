@@ -14,10 +14,11 @@ class sessionDetailsViewController: UIViewController {
     @IBOutlet var tableView: UITableView!
     @IBOutlet var connectButton: UIButton!
     @IBOutlet var disconnectButton: UIButton!
+    @IBOutlet var connectionTypeButton: UIButton!
     var mcAdvertiserAssistant: MCAdvertiserAssistant!
     var mainViewController:ViewController?
     
-    var datasourceArray : [MCPeerID]?
+    var datasourceArray : [String]?
     static let CELL_RESUE_ID = "POPOVER_CELL_REUSE_ID"
     
     override func viewDidLoad() {
@@ -29,6 +30,13 @@ class sessionDetailsViewController: UIViewController {
             disconnectButton.tintColor = UIColor.green
             disconnectButton.setBackgroundImage(UIImage(systemName: "wifi"), for: .normal)
         }
+        if mainViewController!.isBluetooth {
+            print("** Connection type is Bluetooth")
+            connectionTypeButton.setTitle("Bluetooth", for: UIControl.State.normal)
+        } else {
+            print("** Connection type is XMPP")
+            connectionTypeButton.setTitle("XMPP", for: UIControl.State.normal)
+        }
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -36,14 +44,43 @@ class sessionDetailsViewController: UIViewController {
     }
     
     @IBAction func showConnectionPrompt() {
-        self.dismiss(animated: true, completion: nil)
-        mainViewController?.showConnectionPrompt()
+        if (mainViewController!.isBluetooth){
+            print("** Connect Bluetooth")
+            self.dismiss(animated: true, completion: nil)
+            mainViewController?.showConnectionPrompt()
+        } else {
+            print("** Connect XMPP")
+            //XMPP Join Room
+            mainViewController!.xmppController!.connect()
+        }
     }
     
     @IBAction func disconnectSession() {
-        mainViewController?.disconnectSession();
-        disconnectButton.tintColor = UIColor.red
-        disconnectButton.setBackgroundImage(UIImage(systemName: "wifi.slash"), for: .normal)
+        if (mainViewController!.isBluetooth){
+            print("** Disconnect Bluetooth")
+            mainViewController?.disconnectSession();
+            disconnectButton.tintColor = UIColor.red
+            disconnectButton.setBackgroundImage(UIImage(systemName: "wifi.slash"), for: .normal)
+        } else {
+            //XMPP Leave Room
+            print("** Disconnect XMPP")
+            mainViewController!.xmppController!.disconnect()
+        }
+    }
+    
+    @IBAction func changeConnectionType() {
+        if mainViewController!.isBluetooth {
+            print("** Connection type set to XMPP")
+            disconnectSession()
+            mainViewController!.isBluetooth = false
+            connectionTypeButton.setTitle("XMPP", for: UIControl.State.normal)
+        } else {
+            print("** Connection type set to Bluetooth")
+            disconnectSession()
+            mainViewController!.isBluetooth = true
+            connectionTypeButton.setTitle("Bluetooth", for: UIControl.State.normal)
+            //Disconnect XMPP
+        }
     }
 
     
@@ -63,7 +100,7 @@ extension sessionDetailsViewController:UITableViewDelegate, UITableViewDataSourc
         if cell == nil {
             cell = UITableViewCell(style: .default, reuseIdentifier: sessionDetailsViewController.CELL_RESUE_ID)
         }
-        cell?.textLabel?.text = datasourceArray![indexPath.row].displayName
+        cell?.textLabel?.text = datasourceArray![indexPath.row]
         return cell ?? UITableViewCell()
     }
     

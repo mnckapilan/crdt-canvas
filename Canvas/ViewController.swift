@@ -24,6 +24,7 @@ class ViewController: UIViewController, MCSessionDelegate, MCBrowserViewControll
     let sb = UIStoryboard(name: "Main", bundle: nil)
     var colourPickerVC : ColourPickerViewController!
     var xmppController : XMPPController?
+    var isBluetooth = true
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -39,7 +40,7 @@ class ViewController: UIViewController, MCSessionDelegate, MCBrowserViewControll
         userJIDString: "jack@cloud-vm-41-92.doc.ic.ac.uk",
              password: "testtest")
         
-        self.xmppController!.connect()
+        //self.xmppController!.connect()
         drawView.xmppController = self.xmppController
         self.xmppController!.drawView = drawView
     }
@@ -69,8 +70,13 @@ class ViewController: UIViewController, MCSessionDelegate, MCBrowserViewControll
         // Specify the anchor point for the popover.
         sessionDetailsVC.popoverPresentationController?.barButtonItem =
                    sessionDetails
-        
-        sessionDetailsVC.datasourceArray = mcSession.connectedPeers
+        if (isBluetooth){
+            sessionDetailsVC.datasourceArray = mcSession.connectedPeers.map{$0.displayName}
+        } else {
+            sessionDetailsVC.datasourceArray = self.xmppController!.returnMembers()
+            
+        }
+
         sessionDetailsVC.mainViewController = self
         
 

@@ -385,7 +385,9 @@ class DrawView: UIView {
                 }
             }
         }
-        xmppController!.room!.sendMessage(withBody: change)
+        if xmppController!.isConnected(){
+            xmppController!.room!.sendMessage(withBody: change)
+        }
         
     }
 }
