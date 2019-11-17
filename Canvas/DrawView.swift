@@ -13,7 +13,6 @@ class DrawView: UIView {
 
     var lines: [String: Stroke] = [:]
     
-    
     var drawColour = UIColor.white
     var currentIdentifier: String!
     var pointsToWrite: [Point] = []
@@ -30,8 +29,6 @@ class DrawView: UIView {
     
     public var mcSession: MCSession?
 
-    
-    
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         self.backgroundColor = UIColor.black
@@ -148,7 +145,7 @@ class DrawView: UIView {
                 let (rectangle, corners) = isRectangle(currentLine.points)
                 if (rectangle) {
                     print("found rectangle")
-                    redrawRectangle(currentIdentifier, corners)
+                    redrawRectangle(currentIdentifier, corners, currentLine.points)
                 }
             }
         }
@@ -186,34 +183,41 @@ class DrawView: UIView {
         undoStack.append((currentIdentifier, line, Stroke.ActionType.redraw))
     }
     
-    func redrawRectangle(_ id: String, _ points: [Point]) {
+    func redrawRectangle(_ id: String, _ points: [Point], _ full_points: [Point]) {
         let line = lines[id]!
         
         print("corners: ", points)
-        handleChange(change: Change.removeStroke(id, 0))
         
         let x1 = points[0].x
         let y1 = points[0].y
         let x2 = points[2].x
         let y2 = points[2].y
         
-        // User drew a rectangle at an angle (not relative to x, y axis)
-        var corners = points
+        // User drew a rectangle at an angle (not relative to x, y axis) so do not correct to a shape, leave as is
+        var corners : [Point] = []
+        let drewVerticalLine = points[0].x <= points[1].x + 20 && points[0].x >= points[1].x - 20
+        let drewHorizontalLine = points[0].y <= points[1].y + 20 && points[0].y >= points[1].y - 20
         
-        if (points[0].x <= points[1].x + 20 && points[0].x >= points[1].x - 20) {
-            // User drew a vertical line first
-            print("User drew a vertical line first")
-            corners = [points[0], Point(x: x1, y: y2), Point(x: x2, y: y2), Point(x: x2, y: y1)]
-        } else if (points[0].y <= points[1].y + 20 && points[0].y >= points[1].y - 20) {
-            // User drew a horizontal line first
-            print("User drew a horizontal line first")
-            corners = [points[0], Point(x: x2, y: y1), Point(x: x2, y: y2), Point(x: x1, y: y2)]
+        if (drewVerticalLine || drewHorizontalLine) {
+            if (drewVerticalLine) {
+                // User drew a vertical line first
+                print("User drew a vertical line first")
+                corners = [points[0], Point(x: x1, y: y2), Point(x: x2, y: y2), Point(x: x2, y: y1)]
+            } else if (drewHorizontalLine) {
+                // User drew a horizontal line first
+                print("User drew a horizontal line first")
+                corners = [points[0], Point(x: x2, y: y1), Point(x: x2, y: y2), Point(x: x1, y: y2)]
+            }
+            
+            handleChange(change: Change.removeStroke(id, 0))
+              
+            let stroke = Stroke(points: corners, colour: line.colour, isShape: true)
+            currentIdentifier = getIdentifier()
+            handleChange(change: Change.addStroke(stroke, currentIdentifier))
+        } else {
+           // User drew a rectangle at an angle, so do not correct to a shape, leave as is
         }
-
-        let stroke = Stroke(points: corners, colour: line.colour, isShape: true)
-        print("rectangle to be redrawn:", stroke.points)
-        currentIdentifier = getIdentifier()
-        handleChange(change: Change.addStroke(stroke, currentIdentifier))
+        
     }
     
     func isStraightLine(_ points: [Point?]) -> Bool {
