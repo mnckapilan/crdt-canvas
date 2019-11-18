@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="15400" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="15505" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
     <device id="retina6_5" orientation="portrait" appearance="dark"/>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15404"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15509"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -47,14 +47,23 @@
                                     <action selector="showConnectionPrompt" destination="Eku-Qk-D68" eventType="touchUpInside" id="W6v-Ly-tD8"/>
                                 </connections>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="pgX-Hg-c30">
+                                <rect key="frame" x="173.66666666666666" y="54" width="67" height="30"/>
+                                <state key="normal" title="Bluetooth"/>
+                                <connections>
+                                    <action selector="changeConnectionType" destination="Eku-Qk-D68" eventType="touchUpInside" id="M60-kS-zxm"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <constraints>
+                            <constraint firstItem="pgX-Hg-c30" firstAttribute="centerX" secondItem="7XA-E9-kUS" secondAttribute="centerX" id="0EZ-fH-sZQ"/>
                             <constraint firstItem="Zio-9r-piA" firstAttribute="centerY" secondItem="1EZ-bi-h78" secondAttribute="centerY" id="9i8-7c-3Mo"/>
                             <constraint firstItem="1Ni-w7-pap" firstAttribute="trailing" secondItem="1EZ-bi-h78" secondAttribute="trailing" constant="78" id="KmB-mK-M54"/>
                             <constraint firstItem="1Ni-w7-pap" firstAttribute="trailing" secondItem="4Kb-JJ-06e" secondAttribute="trailing" id="NCt-VG-mF1"/>
                             <constraint firstItem="Zio-9r-piA" firstAttribute="top" secondItem="1Ni-w7-pap" secondAttribute="top" constant="43" id="Oeg-cc-hRq"/>
                             <constraint firstItem="4Kb-JJ-06e" firstAttribute="top" secondItem="1Ni-w7-pap" secondAttribute="top" constant="142" id="SPE-KV-Ijn"/>
+                            <constraint firstItem="pgX-Hg-c30" firstAttribute="top" secondItem="1Ni-w7-pap" secondAttribute="top" constant="10" id="Tm4-z3-ddm"/>
                             <constraint firstItem="4Kb-JJ-06e" firstAttribute="top" secondItem="Zio-9r-piA" secondAttribute="bottom" constant="45.666666666666686" id="Wjb-b6-WvI"/>
                             <constraint firstItem="1Ni-w7-pap" firstAttribute="bottom" secondItem="4Kb-JJ-06e" secondAttribute="bottom" id="cKT-E3-Zm6"/>
                             <constraint firstItem="4Kb-JJ-06e" firstAttribute="leading" secondItem="1Ni-w7-pap" secondAttribute="leading" id="goi-tz-v32"/>
@@ -65,6 +74,7 @@
                     </view>
                     <connections>
                         <outlet property="connectButton" destination="Zio-9r-piA" id="HuG-pU-ZmM"/>
+                        <outlet property="connectionTypeButton" destination="pgX-Hg-c30" id="5Fz-Xg-pWZ"/>
                         <outlet property="disconnectButton" destination="1EZ-bi-h78" id="3WY-cu-PNT"/>
                         <outlet property="tableView" destination="4Kb-JJ-06e" id="bJ1-G5-2ql"/>
                     </connections>
