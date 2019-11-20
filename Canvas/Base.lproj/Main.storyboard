@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="15505" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
-    <device id="retina6_5" orientation="portrait" appearance="dark"/>
+    <device id="ipad11_0rounded" orientation="landscape" layout="fullscreen" appearance="light"/>
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15509"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
@@ -12,11 +12,11 @@
             <objects>
                 <viewController storyboardIdentifier="sessionDetailsViewController" modalTransitionStyle="crossDissolve" useStoryboardIdentifierAsRestorationIdentifier="YES" id="Eku-Qk-D68" customClass="sessionDetailsViewController" customModule="Canvas" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="7XA-E9-kUS">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <rect key="frame" x="0.0" y="0.0" width="1194" height="834"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="4Kb-JJ-06e">
-                                <rect key="frame" x="0.0" y="186" width="414" height="676"/>
+                                <rect key="frame" x="0.0" y="142" width="1194" height="672"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                                 <connections>
                                     <outlet property="dataSource" destination="Eku-Qk-D68" id="9RU-lk-tnv"/>
@@ -24,7 +24,7 @@
                                 </connections>
                             </tableView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1EZ-bi-h78">
-                                <rect key="frame" x="269" y="85.333333333333314" width="67" height="53.666666666666657"/>
+                                <rect key="frame" x="1049" y="40.5" width="67" height="54.5"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="67" id="yyG-dT-dav"/>
                                 </constraints>
@@ -36,7 +36,7 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Zio-9r-piA">
-                                <rect key="frame" x="89" y="89" width="59" height="52.999999999999986"/>
+                                <rect key="frame" x="89" y="44.5" width="59" height="53.5"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="59" id="2Z6-NH-55B"/>
                                 </constraints>
@@ -48,7 +48,7 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="pgX-Hg-c30">
-                                <rect key="frame" x="173.66666666666666" y="54" width="67" height="30"/>
+                                <rect key="frame" x="563.5" y="10" width="67" height="30"/>
                                 <state key="normal" title="Bluetooth"/>
                                 <connections>
                                     <action selector="changeConnectionType" destination="Eku-Qk-D68" eventType="touchUpInside" id="M60-kS-zxm"/>
@@ -88,7 +88,7 @@
             <objects>
                 <viewController storyboardIdentifier="colourPickerViewController" id="YXA-Cp-nnx" customClass="ColourPickerViewController" customModule="Canvas" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="C6o-tt-C6Q">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <rect key="frame" x="0.0" y="0.0" width="1194" height="834"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <viewLayoutGuide key="safeArea" id="8AN-bH-PHi"/>
@@ -103,31 +103,50 @@
             <objects>
                 <viewController storyboardIdentifier="viewController" id="BYZ-38-t0r" customClass="ViewController" customModule="Canvas" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <rect key="frame" x="0.0" y="0.0" width="1194" height="834"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translucent="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ACt-1Y-oKJ">
-                                <rect key="frame" x="0.0" y="0.0" width="414" height="44"/>
+                            <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translucent="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ACt-1Y-oKJ" userLabel="dummyToolbar">
+                                <rect key="frame" x="0.0" y="0.0" width="1194" height="50"/>
                                 <items/>
                                 <color key="barTintColor" cocoaTouchSystemColor="darkTextColor"/>
                             </toolbar>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Nsp-Ud-L6L" customClass="DrawView" customModule="Canvas" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="140.66666666666669" width="414" height="672.33333333333326"/>
+                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" ambiguous="YES" scrollEnabled="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HVl-Sw-a0d">
+                                <rect key="frame" x="0.0" y="50" width="1194" height="714"/>
                                 <subviews>
-                                    <imageView hidden="YES" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="wkP-FS-V79">
-                                        <rect key="frame" x="40" y="23" width="30" height="30"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Nsp-Ud-L6L" customClass="DrawView" customModule="Canvas" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="0.0" width="1366" height="904"/>
+                                        <subviews>
+                                            <imageView hidden="YES" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="wkP-FS-V79">
+                                                <rect key="frame" x="40" y="23" width="30" height="30"/>
+                                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                            </imageView>
+                                        </subviews>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                    </imageView>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="1366" id="2DF-8c-eCa"/>
+                                            <constraint firstAttribute="height" constant="904" id="d5J-33-b7f"/>
+                                        </constraints>
+                                        <connections>
+                                            <outlet property="shapeRecognitionButton" destination="F31-i6-jGh" id="64p-AC-ad2"/>
+                                            <outlet property="tracker" destination="wkP-FS-V79" id="Gxh-fl-Zar"/>
+                                        </connections>
+                                    </view>
                                 </subviews>
-                                <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                                <gestureRecognizers/>
+                                <constraints>
+                                    <constraint firstItem="Nsp-Ud-L6L" firstAttribute="top" secondItem="kg0-ir-EMg" secondAttribute="top" id="5AX-ee-sEK"/>
+                                    <constraint firstItem="Nsp-Ud-L6L" firstAttribute="leading" secondItem="kg0-ir-EMg" secondAttribute="leading" id="TxR-Lq-Gr7"/>
+                                </constraints>
+                                <viewLayoutGuide key="contentLayoutGuide" id="j3H-s6-vYf"/>
+                                <viewLayoutGuide key="frameLayoutGuide" id="kg0-ir-EMg"/>
                                 <connections>
-                                    <outlet property="shapeRecognitionButton" destination="F31-i6-jGh" id="64p-AC-ad2"/>
-                                    <outlet property="tracker" destination="wkP-FS-V79" id="Gxh-fl-Zar"/>
+                                    <outletCollection property="gestureRecognizers" destination="NST-aB-nVC" appends="YES" id="f0i-6A-e8Y"/>
                                 </connections>
-                            </view>
+                            </scrollView>
                             <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translucent="NO" translatesAutoresizingMaskIntoConstraints="NO" id="aDU-cP-kvP">
-                                <rect key="frame" x="0.0" y="44" width="414" height="44"/>
+                                <rect key="frame" x="0.0" y="0.0" width="1194" height="50"/>
                                 <items>
                                     <barButtonItem title="Undo" image="arrowshape.turn.up.left.fill" catalog="system" id="Taj-rG-sdE">
                                         <color key="tintColor" systemColor="labelColor" cocoaTouchSystemColor="darkTextColor"/>
@@ -187,15 +206,15 @@
                         <constraints>
                             <constraint firstItem="aDU-cP-kvP" firstAttribute="trailing" secondItem="8bC-Xf-vdC" secondAttribute="trailing" id="7Do-cG-VDT"/>
                             <constraint firstItem="ACt-1Y-oKJ" firstAttribute="trailing" secondItem="8bC-Xf-vdC" secondAttribute="trailing" id="F8g-Wt-Tes"/>
+                            <constraint firstItem="HVl-Sw-a0d" firstAttribute="top" secondItem="aDU-cP-kvP" secondAttribute="bottom" id="Gbu-Of-8KS"/>
+                            <constraint firstItem="HVl-Sw-a0d" firstAttribute="leading" secondItem="aDU-cP-kvP" secondAttribute="leading" id="H4h-bo-GXM"/>
                             <constraint firstItem="ACt-1Y-oKJ" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="LMI-SW-J8h"/>
-                            <constraint firstItem="Nsp-Ud-L6L" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="96.5" id="LOk-lB-MVz"/>
+                            <constraint firstItem="HVl-Sw-a0d" firstAttribute="trailing" secondItem="aDU-cP-kvP" secondAttribute="trailing" id="WPY-dk-uh5"/>
+                            <constraint firstItem="HVl-Sw-a0d" firstAttribute="bottom" secondItem="6Tk-OE-BBY" secondAttribute="bottom" id="dKJ-xu-VW3"/>
                             <constraint firstItem="ACt-1Y-oKJ" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" id="fPE-eE-fuI"/>
                             <constraint firstItem="aDU-cP-kvP" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" id="g9v-Gs-RiF"/>
                             <constraint firstItem="aDU-cP-kvP" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="izU-zx-57g"/>
-                            <constraint firstItem="Nsp-Ud-L6L" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="lfT-G1-WBT"/>
-                            <constraint firstItem="Nsp-Ud-L6L" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="mqt-R4-Znl"/>
                             <constraint firstItem="aDU-cP-kvP" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="xlY-es-dpW"/>
-                            <constraint firstItem="Nsp-Ud-L6L" firstAttribute="bottom" secondItem="6Tk-OE-BBY" secondAttribute="bottom" id="zt2-Zb-2p5"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
@@ -205,12 +224,19 @@
                         <outlet property="colourPicker" destination="k9m-Gf-FRz" id="cxc-vw-H9O"/>
                         <outlet property="drawView" destination="Nsp-Ud-L6L" id="SGm-pC-uOW"/>
                         <outlet property="eraser" destination="liX-JY-aM9" id="hZq-vE-aca"/>
+                        <outlet property="gestureRecogniser" destination="NST-aB-nVC" id="qnK-p2-lwD"/>
+                        <outlet property="scrollView" destination="HVl-Sw-a0d" id="cOG-5T-R8X"/>
                         <outlet property="sessionDetails" destination="0bf-Rv-UNg" id="00s-WS-XUR"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
+                <panGestureRecognizer minimumNumberOfTouches="1" id="NST-aB-nVC">
+                    <connections>
+                        <action selector="getGesture:" destination="BYZ-38-t0r" id="ZuK-WX-s5Z"/>
+                    </connections>
+                </panGestureRecognizer>
             </objects>
-            <point key="canvasLocation" x="135.9375" y="111.59420289855073"/>
+            <point key="canvasLocation" x="134.78260869565219" y="111.16071428571428"/>
         </scene>
     </scenes>
     <resources>

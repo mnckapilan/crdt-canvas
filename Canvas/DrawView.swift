@@ -13,7 +13,7 @@ class DrawView: UIView {
 
     var lines: [String: Stroke] = [:]
     
-    var drawColour = UIColor.white
+    var drawColour = UIColor.black
     var currentIdentifier: String!
     var pointsToWrite: [Point] = []
     var shapeRecognition = false
@@ -31,7 +31,7 @@ class DrawView: UIView {
 
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
-        self.backgroundColor = UIColor.black
+        self.backgroundColor = UIColor.white
     }
     
     func getIdentifier() -> String {
