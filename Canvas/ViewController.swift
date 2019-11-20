@@ -17,6 +17,8 @@ class ViewController: UIViewController, MCSessionDelegate, MCBrowserViewControll
     @IBOutlet var sessionDetails: UIBarButtonItem!
     @IBOutlet var shapeRecognition: UIBarButtonItem!
     @IBOutlet var colourPicker: UIBarButtonItem!
+    @IBOutlet var scrollView: UIScrollView!
+    @IBOutlet var gestureRecogniser: UIPanGestureRecognizer!
     
     var peerID: MCPeerID!
     var mcSession: MCSession!
@@ -25,6 +27,9 @@ class ViewController: UIViewController, MCSessionDelegate, MCBrowserViewControll
     var colourPickerVC : ColourPickerViewController!
     var xmppController : XMPPController?
     var isBluetooth = true
+    
+    var centreX : CGFloat!
+    var centreY : CGFloat!
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -43,6 +48,32 @@ class ViewController: UIViewController, MCSessionDelegate, MCBrowserViewControll
         //self.xmppController!.connect()
         drawView.xmppController = self.xmppController
         self.xmppController!.drawView = drawView
+        
+        scrollView.panGestureRecognizer.minimumNumberOfTouches = 2
+        scrollView.panGestureRecognizer.maximumNumberOfTouches = 2
+        
+        gestureRecogniser.minimumNumberOfTouches = 2
+        gestureRecogniser.maximumNumberOfTouches = 2
+        
+        centreX = drawView.center.x
+        centreY = drawView.center.y
+    }
+    
+    @IBAction func getGesture(_ gesture : UIPanGestureRecognizer){
+        gesture.minimumNumberOfTouches = 2
+        gesture.maximumNumberOfTouches = 2
+        print("We made it")
+        
+        let move = gesture.translation(in: gesture.view!.superview)
+        print(gesture.translation(in: gesture.view!.superview))
+        drawView.center.x = move.x + centreX
+        drawView.center.y = move.y + centreY
+        
+        if gesture.state  == .ended {
+            centreX += move.x
+            centreY += move.y
+        }
+        
     }
 
     @IBAction func showConnectionPrompt() {
