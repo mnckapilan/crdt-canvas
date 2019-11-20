@@ -76,6 +76,32 @@ export class Automerger {
               } 
             }
           });
+        } else if (type === "BETTER_PARTIAL") {
+          var nDoc = Automerge.change(cheekyGlobalVariable, "LOL1", doc => {
+            var stroke = doc.strokes[change.identifier];
+            var lower = change.lower;
+            var upper = change.upper;
+            var end =  stroke.segments.length;
+            for (var j = 0; j < end; j++) {
+              var segment = stroke.segments[j];
+
+              if (segment.start <= lower && lower <= segment.end) {
+                 if (segment.start <= upper && upper <= segment.end) {
+                    stroke.segments.push({
+                      start: upper,
+                      end: segment.end
+                    });
+                 }
+                 segment.end = lower; 
+              } else if (segment.start <= upper && upper <= segment.end) {
+                 segment.start = upper; 
+              } else if (lower <= segment.start && segment.end <= upper) {
+                  stroke.segments.splice(j, 1);
+                  j--;
+                  end--;
+              }
+            }
+          });
         }
         var retValue = [JSON.stringify(nDoc.strokes), JSON.stringify(Automerge.getChanges(cheekyGlobalVariable, nDoc))];
         cheekyGlobalVariable = nDoc;

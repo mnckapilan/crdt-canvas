@@ -38,7 +38,7 @@ class DrawView: UIView {
         return UUID().uuidString
     }
     
-    func lookUpStroke(_ point: Point) -> (String, Int) {
+    func lookUpStroke(_ point: Point) -> (String, Double) {
         for (str, stroke) in lines {
             if let t = stroke.indexOf(givenPoint: point) {
                 return (str, t);
@@ -51,7 +51,12 @@ class DrawView: UIView {
         for (str, stroke) in lines {
             let p = stroke.indexOf(givenPoint: point)
             if let t = p {
-                handleChange(change: Change.partialRemoveStroke(str, t))
+                if stroke.isShape {
+                    print(t)
+                    handleChange(change: Change.betterPartial(str, t - 0.02, t + 0.02))
+                } else {
+                    handleChange(change: Change.partialRemoveStroke(str, Int(t)))
+                }
             }
         }
     }
@@ -71,7 +76,7 @@ class DrawView: UIView {
             let (strokeId, t) = lookUpStroke(point)
             if (strokeId != "") {
                 let stroke = lines[strokeId]!
-                handleChange(change: Change.removeStroke(strokeId, t))
+                handleChange(change: Change.removeStroke(strokeId, Int(t)))
                 undoStack.append((strokeId, stroke, Stroke.ActionType.remove))
             }
         case .PARTIAL_REMOVE:
@@ -202,11 +207,11 @@ class DrawView: UIView {
             if (drewVerticalLine) {
                 // User drew a vertical line first
                 print("User drew a vertical line first")
-                corners = [points[0], Point(x: x1, y: y2), Point(x: x2, y: y2), Point(x: x2, y: y1)]
+                corners = [points[0], Point(x: x1, y: y2), Point(x: x2, y: y2), Point(x: x2, y: y1), points[0]]
             } else if (drewHorizontalLine) {
                 // User drew a horizontal line first
                 print("User drew a horizontal line first")
-                corners = [points[0], Point(x: x2, y: y1), Point(x: x2, y: y2), Point(x: x1, y: y2)]
+                corners = [points[0], Point(x: x2, y: y1), Point(x: x2, y: y2), Point(x: x1, y: y2), points[0]]
             }
             
             handleChange(change: Change.removeStroke(id, 0))
