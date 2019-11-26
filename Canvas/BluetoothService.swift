@@ -12,7 +12,7 @@ import MultipeerConnectivity
 protocol BluetoothServiceDelegate {
     
     func connectedDevicesChanged(manager : BluetoothService, connectedDevices: [String])
-    func sendData(manager : BluetoothService, data: String)
+    func receiveData(manager : BluetoothService, data: String)
     
 }
 
@@ -54,7 +54,7 @@ class BluetoothService : NSObject {
     }
     
     func send(data : String) {
-        NSLog("%@", "sendData: \(data) to \(session.connectedPeers.count) peers")
+        NSLog("%@", "receiveData: \(data) to \(session.connectedPeers.count) peers")
 
         if session.connectedPeers.count > 0 {
             do {
@@ -66,6 +66,7 @@ class BluetoothService : NSObject {
         }
 
     }
+    
 
 }
 
@@ -111,7 +112,7 @@ extension BluetoothService : MCSessionDelegate {
     func session(_ session: MCSession, didReceive data: Data, fromPeer peerID: MCPeerID) {
         NSLog("%@", "didReceiveData: \(data)")
         let str = String(data: data, encoding: .utf8)!
-        self.delegate?.sendData(manager: self, data: str)
+        self.delegate?.receiveData(manager: self, data: str)
     }
 
     func session(_ session: MCSession, didReceive stream: InputStream, withName streamName: String, fromPeer peerID: MCPeerID) {

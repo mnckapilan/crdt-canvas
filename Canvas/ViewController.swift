@@ -28,7 +28,6 @@ class ViewController: UIViewController, MCSessionDelegate, MCBrowserViewControll
     var xmppController : XMPPController?
     var isBluetooth = true
     var connectedDevices : [String]?
-    
     let bluetoothService = BluetoothService()
     
     var centreX : CGFloat!
@@ -68,10 +67,7 @@ class ViewController: UIViewController, MCSessionDelegate, MCBrowserViewControll
     @IBAction func getGesture(_ gesture : UIPanGestureRecognizer){
         gesture.minimumNumberOfTouches = 2
         gesture.maximumNumberOfTouches = 2
-        print("We made it")
-        
         let move = gesture.translation(in: gesture.view!.superview)
-        print(gesture.translation(in: gesture.view!.superview))
         drawView.center.x = move.x + centreX
         drawView.center.y = move.y + centreY
         
@@ -217,7 +213,8 @@ class ViewController: UIViewController, MCSessionDelegate, MCBrowserViewControll
 
 
 extension ViewController : BluetoothServiceDelegate {
-    func sendData(manager: BluetoothService, data: String) {
+    
+    func receiveData(manager: BluetoothService, data: String) {
         do {
             DispatchQueue.main.async { [unowned self] in
                 print("here")
