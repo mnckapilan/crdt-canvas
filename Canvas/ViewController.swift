@@ -27,6 +27,9 @@ class ViewController: UIViewController, MCSessionDelegate, MCBrowserViewControll
     var colourPickerVC : ColourPickerViewController!
     var xmppController : XMPPController?
     var isBluetooth = true
+    var connectedDevices : [String]?
+    
+    let bluetoothService = BluetoothService()
     
     var centreX : CGFloat!
     var centreY : CGFloat!
@@ -38,6 +41,7 @@ class ViewController: UIViewController, MCSessionDelegate, MCBrowserViewControll
         mcSession = MCSession(peer: peerID, securityIdentity: nil, encryptionPreference: .required)
         mcSession.delegate = self
         drawView.mcSession = mcSession
+        drawView.bluetoothService = bluetoothService
         colourPickerVC = sb.instantiateViewController(
             withIdentifier: "colourPickerViewController") as? ColourPickerViewController
         
@@ -45,9 +49,11 @@ class ViewController: UIViewController, MCSessionDelegate, MCBrowserViewControll
         userJIDString: "jack@cloud-vm-41-92.doc.ic.ac.uk",
              password: "testtest")
         
-        //self.xmppController!.connect()
+        self.xmppController!.connect("global")
         drawView.xmppController = self.xmppController
         self.xmppController!.drawView = drawView
+        
+        bluetoothService.delegate = self
         
         scrollView.panGestureRecognizer.minimumNumberOfTouches = 2
         scrollView.panGestureRecognizer.maximumNumberOfTouches = 2
@@ -102,9 +108,9 @@ class ViewController: UIViewController, MCSessionDelegate, MCBrowserViewControll
         sessionDetailsVC.popoverPresentationController?.barButtonItem =
                    sessionDetails
         if (isBluetooth){
-            sessionDetailsVC.datasourceArray = mcSession.connectedPeers.map{$0.displayName}
+            sessionDetailsVC.datasourceArray = connectedDevices! //mcSession.connectedPeers.map{$0.displayName}
         } else {
-            sessionDetailsVC.datasourceArray = self.xmppController!.returnMembers()
+            sessionDetailsVC.datasourceArray = [] //self.xmppController!.returnMembers()
             
         }
 
@@ -209,3 +215,26 @@ class ViewController: UIViewController, MCSessionDelegate, MCBrowserViewControll
     }
 }
 
+
+extension ViewController : BluetoothServiceDelegate {
+    func sendData(manager: BluetoothService, data: String) {
+        do {
+            DispatchQueue.main.async { [unowned self] in
+                print("here")
+                self.drawView.incomingChange(data)
+            }
+        } catch {
+            print(error)
+        }
+    }
+    
+
+    func connectedDevicesChanged(manager: BluetoothService, connectedDevices: [String]) {
+        OperationQueue.main.addOperation {
+            self.connectedDevices = connectedDevices
+            print(connectedDevices)
+        }
+    }
+
+
+}
