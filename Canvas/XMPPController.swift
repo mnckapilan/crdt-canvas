@@ -88,7 +88,7 @@ extension XMPPController: XMPPRoomDelegate {
     }
     
     func xmppStream(_ sender: XMPPStream, didReceive message: XMPPMessage) {
-//        drawView?.incomingChange(message.body!)
+        drawView?.incomingChange(message.body!)
     }
     
     func xmppRoom(_ sender: XMPPRoom, occupantDidJoin occupantJID: XMPPJID, with presence: XMPPPresence) {
