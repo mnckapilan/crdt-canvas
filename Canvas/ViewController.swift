@@ -27,6 +27,8 @@ class ViewController: UIViewController, MCSessionDelegate, MCBrowserViewControll
     var colourPickerVC : ColourPickerViewController!
     var xmppController : XMPPController?
     var isBluetooth = true
+    var connectedDevices : [String]?
+    let bluetoothService = BluetoothService()
     
     var centreX : CGFloat!
     var centreY : CGFloat!
@@ -38,22 +40,27 @@ class ViewController: UIViewController, MCSessionDelegate, MCBrowserViewControll
         mcSession = MCSession(peer: peerID, securityIdentity: nil, encryptionPreference: .required)
         mcSession.delegate = self
         drawView.mcSession = mcSession
+        drawView.bluetoothService = bluetoothService
         colourPickerVC = sb.instantiateViewController(
             withIdentifier: "colourPickerViewController") as? ColourPickerViewController
         
-        try! self.xmppController = XMPPController(hostName: "cloud-vm-41-92.doc.ic.ac.uk",
-        userJIDString: "jack@cloud-vm-41-92.doc.ic.ac.uk",
-             password: "testtest")
+        try! self.xmppController = XMPPController(hostName: "xmpp.lets-draw.live",
+        userJIDString: "grouptwo@xmpp.lets-draw.live",
+             password: "grouptwo")
         
-        //self.xmppController!.connect()
+        self.xmppController!.connect("global")
         drawView.xmppController = self.xmppController
         self.xmppController!.drawView = drawView
+        
+        bluetoothService.delegate = self
         
         scrollView.panGestureRecognizer.minimumNumberOfTouches = 2
         scrollView.panGestureRecognizer.maximumNumberOfTouches = 2
         
         gestureRecogniser.minimumNumberOfTouches = 2
         gestureRecogniser.maximumNumberOfTouches = 2
+        
+        connectedDevices = []
         
         centreX = drawView.center.x
         centreY = drawView.center.y
@@ -62,10 +69,7 @@ class ViewController: UIViewController, MCSessionDelegate, MCBrowserViewControll
     @IBAction func getGesture(_ gesture : UIPanGestureRecognizer){
         gesture.minimumNumberOfTouches = 2
         gesture.maximumNumberOfTouches = 2
-        print("We made it")
-        
         let move = gesture.translation(in: gesture.view!.superview)
-        print(gesture.translation(in: gesture.view!.superview))
         drawView.center.x = move.x + centreX
         drawView.center.y = move.y + centreY
         
@@ -102,9 +106,9 @@ class ViewController: UIViewController, MCSessionDelegate, MCBrowserViewControll
         sessionDetailsVC.popoverPresentationController?.barButtonItem =
                    sessionDetails
         if (isBluetooth){
-            sessionDetailsVC.datasourceArray = mcSession.connectedPeers.map{$0.displayName}
+            sessionDetailsVC.datasourceArray = connectedDevices! //mcSession.connectedPeers.map{$0.displayName}
         } else {
-            sessionDetailsVC.datasourceArray = self.xmppController!.returnMembers()
+            sessionDetailsVC.datasourceArray = [] //self.xmppController!.returnMembers()
             
         }
 
@@ -209,3 +213,27 @@ class ViewController: UIViewController, MCSessionDelegate, MCBrowserViewControll
     }
 }
 
+
+extension ViewController : BluetoothServiceDelegate {
+    
+    func receiveData(manager: BluetoothService, data: String) {
+        do {
+            DispatchQueue.main.async { [unowned self] in
+                print("here")
+                self.drawView.incomingChange(data)
+            }
+        } catch {
+            print(error)
+        }
+    }
+    
+
+    func connectedDevicesChanged(manager: BluetoothService, connectedDevices: [String]) {
+        OperationQueue.main.addOperation {
+            self.connectedDevices = connectedDevices
+            print(connectedDevices)
+        }
+    }
+
+
+}

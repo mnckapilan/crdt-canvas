@@ -51,7 +51,7 @@ class sessionDetailsViewController: UIViewController {
         } else {
             print("** Connect XMPP")
             //XMPP Join Room
-            mainViewController!.xmppController!.connect()
+            mainViewController!.xmppController!.connect("global")
         }
     }
     
