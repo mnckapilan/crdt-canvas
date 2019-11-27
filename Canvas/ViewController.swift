@@ -60,6 +60,8 @@ class ViewController: UIViewController, MCSessionDelegate, MCBrowserViewControll
         gestureRecogniser.minimumNumberOfTouches = 2
         gestureRecogniser.maximumNumberOfTouches = 2
         
+        connectedDevices = []
+        
         centreX = drawView.center.x
         centreY = drawView.center.y
     }
