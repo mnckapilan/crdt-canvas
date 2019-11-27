@@ -44,9 +44,9 @@ class ViewController: UIViewController, MCSessionDelegate, MCBrowserViewControll
         colourPickerVC = sb.instantiateViewController(
             withIdentifier: "colourPickerViewController") as? ColourPickerViewController
         
-        try! self.xmppController = XMPPController(hostName: "cloud-vm-41-92.doc.ic.ac.uk",
-        userJIDString: "jack@cloud-vm-41-92.doc.ic.ac.uk",
-             password: "testtest")
+        try! self.xmppController = XMPPController(hostName: "xmpp.lets-draw.live",
+        userJIDString: "grouptwo@xmpp.lets-draw.live",
+             password: "grouptwo")
         
         self.xmppController!.connect("global")
         drawView.xmppController = self.xmppController
