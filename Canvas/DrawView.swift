@@ -398,8 +398,22 @@ class DrawView: UIView {
         }
         if xmppController!.isConnected(){
             xmppController!.room!.sendMessage(withBody: change)
+            let protocolMessage = self.protocolMessage(change)
+            xmppController!.room!.sendMessage(withBody: protocolMessage)
         }
         bluetoothService!.send(data: change)
         
+    }
+    
+    func protocolMessage(_ change: String) -> String {
+        let data = Data(change.utf8)
+        do {
+            if let json = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any] {
+                return json["message"] as! String
+            }
+        } catch let error as NSError {
+            print("Failed to load: \(error.localizedDescription)")
+        }
+        return "ERROR"
     }
 }
