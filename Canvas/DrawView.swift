@@ -20,6 +20,8 @@ class DrawView: UIView {
     @IBOutlet var tracker: UIImageView!
     var xmppController : XMPPController?
     
+    var bluetoothService:BluetoothService?
+    
     @IBOutlet var shapeRecognitionButton: UIBarButtonItem!
     
     var undoStack: [(String, Stroke, Stroke.ActionType)] = []
@@ -397,6 +399,7 @@ class DrawView: UIView {
         if xmppController!.isConnected(){
             xmppController!.room!.sendMessage(withBody: change)
         }
+        bluetoothService!.send(data: change)
         
     }
 }

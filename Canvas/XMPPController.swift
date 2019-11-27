@@ -23,6 +23,7 @@ class XMPPController: NSObject {
     var room: XMPPRoom?
     var drawView: DrawView?
     var members: [String]?
+    var currentRoom: String?
     
     init(hostName: String, userJIDString: String, hostPort: UInt16 = 5222, password: String) throws {
         guard let userJID = XMPPJID(string: userJIDString) else {
@@ -46,11 +47,11 @@ class XMPPController: NSObject {
         self.xmppStream.addDelegate(self, delegateQueue: DispatchQueue.main)
     }
     
-    func connect() {
+    func connect(_ name: String) {
         if !self.xmppStream.isDisconnected {
             return
         }
-
+        self.currentRoom = name
         try! self.xmppStream.connect(withTimeout: XMPPStreamTimeoutNone)
     }
     
@@ -66,15 +67,19 @@ class XMPPController: NSObject {
         return self.xmppStream.isConnected
     }
     
-    func returnMembers() -> [String] {
-        
-        room!.fetchMembersList()
-        while (members == nil){
-            members = []
-            break
-        }
-        return members!
-    }
+// Needs to be fixed
+//    func returnMembers() -> [String] {
+//
+//        room!.fetchMembersList()
+//        while (members == nil){
+//            members = []
+//            break
+//        }
+//        return members!
+//    }
+    
+    
+    
 }
 
 extension XMPPController: XMPPRoomDelegate {
@@ -112,7 +117,7 @@ extension XMPPController: XMPPStreamDelegate {
     
     func xmppStreamDidAuthenticate(_ sender: XMPPStream) {
         self.xmppStream.send(XMPPPresence())
-        let userID = XMPPJID(string: "test3@conference.cloud-vm-41-92.doc.ic.ac.uk")!
+        let userID = XMPPJID(string: self.currentRoom! + "@conference.cloud-vm-41-92.doc.ic.ac.uk")!
         let roomStorage = XMPPRoomCoreDataStorage.sharedInstance()!
         let room = XMPPRoom(roomStorage: roomStorage, jid: userID)
         self.room = room
