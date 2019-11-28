@@ -234,7 +234,7 @@ extension ViewController : BluetoothServiceDelegate {
         OperationQueue.main.addOperation {
             if (connectedDevices.count > 0) {
                 if (connectedDevices.count > 1){
-                    self.connectedDevices = connectedDevices.sorted{$0 > $1}
+                    self.connectedDevices = connectedDevices.sorted{$0 < $1}
                 } else {
                     self.connectedDevices = connectedDevices
                 }
