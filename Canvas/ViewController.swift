@@ -52,6 +52,7 @@ class ViewController: UIViewController, MCSessionDelegate, MCBrowserViewControll
         self.xmppController!.connect("jacksroom")
         drawView.xmppController = self.xmppController
         self.xmppController!.drawView = drawView
+        self.xmppController!.isMaster = self.isMaster
         
         bluetoothService.delegate = self
         
@@ -231,9 +232,18 @@ extension ViewController : BluetoothServiceDelegate {
 
     func connectedDevicesChanged(manager: BluetoothService, connectedDevices: [String]) {
         OperationQueue.main.addOperation {
-            self.connectedDevices = connectedDevices
-            print(connectedDevices)
-            // iterate over list of devices, if one has name before alphabetically, then not master
+            if (connectedDevices.count > 0) {
+                if (connectedDevices.count > 1){
+                    self.connectedDevices = connectedDevices.sorted{$0 < $1}
+                } else {
+                    self.connectedDevices = connectedDevices
+                }
+                print(connectedDevices)
+                self.isMaster = !(connectedDevices[0] < self.peerID.displayName)
+                print(self.isMaster)
+            } else {
+                self.isMaster = true
+            }
         }
     }
 
