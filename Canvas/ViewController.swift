@@ -45,14 +45,15 @@ class ViewController: UIViewController, MCSessionDelegate, MCBrowserViewControll
         colourPickerVC = sb.instantiateViewController(
             withIdentifier: "colourPickerViewController") as? ColourPickerViewController
         
-        try! self.xmppController = XMPPController(hostName: "xmpp.lets-draw.live",
-        userJIDString: "grouptwo@xmpp.lets-draw.live",
-             password: "grouptwo")
+        try! self.xmppController = XMPPController(hostName: "cloud-vm-41-92.doc.ic.ac.uk",
+        userJIDString: "jack@cloud-vm-41-92.doc.ic.ac.uk",
+             password: "testtest")
         
         self.xmppController!.connect("jacksroom")
         drawView.xmppController = self.xmppController
         self.xmppController!.drawView = drawView
-        self.xmppController!.isMaster = self.isMaster
+        drawView.mainViewController = self
+        self.xmppController!.mainViewController = self
         
         bluetoothService.delegate = self
         
@@ -219,13 +220,10 @@ class ViewController: UIViewController, MCSessionDelegate, MCBrowserViewControll
 extension ViewController : BluetoothServiceDelegate {
     
     func receiveData(manager: BluetoothService, data: String) {
-        do {
-            DispatchQueue.main.async { [unowned self] in
-                print("here")
-                self.drawView.incomingChange(data)
-            }
-        } catch {
-            print(error)
+        DispatchQueue.main.async { [unowned self] in
+            print("here")
+            // Only do this if the change's user is not myself
+            self.drawView.incomingChange(data)
         }
     }
     

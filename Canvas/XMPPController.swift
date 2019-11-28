@@ -24,7 +24,7 @@ class XMPPController: NSObject {
     var drawView: DrawView?
     var members: [String]?
     var currentRoom: String?
-    var isMaster: Bool?
+    var mainViewController : ViewController?
     
     init(hostName: String, userJIDString: String, hostPort: UInt16 = 5222, password: String) throws {
         guard let userJID = XMPPJID(string: userJIDString) else {
@@ -89,8 +89,11 @@ extension XMPPController: XMPPRoomDelegate {
     }
     
     func xmppStream(_ sender: XMPPStream, didReceive message: XMPPMessage) {
-        //drawView?.incomingChange(message.body!)
-        print(self.isMaster)
+        // if it is the master, then render it and also send it over bluetooth to every other device
+        if (mainViewController!.isMaster) {
+            drawView?.incomingChange(message.body!)
+            mainViewController!.bluetoothService.send(data: message.body!)
+        }
     }
     
     func xmppRoom(_ sender: XMPPRoom, occupantDidJoin occupantJID: XMPPJID, with presence: XMPPPresence) {
@@ -119,7 +122,7 @@ extension XMPPController: XMPPStreamDelegate {
     
     func xmppStreamDidAuthenticate(_ sender: XMPPStream) {
         self.xmppStream.send(XMPPPresence())
-        let userID = XMPPJID(string: self.currentRoom! + "@conference.xmpp.lets-draw.live")!
+        let userID = XMPPJID(string: self.currentRoom! + "@conference.cloud-vm-41-92.doc.ic.ac.uk")!
         let roomStorage = XMPPRoomCoreDataStorage.sharedInstance()!
         let room = XMPPRoom(roomStorage: roomStorage, jid: userID)
         self.room = room
