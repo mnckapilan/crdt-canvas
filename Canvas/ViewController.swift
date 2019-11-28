@@ -29,6 +29,7 @@ class ViewController: UIViewController, MCSessionDelegate, MCBrowserViewControll
     var isBluetooth = true
     var connectedDevices : [String]?
     let bluetoothService = BluetoothService()
+    var isMaster = true
     
     var centreX : CGFloat!
     var centreY : CGFloat!
@@ -44,13 +45,15 @@ class ViewController: UIViewController, MCSessionDelegate, MCBrowserViewControll
         colourPickerVC = sb.instantiateViewController(
             withIdentifier: "colourPickerViewController") as? ColourPickerViewController
         
-        try! self.xmppController = XMPPController(hostName: "xmpp.lets-draw.live",
-        userJIDString: "grouptwo@xmpp.lets-draw.live",
-             password: "grouptwo")
+        try! self.xmppController = XMPPController(hostName: "cloud-vm-41-92.doc.ic.ac.uk",
+        userJIDString: "jack@cloud-vm-41-92.doc.ic.ac.uk",
+             password: "testtest")
         
-        self.xmppController!.connect("global")
+        self.xmppController!.connect("jack2")
         drawView.xmppController = self.xmppController
         self.xmppController!.drawView = drawView
+        drawView.mainViewController = self
+        self.xmppController!.mainViewController = self
         
         bluetoothService.delegate = self
         
@@ -217,21 +220,35 @@ class ViewController: UIViewController, MCSessionDelegate, MCBrowserViewControll
 extension ViewController : BluetoothServiceDelegate {
     
     func receiveData(manager: BluetoothService, data: String) {
-        do {
-            DispatchQueue.main.async { [unowned self] in
-                print("here")
-                self.drawView.incomingChange(data)
+        DispatchQueue.main.async { [unowned self] in
+            print("here")
+            // Only do this if the change's user is not myself?
+            self.drawView.incomingChange(data)
+            //Send to XMPP if master
+            if (self.isMaster) {
+                if self.xmppController!.isConnected(){
+                    self.xmppController!.room!.sendMessage(withBody: data)
+                }
             }
-        } catch {
-            print(error)
+            
         }
     }
     
 
     func connectedDevicesChanged(manager: BluetoothService, connectedDevices: [String]) {
         OperationQueue.main.addOperation {
-            self.connectedDevices = connectedDevices
-            print(connectedDevices)
+            if (connectedDevices.count > 0) {
+                if (connectedDevices.count > 1){
+                    self.connectedDevices = connectedDevices.sorted{$0 < $1}
+                } else {
+                    self.connectedDevices = connectedDevices
+                }
+                print(connectedDevices)
+                self.isMaster = !(connectedDevices[0] > self.peerID.displayName)
+                print(self.isMaster)
+            } else {
+                self.isMaster = true
+            }
         }
     }
 
