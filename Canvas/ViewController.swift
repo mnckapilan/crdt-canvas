@@ -30,6 +30,7 @@ class ViewController: UIViewController, MCSessionDelegate, MCBrowserViewControll
     var connectedDevices : [String]?
     let bluetoothService = BluetoothService()
     var isMaster = true
+    var currentRoom = "jack3"
     
     var centreX : CGFloat!
     var centreY : CGFloat!
@@ -49,7 +50,7 @@ class ViewController: UIViewController, MCSessionDelegate, MCBrowserViewControll
         userJIDString: "jack@cloud-vm-41-92.doc.ic.ac.uk",
              password: "testtest")
         
-        self.xmppController!.connect("jack2")
+        self.xmppController!.connect(currentRoom)
         drawView.xmppController = self.xmppController
         self.xmppController!.drawView = drawView
         drawView.mainViewController = self
