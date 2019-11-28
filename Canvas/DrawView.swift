@@ -108,7 +108,7 @@ class DrawView: UIView {
             self.setNeedsDisplay()
         }
     }
-    
+
     override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
         let point = Point(fromCGPoint: Array(touches)[0].location(in: self))
         switch mode {
