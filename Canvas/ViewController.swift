@@ -49,7 +49,7 @@ class ViewController: UIViewController, MCSessionDelegate, MCBrowserViewControll
         userJIDString: "jack@cloud-vm-41-92.doc.ic.ac.uk",
              password: "testtest")
         
-        self.xmppController!.connect("jacksroom")
+        self.xmppController!.connect("jack2")
         drawView.xmppController = self.xmppController
         self.xmppController!.drawView = drawView
         drawView.mainViewController = self
@@ -222,8 +222,15 @@ extension ViewController : BluetoothServiceDelegate {
     func receiveData(manager: BluetoothService, data: String) {
         DispatchQueue.main.async { [unowned self] in
             print("here")
-            // Only do this if the change's user is not myself
+            // Only do this if the change's user is not myself?
             self.drawView.incomingChange(data)
+            //Send to XMPP if master
+            if (self.isMaster) {
+                if self.xmppController!.isConnected(){
+                    self.xmppController!.room!.sendMessage(withBody: data)
+                }
+            }
+            
         }
     }
     
