@@ -29,6 +29,7 @@ class ViewController: UIViewController, MCSessionDelegate, MCBrowserViewControll
     var isBluetooth = true
     var connectedDevices : [String]?
     let bluetoothService = BluetoothService()
+    var isMaster = false
     
     var centreX : CGFloat!
     var centreY : CGFloat!
@@ -48,7 +49,7 @@ class ViewController: UIViewController, MCSessionDelegate, MCBrowserViewControll
         userJIDString: "jack@cloud-vm-41-92.doc.ic.ac.uk",
              password: "testtest")
         
-        self.xmppController!.connect("global")
+        self.xmppController!.connect("jacksroom")
         drawView.xmppController = self.xmppController
         self.xmppController!.drawView = drawView
         
@@ -232,6 +233,7 @@ extension ViewController : BluetoothServiceDelegate {
         OperationQueue.main.addOperation {
             self.connectedDevices = connectedDevices
             print(connectedDevices)
+            // iterate over list of devices, if one has name before alphabetically, then not master
         }
     }
 
