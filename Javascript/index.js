@@ -20,22 +20,22 @@ export class Automerger {
     var change = JSON.parse(changeString);
     var type = change.type;
     if (type === "ADD_POINT") {
-      var nDoc = Automerge.change(cheekyGlobalVariable, "LOL0", doc => {
+      var nDoc = Automerge.change(cheekyGlobalVariable, "ADD_POINT", doc => {
         var p = doc.strokes[change.identifier].points;
         change.point.forEach(x => p.push(x));
         doc.strokes[change.identifier].segments[0].end += change.point.length;
         // console.log("end");
       });
     } else if (type === "ADD_STROKE") {
-      var nDoc = Automerge.change(cheekyGlobalVariable, "LOL1", doc => {
+      var nDoc = Automerge.change(cheekyGlobalVariable, "ADD_STROKE", doc => {
         doc.strokes[change.identifier] = change.stroke;
       });
     } else if (type === "CLEAR_CANVAS") {
-      var nDoc = Automerge.change(cheekyGlobalVariable, "LOL2", doc => {
+      var nDoc = Automerge.change(cheekyGlobalVariable, "CLEAR_CANVAS", doc => {
         doc.strokes = {};
       });
     } else if (type === "REMOVE_STROKE") {
-      var nDoc = Automerge.change(cheekyGlobalVariable, "LOL1", doc => {
+      var nDoc = Automerge.change(cheekyGlobalVariable, "REMOVE_STROKE", doc => {
         var stroke = doc.strokes[change.identifier];
         var index = change.index;
         if (stroke.segments.length == 1) {
@@ -51,7 +51,7 @@ export class Automerger {
         }
       });
     } else if (type === "PARTIAL_REMOVE_STROKE") {
-      var nDoc = Automerge.change(cheekyGlobalVariable, "LOL1", doc => {
+      var nDoc = Automerge.change(cheekyGlobalVariable, "PARTIAL_REMOVE_STROKE", doc => {
         var stroke = doc.strokes[change.identifier];
         var index = change.index;
         for (var j = 0; j < stroke.segments.length; j++) {
@@ -74,7 +74,7 @@ export class Automerger {
         }
       });
     } else if (type === "BETTER_PARTIAL") {
-      var nDoc = Automerge.change(cheekyGlobalVariable, "LOL1", doc => {
+      var nDoc = Automerge.change(cheekyGlobalVariable, "BETTER_PARTIAL", doc => {
         var stroke = doc.strokes[change.identifier];
         var lower = change.lower;
         var upper = change.upper;
@@ -105,34 +105,15 @@ export class Automerger {
     return retValue;
   }
 
-  // If we are sending/receiving changes, use this.
-  // May be an issue as it's only one change ? But give it a go
   static mergeIncomingChanges(changesString) {
     let changes = JSON.parse(changesString);
     cheekyGlobalVariable = Automerge.applyChanges(cheekyGlobalVariable, changes);
     return JSON.stringify(cheekyGlobalVariable.strokes);
   }
 
-  // If we are sending/receiving changes, use this.
-  // May be an issue as it's only one change ? But give it a go
   static getAllChanges() {
     let q = Automerge.getChanges(Automerge.init(), cheekyGlobalVariable);
     let p = JSON.stringify(q);
     return p;
   }
-
-  /* Case 1: Everyone online drawing
-     user1 makes a change and sends changes to all other users
-     user2,3.. receive change and apply change to their document
-     using Automerge.applyChange()
-  */
-
-  /* Case 2: Someone drops and everyone else remains
-      They hold a local copy of doc and all changes made, they
-     can carry on editing offline and adding to doc.
-     When the user comes back online, send all their changes 
-     and request everyone else's changes.
-     */
-  /* Case 3: Everyone drops 
-  */
 };

@@ -49,7 +49,7 @@ class ViewController: UIViewController, MCSessionDelegate, MCBrowserViewControll
         userJIDString: "jack@cloud-vm-41-92.doc.ic.ac.uk",
              password: "testtest")
         
-        self.xmppController!.connect("jack2")
+        self.xmppController!.connect("hugo3")
         drawView.xmppController = self.xmppController
         self.xmppController!.drawView = drawView
         drawView.mainViewController = self
