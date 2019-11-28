@@ -16,6 +16,7 @@ class AutomergeJavaScript: NSObject {
     private let context: JSContext
    
     private override init() {
+        print("should be getting console logs")
         let jsCode = try? String.init(contentsOf: Bundle.main.url(forResource: "Canvas.bundle", withExtension: "js")!)
         
         // Create a new JavaScript context that will contain the state of our evaluated JS code.
@@ -23,6 +24,9 @@ class AutomergeJavaScript: NSObject {
        context.evaluateScript("var console = { log: function(message) { _consoleLog(message) } }")
        let consoleLog: @convention(block) (String) -> Void = { message in
            print("JavaScript console.log: " + message)
+        print("inside here")
+        
+
        }
         context.setObject(unsafeBitCast(consoleLog, to: AnyObject.self), forKeyedSubscript: "_consoleLog" as (NSCopying & NSObjectProtocol)?)
 

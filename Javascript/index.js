@@ -1,49 +1,44 @@
-import * as Automerge from 'automerge'
 import * as Y from 'yjs'
+// const doc = new Y.Doc();
 
+// console.log("we are in init");
+// // return Y.encodeStateAsUpdate(doc);
+// const strokeMap = doc.getMap("strokes")
+// console.log(Y.encodeStateAsUpdate(doc));
 export class Automerger {
-
-  static randomNumber() {
-    // console.log("random number generated");
-    return Math.floor(Math.random() * 100);
-  }
-
-  static initDocument() {
-    const doc = new Y.Doc();
-    // return Y.encodeStateAsUpdate(doc);
-    console.log(Y.encodeStateAsUpdate(doc));
-  }
-
   // Local changes when user adds a stoke.
   // We will be sending a list of changes but this list only contains one change
 
   static addChange(changeString) {
+    console.log("entering Add change....");
+    var oldDocSV = Y.encodeStateAsUpdate(doc);
     var change = JSON.parse(changeString);
     var type = change.type;
+    const strokes = doc.getMap('strokes');
     if (type === "ADD_POINT") {
-      var nDoc = Automerge.change(cheekyGlobalVariable, "ADD_POINT", doc => {
-        //console.log(JSON.stringify(doc.strokes));
-        //console.log(JSON.stringify(change));
-        //console.log("start");
-        var p = doc.strokes[change.identifier].points;
+      console.log("trying to add a point");
+      doc.transact(() => {
+        var p = strokes.get(change.identifier).points;
         change.point.forEach(x => p.push(x));
-        doc.strokes[change.identifier].segments[0].end += change.point.length;
-        // console.log("end");
+        strokes.get(change.identifier).segments[0].end += change.point.length;
+        // strokes.set(change.identifier, temp);
       });
     } else if (type === "ADD_STROKE") {
-      var nDoc = Automerge.change(cheekyGlobalVariable, "ADD_STROKE", doc => {
-        doc.strokes[change.identifier] = change.stroke;
+      console.log("trying to add a stroke");
+      doc.transact(() => {
+        strokeMap.set(change.identifier, change.stroke);
       });
     } else if (type === "CLEAR_CANVAS") {
-      var nDoc = Automerge.change(cheekyGlobalVariable, "CLEAR_CANVAS", doc => {
-        doc.strokes = {};
-      });
-    } else if (type === "REMOVE_STROKE") {
-      var nDoc = Automerge.change(cheekyGlobalVariable, "REMOVE_STROKE", doc => {
-        var stroke = doc.strokes[change.identifier];
+      doc.transact(() => {
+        doc.getMap("strokes").forEach(x => strokes.delete(x))
+      })
+    }
+    else if (type === "REMOVE_STROKE") {
+      doc.transact(() => {
+        var stroke = strokes.get(change.identifier);
         var index = change.index;
         if (stroke.segments.length == 1) {
-          delete doc.strokes[change.identifier];
+          strokes.delete(change.identifier)
         } else {
           for (var j = 0; j < stroke.segments.length; j++) {
             var segment = stroke.segments[j];
@@ -55,11 +50,11 @@ export class Automerger {
         }
       });
     } else if (type === "PARTIAL_REMOVE_STROKE") {
-      var nDoc = Automerge.change(cheekyGlobalVariable, "PARTIAL_REMOVE_STROKE", doc => {
-        var stroke = doc.strokes[change.identifier];
+      doc.transact(() => {
+        var stroke = strokes.get(change.identifier);
         var index = change.index;
         for (var j = 0; j < stroke.segments.length; j++) {
-          var segment = stroke.segments[j];
+          var segment = stroke.segment[j];
           if (segment.start <= index && index <= segment.end) {
             if (index + 1 < segment.end) {
               stroke.segments.push({
@@ -67,7 +62,6 @@ export class Automerger {
                 end: segment.end
               });
             }
-
             if (segment.start < index - 1) {
               segment.end = index - 1;
             } else {
@@ -77,12 +71,14 @@ export class Automerger {
           }
         }
       });
+
     } else if (type === "BETTER_PARTIAL") {
-      var nDoc = Automerge.change(cheekyGlobalVariable, "BETTER_PARTIAL", doc => {
-        var stroke = doc.strokes[change.identifier];
+      doc.transact(() => {
+        var stroke = strokes.get(change.identifier)
         var lower = change.lower;
         var upper = change.upper;
         var end = stroke.segments.length;
+
         for (var j = 0; j < end; j++) {
           var segment = stroke.segments[j];
 
@@ -104,8 +100,9 @@ export class Automerger {
         }
       });
     }
-    var retValue = [JSON.stringify(nDoc.strokes), JSON.stringify(Automerge.getChanges(cheekyGlobalVariable, nDoc))];
-    cheekyGlobalVariable = nDoc;
+    var updatedDocStateVector = Y.encodeStateVector(doc)
+    var changes = Y.encodeStateAsUpdate(oldDocSV, updatedDocStateVector)
+    var retValue = [JSON.stringify(doc.getMap("strokes").toJSON), JSON.stringify(changes)];
     return retValue;
   }
 
@@ -113,16 +110,16 @@ export class Automerger {
   // May be an issue as it's only one change ? But give it a go
   static mergeIncomingChanges(changesString) {
     let changes = JSON.parse(changesString);
-    cheekyGlobalVariable = Automerge.applyChanges(cheekyGlobalVariable, changes);
-    return JSON.stringify(cheekyGlobalVariable.strokes);
+    let diff1 = Y.encodeStateAsUpdate(doc, changes)
+    Y.applyUpdate(doc, diff1)
+    return JSON.stringify(doc.get('strokes'));
   }
 
   // If we are sending/receiving changes, use this.
   // May be an issue as it's only one change ? But give it a go
   static getAllChanges() {
-    let q = Automerge.getChanges(Automerge.init(), cheekyGlobalVariable);
-    let p = JSON.stringify(q);
-    return p;
+    let completeDoc = Y.encodeStateAsUpdate(doc);
+    return JSON.stringify(completeDoc);
   }
 
   /* Case 1: Everyone online drawing
