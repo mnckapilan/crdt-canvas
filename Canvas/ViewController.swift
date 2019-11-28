@@ -29,7 +29,7 @@ class ViewController: UIViewController, MCSessionDelegate, MCBrowserViewControll
     var isBluetooth = true
     var connectedDevices : [String]?
     let bluetoothService = BluetoothService()
-    var isMaster = false
+    var isMaster = true
     
     var centreX : CGFloat!
     var centreY : CGFloat!
@@ -234,12 +234,12 @@ extension ViewController : BluetoothServiceDelegate {
         OperationQueue.main.addOperation {
             if (connectedDevices.count > 0) {
                 if (connectedDevices.count > 1){
-                    self.connectedDevices = connectedDevices.sorted{$0 < $1}
+                    self.connectedDevices = connectedDevices.sorted{$0 > $1}
                 } else {
                     self.connectedDevices = connectedDevices
                 }
                 print(connectedDevices)
-                self.isMaster = !(connectedDevices[0] < self.peerID.displayName)
+                self.isMaster = !(connectedDevices[0] > self.peerID.displayName)
                 print(self.isMaster)
             } else {
                 self.isMaster = true
