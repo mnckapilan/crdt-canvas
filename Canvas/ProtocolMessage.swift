@@ -47,11 +47,30 @@ class ProtocolMessage {
 
     /*Points are added in multiples of 5 operations. so (ops - 1) % 5  == 0
         theres an extra op at the end for setting 'end' which we can ignore.*/
+
+        /* op1: is insert and contains the id of the point list.
+                 this is what we can use as a stroke id.
+            op2: irrelevant
+            op3: contains x coord
+            op4: contains y coord
+            op5: irrelevant
+            */
     func protocolAddPoint(_ changeJson: JSON) -> String {
         // We don't set weight for the time being
         let dict = AddPointProtocol(type: "APPEND", identifier: "", points: [[0,0]])
         let ops = changeJson["ops"]
-        // var identifier = ops[1]["obj"].stringValue
+        var identifier = ops[0]["obj"].stringValue
+
+        for (indexStr: String, subJson: JSON) in ops {
+           let i = Int(indexStr) 
+            if (i % 5 == 0) {
+                dict.identifier = subJson["obj"].strinValue
+            }
+            /
+
+
+        }
+
         do {
             let protocolJson = try JSONEncoder().encode(dict)
             let jsonString = String(data: protocolJson, encoding: .utf8)
