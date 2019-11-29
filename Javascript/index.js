@@ -18,6 +18,8 @@ export class Automerger {
 
   static addChange(changeString) {
     var change = JSON.parse(changeString);
+    console.log("our id" + change.identifier)
+    console.log("automerg id" + Automerge.getObjectId())
     var type = change.type;
     if (type === "ADD_POINT") {
       var nDoc = Automerge.change(cheekyGlobalVariable, "ADD_POINT", doc => {

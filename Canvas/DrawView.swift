@@ -402,7 +402,7 @@ class DrawView: UIView {
         if (mainViewController!.isMaster) {
             if xmppController!.isConnected(){
                 xmppController!.room!.sendMessage(withBody: change)
-                let protocolMessage = self.getProtocolMessage(change)
+                let protocolMessage = ProtocolMessage().getProtocolMessage(change)
                 print("protocolMessage: ", protocolMessage)
                 xmppController!.room!.sendMessage(withBody: protocolMessage)
             }
@@ -410,49 +410,4 @@ class DrawView: UIView {
         bluetoothService!.send(data: change)
         
     }
-
-    struct AddStrokeProtocol : Codable {
-        var type: String
-        var identifier: String
-        var weight: Float
-        var colour: [Int]
-        var start: [Int]
-    }
-    func protocolAddStroke(_ changeJson: JSON) -> String {
-        // We don't set weight for the time being
-        var dict = AddStrokeProtocol(type: "ADD_STROKE", identifier: "", weight: 5.0, colour: [0,0,0], start: [0,0])
-        var ops = changeJson["ops"]
-        dict.identifier = ops[0]["obj"].stringValue
-        dict.start[0] = ops[4]["value"].int!
-        dict.start[1] = ops[5]["value"].int!
-        dict.colour[0] = ops[10]["value"].int!
-        dict.colour[1] = ops[13]["value"].int!
-        dict.colour[2] = ops[12]["value"].int!
-         
-        
-        do {
-            var protocolJson = try JSONEncoder().encode(dict)
-            var jsonString = String(data: protocolJson, encoding: .utf8)
-            print(jsonString)
-            return jsonString!
-        } catch {print(error)}
-        // var protocolJson =JSON(dict)
-        
-        return ""
-    }
-
-    func getProtocolMessage(_ change: String) -> String {
-        var json = JSON.init(parseJSON:change)[0]
-        var type = json["message"].stringValue
-        var protocolJson = ""
-
-        if (type == "ADD_STROKE") {
-            print("type is addstroke")
-            protocolJson = protocolAddStroke(json)
-        }
-        
-        return protocolJson
-    
-    }
-
 }

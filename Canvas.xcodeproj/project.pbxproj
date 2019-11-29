@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		15F9B347235E068600A6F790 /* Stroke.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15F9B346235E068600A6F790 /* Stroke.swift */; };
+		C12DB22623917C1900CE9CD5 /* ProtocolMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = C12DB22523917C1900CE9CD5 /* ProtocolMessage.swift */; };
 		C1C1C0F32350E3E2006DED27 /* AutomergeJavaScript.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1C1C0F22350E3E2006DED27 /* AutomergeJavaScript.swift */; };
 		C1C1C0F52350E404006DED27 /* Canvas.bundle.js in Resources */ = {isa = PBXBuildFile; fileRef = C1C1C0F42350E404006DED27 /* Canvas.bundle.js */; };
 		E009D221235520EB00B55EA0 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E009D220235520EB00B55EA0 /* ViewController.swift */; };
@@ -59,6 +60,7 @@
 
 /* Begin PBXFileReference section */
 		15F9B346235E068600A6F790 /* Stroke.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Stroke.swift; sourceTree = "<group>"; };
+		C12DB22523917C1900CE9CD5 /* ProtocolMessage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProtocolMessage.swift; sourceTree = "<group>"; };
 		C1C1C0F22350E3E2006DED27 /* AutomergeJavaScript.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AutomergeJavaScript.swift; sourceTree = "<group>"; };
 		C1C1C0F42350E404006DED27 /* Canvas.bundle.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; name = Canvas.bundle.js; path = Javascript/dist/Canvas.bundle.js; sourceTree = SOURCE_ROOT; };
 		E009D220235520EB00B55EA0 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -135,6 +137,7 @@
 		E0BE81F92350C3A100D93BF1 /* Canvas */ = {
 			isa = PBXGroup;
 			children = (
+				C12DB22523917C1900CE9CD5 /* ProtocolMessage.swift */,
 				E097F4412373203D00050137 /* ColourPickerViewController.swift */,
 				E0BE81FA2350C3A100D93BF1 /* AppDelegate.swift */,
 				C1C1C0F22350E3E2006DED27 /* AutomergeJavaScript.swift */,
@@ -298,6 +301,7 @@
 			files = (
 				C1C1C0F32350E3E2006DED27 /* AutomergeJavaScript.swift in Sources */,
 				E0EEA22E235494C10076D540 /* DrawView.swift in Sources */,
+				C12DB22623917C1900CE9CD5 /* ProtocolMessage.swift in Sources */,
 				E095ED77237D67EE00D929D2 /* XMPPController.swift in Sources */,
 				E097F4422373203D00050137 /* ColourPickerViewController.swift in Sources */,
 				E05B2B14238D7FC1003D48B6 /* BluetoothService.swift in Sources */,
