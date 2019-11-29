@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="15505" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
-    <device id="ipad11_0rounded" orientation="portrait" layout="fullscreen" appearance="dark"/>
+    <device id="retina6_5" orientation="portrait" appearance="light"/>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15509"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15510"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -12,83 +12,64 @@
             <objects>
                 <viewController storyboardIdentifier="sessionDetailsViewController" modalTransitionStyle="crossDissolve" useStoryboardIdentifierAsRestorationIdentifier="YES" id="Eku-Qk-D68" customClass="sessionDetailsViewController" customModule="Canvas" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="7XA-E9-kUS">
-                        <rect key="frame" x="0.0" y="0.0" width="834" height="1194"/>
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="4Kb-JJ-06e">
-                                <rect key="frame" x="0.0" y="142" width="834" height="1032"/>
+                                <rect key="frame" x="0.0" y="186" width="414" height="676"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                                 <connections>
                                     <outlet property="dataSource" destination="Eku-Qk-D68" id="9RU-lk-tnv"/>
                                     <outlet property="delegate" destination="Eku-Qk-D68" id="XHi-HI-8fD"/>
                                 </connections>
                             </tableView>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1EZ-bi-h78">
-                                <rect key="frame" x="689" y="40.5" width="67" height="54.5"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="67" id="yyG-dT-dav"/>
-                                </constraints>
-                                <fontDescription key="fontDescription" type="system" pointSize="36"/>
-                                <color key="tintColor" systemColor="labelColor" cocoaTouchSystemColor="darkTextColor"/>
-                                <state key="normal" backgroundImage="wifi.slash" catalog="system"/>
+                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Dy6-19-Wrn" customClass="TextFieldWithReturn" customModule="Canvas" customModuleProvider="target">
+                                <rect key="frame" x="50" y="109" width="314" height="34"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits"/>
                                 <connections>
-                                    <action selector="disconnectSession" destination="Eku-Qk-D68" eventType="touchUpInside" id="7sa-tE-ExW"/>
+                                    <action selector="changeRoomWithSender:" destination="Eku-Qk-D68" eventType="editingDidEnd" id="iW7-Wh-NKY"/>
                                 </connections>
-                            </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Zio-9r-piA">
-                                <rect key="frame" x="89" y="44.5" width="59" height="53.5"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="59" id="2Z6-NH-55B"/>
-                                </constraints>
-                                <fontDescription key="fontDescription" type="system" pointSize="36"/>
-                                <color key="tintColor" systemColor="labelColor" cocoaTouchSystemColor="darkTextColor"/>
-                                <state key="normal" backgroundImage="person.badge.plus.fill" catalog="system"/>
-                                <connections>
-                                    <action selector="showConnectionPrompt" destination="Eku-Qk-D68" eventType="touchUpInside" id="W6v-Ly-tD8"/>
-                                </connections>
-                            </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="pgX-Hg-c30">
-                                <rect key="frame" x="383.5" y="10" width="67" height="30"/>
-                                <state key="normal" title="Bluetooth"/>
-                                <connections>
-                                    <action selector="changeConnectionType" destination="Eku-Qk-D68" eventType="touchUpInside" id="M60-kS-zxm"/>
-                                </connections>
-                            </button>
+                            </textField>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Please enter a room to connect to:" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Gm5-XN-863">
+                                <rect key="frame" x="50" y="69" width="314" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <constraints>
-                            <constraint firstItem="pgX-Hg-c30" firstAttribute="centerX" secondItem="7XA-E9-kUS" secondAttribute="centerX" id="0EZ-fH-sZQ"/>
-                            <constraint firstItem="Zio-9r-piA" firstAttribute="centerY" secondItem="1EZ-bi-h78" secondAttribute="centerY" id="9i8-7c-3Mo"/>
-                            <constraint firstItem="1Ni-w7-pap" firstAttribute="trailing" secondItem="1EZ-bi-h78" secondAttribute="trailing" constant="78" id="KmB-mK-M54"/>
+                            <constraint firstItem="Dy6-19-Wrn" firstAttribute="top" secondItem="Gm5-XN-863" secondAttribute="top" constant="40" id="4PL-Tq-Bfc"/>
+                            <constraint firstItem="1Ni-w7-pap" firstAttribute="trailing" secondItem="Gm5-XN-863" secondAttribute="trailing" constant="50" id="7nI-Ji-lSF"/>
+                            <constraint firstItem="1Ni-w7-pap" firstAttribute="trailing" secondItem="Dy6-19-Wrn" secondAttribute="trailing" constant="50" id="KXL-xF-CNC"/>
                             <constraint firstItem="1Ni-w7-pap" firstAttribute="trailing" secondItem="4Kb-JJ-06e" secondAttribute="trailing" id="NCt-VG-mF1"/>
-                            <constraint firstItem="Zio-9r-piA" firstAttribute="top" secondItem="1Ni-w7-pap" secondAttribute="top" constant="43" id="Oeg-cc-hRq"/>
+                            <constraint firstItem="Gm5-XN-863" firstAttribute="leading" secondItem="1Ni-w7-pap" secondAttribute="leading" constant="50" id="Nwc-i9-nJ7"/>
+                            <constraint firstItem="Gm5-XN-863" firstAttribute="top" secondItem="1Ni-w7-pap" secondAttribute="top" constant="25" id="SNR-x9-OPj"/>
                             <constraint firstItem="4Kb-JJ-06e" firstAttribute="top" secondItem="1Ni-w7-pap" secondAttribute="top" constant="142" id="SPE-KV-Ijn"/>
-                            <constraint firstItem="pgX-Hg-c30" firstAttribute="top" secondItem="1Ni-w7-pap" secondAttribute="top" constant="10" id="Tm4-z3-ddm"/>
-                            <constraint firstItem="4Kb-JJ-06e" firstAttribute="top" secondItem="Zio-9r-piA" secondAttribute="bottom" constant="45.666666666666686" id="Wjb-b6-WvI"/>
+                            <constraint firstItem="Dy6-19-Wrn" firstAttribute="centerX" secondItem="7XA-E9-kUS" secondAttribute="centerX" id="X4s-4c-Lbp"/>
                             <constraint firstItem="1Ni-w7-pap" firstAttribute="bottom" secondItem="4Kb-JJ-06e" secondAttribute="bottom" id="cKT-E3-Zm6"/>
                             <constraint firstItem="4Kb-JJ-06e" firstAttribute="leading" secondItem="1Ni-w7-pap" secondAttribute="leading" id="goi-tz-v32"/>
-                            <constraint firstItem="1EZ-bi-h78" firstAttribute="top" secondItem="1Ni-w7-pap" secondAttribute="top" constant="41.999999999999929" id="lgu-My-yir"/>
-                            <constraint firstItem="Zio-9r-piA" firstAttribute="leading" secondItem="1Ni-w7-pap" secondAttribute="leading" constant="89" id="ntV-QI-sAd"/>
+                            <constraint firstItem="Dy6-19-Wrn" firstAttribute="leading" secondItem="1Ni-w7-pap" secondAttribute="leading" constant="50" id="jpg-Ec-vZU"/>
+                            <constraint firstItem="Gm5-XN-863" firstAttribute="centerX" secondItem="7XA-E9-kUS" secondAttribute="centerX" id="pTV-sU-D9Q"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="1Ni-w7-pap"/>
                     </view>
                     <connections>
-                        <outlet property="connectButton" destination="Zio-9r-piA" id="HuG-pU-ZmM"/>
-                        <outlet property="connectionTypeButton" destination="pgX-Hg-c30" id="5Fz-Xg-pWZ"/>
-                        <outlet property="disconnectButton" destination="1EZ-bi-h78" id="3WY-cu-PNT"/>
                         <outlet property="tableView" destination="4Kb-JJ-06e" id="bJ1-G5-2ql"/>
+                        <outlet property="textField" destination="Dy6-19-Wrn" id="pCo-tZ-wuE"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Cmw-kx-JrQ" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="868.11594202898561" y="109.82142857142857"/>
+            <point key="canvasLocation" x="867.6258992805756" y="109.54773869346734"/>
         </scene>
         <!--Colour Picker View Controller-->
         <scene sceneID="zSd-Y9-nTK">
             <objects>
                 <viewController storyboardIdentifier="colourPickerViewController" id="YXA-Cp-nnx" customClass="ColourPickerViewController" customModule="Canvas" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="C6o-tt-C6Q">
-                        <rect key="frame" x="0.0" y="0.0" width="834" height="1194"/>
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <viewLayoutGuide key="safeArea" id="8AN-bH-PHi"/>
@@ -103,11 +84,11 @@
             <objects>
                 <viewController storyboardIdentifier="viewController" id="BYZ-38-t0r" customClass="ViewController" customModule="Canvas" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
-                        <rect key="frame" x="0.0" y="0.0" width="834" height="1194"/>
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translucent="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ACt-1Y-oKJ" userLabel="dummyToolbar">
-                                <rect key="frame" x="0.0" y="0.0" width="834" height="50"/>
+                                <rect key="frame" x="0.0" y="0.0" width="414" height="44"/>
                                 <items/>
                                 <color key="barTintColor" cocoaTouchSystemColor="darkTextColor"/>
                             </toolbar>
@@ -146,7 +127,7 @@
                                 </connections>
                             </scrollView>
                             <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translucent="NO" translatesAutoresizingMaskIntoConstraints="NO" id="aDU-cP-kvP">
-                                <rect key="frame" x="0.0" y="0.0" width="834" height="50"/>
+                                <rect key="frame" x="0.0" y="44" width="414" height="44"/>
                                 <items>
                                     <barButtonItem title="Undo" image="arrowshape.turn.up.left.fill" catalog="system" id="Taj-rG-sdE">
                                         <color key="tintColor" systemColor="labelColor" cocoaTouchSystemColor="darkTextColor"/>
@@ -247,8 +228,6 @@
         <image name="pencil.slash" catalog="system" width="64" height="56"/>
         <image name="pencil.tip.crop.circle.badge.minus" catalog="system" width="64" height="50"/>
         <image name="person.3.fill" catalog="system" width="71" height="34"/>
-        <image name="person.badge.plus.fill" catalog="system" width="64" height="58"/>
         <image name="skew" catalog="system" width="64" height="54"/>
-        <image name="wifi.slash" catalog="system" width="64" height="56"/>
     </resources>
 </document>

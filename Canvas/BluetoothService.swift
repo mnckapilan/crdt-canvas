@@ -20,8 +20,6 @@ class BluetoothService : NSObject {
 
     // Service type must be a unique string, at most 15 characters long
     // and can contain only ASCII lowercase letters, numbers and hyphens.
-    private let BluetoothServiceType = "hws-project-25"
-
     private let myPeerId = MCPeerID(displayName: UIDevice.current.name)
     
     private let serviceAdvertiser : MCNearbyServiceAdvertiser
@@ -35,9 +33,9 @@ class BluetoothService : NSObject {
     
     var delegate : BluetoothServiceDelegate?
 
-    override init() {
-        self.serviceAdvertiser = MCNearbyServiceAdvertiser(peer: myPeerId, discoveryInfo: nil, serviceType: BluetoothServiceType)
-        self.serviceBrowser = MCNearbyServiceBrowser(peer: myPeerId, serviceType: BluetoothServiceType)
+    init(withRoomName roomName: String) {
+        self.serviceAdvertiser = MCNearbyServiceAdvertiser(peer: myPeerId, discoveryInfo: nil, serviceType: roomName)
+        self.serviceBrowser = MCNearbyServiceBrowser(peer: myPeerId, serviceType: roomName)
 
         super.init()
         self.serviceAdvertiser.delegate = self
@@ -54,7 +52,7 @@ class BluetoothService : NSObject {
     }
     
     func send(data : String) {
-        NSLog("%@", "receiveData: \(data) to \(session.connectedPeers.count) peers")
+        //NSLog("%@", "receiveData: \(data) to \(session.connectedPeers.count) peers")
 
         if session.connectedPeers.count > 0 {
             do {
@@ -65,6 +63,13 @@ class BluetoothService : NSObject {
             }
         }
 
+    }
+    
+    func disconnect() {
+        print("** Disconnecting")
+        self.serviceBrowser.stopBrowsingForPeers()
+        self.serviceAdvertiser.stopAdvertisingPeer()
+        self.session.disconnect()
     }
     
 
@@ -110,7 +115,7 @@ extension BluetoothService : MCSessionDelegate {
     }
 
     func session(_ session: MCSession, didReceive data: Data, fromPeer peerID: MCPeerID) {
-        NSLog("%@", "didReceiveData: \(data)")
+        //NSLog("%@", "didReceiveData: \(data)")
         let str = String(data: data, encoding: .utf8)!
         self.delegate?.receiveData(manager: self, data: str)
     }
