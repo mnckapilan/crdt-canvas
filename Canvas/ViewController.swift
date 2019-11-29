@@ -13,9 +13,7 @@ import XMPPFrameworkSwift
 class ViewController: UIViewController {
     
     @IBOutlet var drawView: DrawView!
-    @IBOutlet var eraser: UIBarButtonItem!
     @IBOutlet var sessionDetails: UIBarButtonItem!
-    @IBOutlet var shapeRecognition: UIBarButtonItem!
     @IBOutlet var colourPicker: UIBarButtonItem!
     @IBOutlet var scrollView: UIScrollView!
     @IBOutlet var gestureRecogniser: UIPanGestureRecognizer!
@@ -107,6 +105,7 @@ class ViewController: UIViewController {
     
     @IBAction func showColorPicker() {
         // Use the popover presentation style for your view controller.
+        drawView!.setButtonColour(name: "none")
         colourPickerVC.modalPresentationStyle = .popover
 
         // Specify the anchor point for the popover.

@@ -40,18 +40,17 @@
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <constraints>
-                            <constraint firstItem="Dy6-19-Wrn" firstAttribute="top" secondItem="Gm5-XN-863" secondAttribute="top" constant="40" id="4PL-Tq-Bfc"/>
-                            <constraint firstItem="1Ni-w7-pap" firstAttribute="trailing" secondItem="Gm5-XN-863" secondAttribute="trailing" constant="50" id="7nI-Ji-lSF"/>
+                            <constraint firstItem="Dy6-19-Wrn" firstAttribute="top" secondItem="Gm5-XN-863" secondAttribute="bottom" constant="19" id="2qo-WJ-S64"/>
+                            <constraint firstItem="Gm5-XN-863" firstAttribute="leading" secondItem="Dy6-19-Wrn" secondAttribute="leading" id="4kq-9u-2tU"/>
+                            <constraint firstItem="Gm5-XN-863" firstAttribute="trailing" secondItem="Dy6-19-Wrn" secondAttribute="trailing" id="ABY-ge-aUU"/>
                             <constraint firstItem="1Ni-w7-pap" firstAttribute="trailing" secondItem="Dy6-19-Wrn" secondAttribute="trailing" constant="50" id="KXL-xF-CNC"/>
+                            <constraint firstItem="Gm5-XN-863" firstAttribute="top" secondItem="1Ni-w7-pap" secondAttribute="top" constant="25" id="MIs-db-SfD"/>
                             <constraint firstItem="1Ni-w7-pap" firstAttribute="trailing" secondItem="4Kb-JJ-06e" secondAttribute="trailing" id="NCt-VG-mF1"/>
-                            <constraint firstItem="Gm5-XN-863" firstAttribute="leading" secondItem="1Ni-w7-pap" secondAttribute="leading" constant="50" id="Nwc-i9-nJ7"/>
-                            <constraint firstItem="Gm5-XN-863" firstAttribute="top" secondItem="1Ni-w7-pap" secondAttribute="top" constant="25" id="SNR-x9-OPj"/>
                             <constraint firstItem="4Kb-JJ-06e" firstAttribute="top" secondItem="1Ni-w7-pap" secondAttribute="top" constant="142" id="SPE-KV-Ijn"/>
                             <constraint firstItem="Dy6-19-Wrn" firstAttribute="centerX" secondItem="7XA-E9-kUS" secondAttribute="centerX" id="X4s-4c-Lbp"/>
                             <constraint firstItem="1Ni-w7-pap" firstAttribute="bottom" secondItem="4Kb-JJ-06e" secondAttribute="bottom" id="cKT-E3-Zm6"/>
                             <constraint firstItem="4Kb-JJ-06e" firstAttribute="leading" secondItem="1Ni-w7-pap" secondAttribute="leading" id="goi-tz-v32"/>
                             <constraint firstItem="Dy6-19-Wrn" firstAttribute="leading" secondItem="1Ni-w7-pap" secondAttribute="leading" constant="50" id="jpg-Ec-vZU"/>
-                            <constraint firstItem="Gm5-XN-863" firstAttribute="centerX" secondItem="7XA-E9-kUS" secondAttribute="centerX" id="pTV-sU-D9Q"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="1Ni-w7-pap"/>
                     </view>
@@ -92,8 +91,8 @@
                                 <items/>
                                 <color key="barTintColor" cocoaTouchSystemColor="darkTextColor"/>
                             </toolbar>
-                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" ambiguous="YES" scrollEnabled="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HVl-Sw-a0d">
-                                <rect key="frame" x="0.0" y="50" width="834" height="1074"/>
+                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" scrollEnabled="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HVl-Sw-a0d">
+                                <rect key="frame" x="0.0" y="88" width="414" height="725"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Nsp-Ud-L6L" customClass="DrawView" customModule="Canvas" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="0.0" width="1366" height="904"/>
@@ -110,6 +109,8 @@
                                             <constraint firstAttribute="height" constant="904" id="d5J-33-b7f"/>
                                         </constraints>
                                         <connections>
+                                            <outlet property="eraserButton" destination="liX-JY-aM9" id="Tf7-Qp-dS7"/>
+                                            <outlet property="partialButton" destination="b40-Ek-mUS" id="Q1m-w0-kp3"/>
                                             <outlet property="shapeRecognitionButton" destination="F31-i6-jGh" id="64p-AC-ad2"/>
                                             <outlet property="tracker" destination="wkP-FS-V79" id="Gxh-fl-Zar"/>
                                         </connections>
@@ -117,8 +118,10 @@
                                 </subviews>
                                 <gestureRecognizers/>
                                 <constraints>
+                                    <constraint firstAttribute="bottom" secondItem="Nsp-Ud-L6L" secondAttribute="bottom" constant="170" id="4J0-Rw-vPa"/>
                                     <constraint firstItem="Nsp-Ud-L6L" firstAttribute="top" secondItem="kg0-ir-EMg" secondAttribute="top" id="5AX-ee-sEK"/>
                                     <constraint firstItem="Nsp-Ud-L6L" firstAttribute="leading" secondItem="kg0-ir-EMg" secondAttribute="leading" id="TxR-Lq-Gr7"/>
+                                    <constraint firstAttribute="trailing" secondItem="Nsp-Ud-L6L" secondAttribute="trailing" constant="-532" id="VxP-ow-lgH"/>
                                 </constraints>
                                 <viewLayoutGuide key="contentLayoutGuide" id="j3H-s6-vYf"/>
                                 <viewLayoutGuide key="frameLayoutGuide" id="kg0-ir-EMg"/>
@@ -204,7 +207,6 @@
                     <connections>
                         <outlet property="colourPicker" destination="k9m-Gf-FRz" id="cxc-vw-H9O"/>
                         <outlet property="drawView" destination="Nsp-Ud-L6L" id="SGm-pC-uOW"/>
-                        <outlet property="eraser" destination="liX-JY-aM9" id="hZq-vE-aca"/>
                         <outlet property="gestureRecogniser" destination="NST-aB-nVC" id="qnK-p2-lwD"/>
                         <outlet property="scrollView" destination="HVl-Sw-a0d" id="cOG-5T-R8X"/>
                         <outlet property="sessionDetails" destination="0bf-Rv-UNg" id="00s-WS-XUR"/>
