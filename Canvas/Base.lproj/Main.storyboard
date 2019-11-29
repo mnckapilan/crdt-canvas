@@ -110,6 +110,8 @@
                                             <constraint firstAttribute="height" constant="904" id="d5J-33-b7f"/>
                                         </constraints>
                                         <connections>
+                                            <outlet property="eraserButton" destination="liX-JY-aM9" id="Tf7-Qp-dS7"/>
+                                            <outlet property="partialButton" destination="b40-Ek-mUS" id="Q1m-w0-kp3"/>
                                             <outlet property="shapeRecognitionButton" destination="F31-i6-jGh" id="64p-AC-ad2"/>
                                             <outlet property="tracker" destination="wkP-FS-V79" id="Gxh-fl-Zar"/>
                                         </connections>
@@ -204,7 +206,6 @@
                     <connections>
                         <outlet property="colourPicker" destination="k9m-Gf-FRz" id="cxc-vw-H9O"/>
                         <outlet property="drawView" destination="Nsp-Ud-L6L" id="SGm-pC-uOW"/>
-                        <outlet property="eraser" destination="liX-JY-aM9" id="hZq-vE-aca"/>
                         <outlet property="gestureRecogniser" destination="NST-aB-nVC" id="qnK-p2-lwD"/>
                         <outlet property="scrollView" destination="HVl-Sw-a0d" id="cOG-5T-R8X"/>
                         <outlet property="sessionDetails" destination="0bf-Rv-UNg" id="00s-WS-XUR"/>
