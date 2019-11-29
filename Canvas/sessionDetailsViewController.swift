@@ -12,77 +12,42 @@ import UIKit
 
 class sessionDetailsViewController: UIViewController {
     @IBOutlet var tableView: UITableView!
-    @IBOutlet var connectButton: UIButton!
-    @IBOutlet var disconnectButton: UIButton!
-    @IBOutlet var connectionTypeButton: UIButton!
     var mcAdvertiserAssistant: MCAdvertiserAssistant!
     var mainViewController:ViewController?
+    @IBOutlet var textField: UITextField!
     
     var datasourceArray : [String]?
     static let CELL_RESUE_ID = "POPOVER_CELL_REUSE_ID"
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        if (((mainViewController!.isBluetooth)&&(mainViewController?.mcSession.connectedPeers.count == 0)) || (!mainViewController!.isBluetooth) && (!(mainViewController?.xmppController?.isConnected())!)) {
-            disconnectButton.tintColor = UIColor.red
-            disconnectButton.setBackgroundImage(UIImage(systemName: "wifi.slash"), for: .normal)
-        } else {
-            disconnectButton.tintColor = UIColor.green
-            disconnectButton.setBackgroundImage(UIImage(systemName: "wifi"), for: .normal)
-        }
-        if mainViewController!.isBluetooth {
-            print("** Connection type is Bluetooth")
-            connectionTypeButton.setTitle("Bluetooth", for: UIControl.State.normal)
-        } else {
-            print("** Connection type is XMPP")
-            connectionTypeButton.setTitle("XMPP", for: UIControl.State.normal)
-        }
+        textField.text = mainViewController!.currentRoom
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
     }
     
-    @IBAction func showConnectionPrompt() {
-        if (mainViewController!.isBluetooth){
-            print("** Connect Bluetooth")
-            self.dismiss(animated: true, completion: nil)
-            mainViewController?.showConnectionPrompt()
-        } else {
-            print("** Connect XMPP")
-            //XMPP Join Room
-            mainViewController!.xmppController!.connect("global")
-        }
-    }
-    
-    @IBAction func disconnectSession() {
-        if (mainViewController!.isBluetooth){
-            print("** Disconnect Bluetooth")
-            mainViewController?.disconnectSession();
-            disconnectButton.tintColor = UIColor.red
-            disconnectButton.setBackgroundImage(UIImage(systemName: "wifi.slash"), for: .normal)
-        } else {
-            //XMPP Leave Room
+    @IBAction func changeRoom(sender: UITextField) {
+        if (sender.text != nil) {
+            mainViewController!.currentRoom = sender.text!
             print("** Disconnect XMPP")
             mainViewController!.xmppController!.disconnect()
-            disconnectButton.tintColor = UIColor.red
-            disconnectButton.setBackgroundImage(UIImage(systemName: "wifi.slash"), for: .normal)
+            print("** Connect XMPP to room: ", sender.text!)
+            mainViewController!.xmppController!.connect(sender.text!)
+            
+            mainViewController!.connectedDevices = []
+            //Then update bluetooth room
+            print("** Disconnect Bluetooth")
+            mainViewController!.bluetoothService.disconnect()
+            print("** Connect Bluetooth to room: ", sender.text!)
+            mainViewController!.bluetoothService = BluetoothService(withRoomName: sender.text!)
+            mainViewController!.bluetoothService.delegate = mainViewController!
+            AutomergeJavaScript.shared.getAllChanges() { (returnValue) in
+                self.mainViewController!.drawView.sendPath(returnValue)
+            }
         }
-    }
-    
-    @IBAction func changeConnectionType() {
-        if mainViewController!.isBluetooth {
-            print("** Connection type set to XMPP")
-            disconnectSession()
-            mainViewController!.isBluetooth = false
-            connectionTypeButton.setTitle("XMPP", for: UIControl.State.normal)
-        } else {
-            print("** Connection type set to Bluetooth")
-            disconnectSession()
-            mainViewController!.isBluetooth = true
-            connectionTypeButton.setTitle("Bluetooth", for: UIControl.State.normal)
-            //Disconnect XMPP
-        }
+
     }
 
     
@@ -106,4 +71,22 @@ extension sessionDetailsViewController:UITableViewDelegate, UITableViewDataSourc
         return cell ?? UITableViewCell()
     }
     
+}
+
+// A class for Text Fields which makes keyboards disappear when return is clicked
+class TextFieldWithReturn: UITextField, UITextFieldDelegate
+{
+
+    required init?(coder aDecoder: NSCoder)
+    {
+        super.init(coder: aDecoder)
+        self.delegate = self
+    }
+
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool
+    {
+        textField.resignFirstResponder()
+        return true
+    }
+
 }

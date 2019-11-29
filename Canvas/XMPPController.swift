@@ -68,19 +68,6 @@ class XMPPController: NSObject {
         return self.xmppStream.isConnected
     }
     
-// Needs to be fixed
-//    func returnMembers() -> [String] {
-//
-//        room!.fetchMembersList()
-//        while (members == nil){
-//            members = []
-//            break
-//        }
-//        return members!
-//    }
-    
-    
-    
 }
 
 extension XMPPController: XMPPRoomDelegate {
@@ -89,7 +76,7 @@ extension XMPPController: XMPPRoomDelegate {
     }
     
     func xmppStream(_ sender: XMPPStream, didReceive message: XMPPMessage) {
-        // if it is the master, then render it and also send it over bluetooth to every other device
+        // If it is the master, then render it and also send it over bluetooth to every other device
         if (mainViewController!.isMaster) {
             drawView?.incomingChange(message.body!)
             mainViewController!.bluetoothService.send(data: message.body!)
@@ -129,9 +116,6 @@ extension XMPPController: XMPPStreamDelegate {
         room.addDelegate(self, delegateQueue: DispatchQueue.main)
         room.activate(xmppStream)
         room.join(usingNickname: UIDevice.current.name, history: nil)
-        //let message = XMPPMessage(messageType: XMPPMessage.MessageType.groupchat, to: userID, elementID: NSUUID().uuidString)
-        //message.addBody("what's up")
-        //self.xmppStream.send(message)
         print("Stream: Authenticated")
     }
 
