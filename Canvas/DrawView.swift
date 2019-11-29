@@ -30,8 +30,6 @@ class DrawView: UIView {
     
     var mode = Mode.DRAWING
     
-    public var mcSession: MCSession?
-
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         self.backgroundColor = UIColor.white
@@ -55,7 +53,7 @@ class DrawView: UIView {
             let p = stroke.indexOf(givenPoint: point)
             if let t = p {
                 if stroke.isShape {
-                    print(t)
+                    //print(t)
                     handleChange(change: Change.betterPartial(str, t - 0.02, t + 0.02))
                 } else {
                     handleChange(change: Change.partialRemoveStroke(str, Int(t)))
@@ -389,15 +387,6 @@ class DrawView: UIView {
     }
     
     func sendPath(_ change: String) {
-//        if let m = self.mcSession {
-//            if m.connectedPeers.count > 0 {
-//                do {
-//                    try m.send(change.data(using: .utf8)!, toPeers: m.connectedPeers, with: .reliable)
-//                } catch _ as NSError {
-//                }
-//            }
-//        }
-        
         if (mainViewController!.isMaster) {
             if xmppController!.isConnected(){
                 xmppController!.room!.sendMessage(withBody: change)

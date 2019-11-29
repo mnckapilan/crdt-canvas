@@ -10,7 +10,7 @@ import UIKit
 import FlexColorPicker
 import XMPPFrameworkSwift
 
-class ViewController: UIViewController, MCSessionDelegate, MCBrowserViewControllerDelegate {
+class ViewController: UIViewController {
     
     @IBOutlet var drawView: DrawView!
     @IBOutlet var eraser: UIBarButtonItem!
@@ -21,17 +21,14 @@ class ViewController: UIViewController, MCSessionDelegate, MCBrowserViewControll
     @IBOutlet var gestureRecogniser: UIPanGestureRecognizer!
     
     var peerID: MCPeerID!
-    var mcSession: MCSession!
     var mcAdvertiserAssistant: MCAdvertiserAssistant!
     let sb = UIStoryboard(name: "Main", bundle: nil)
     var colourPickerVC : ColourPickerViewController!
     var xmppController : XMPPController?
-    var isBluetooth = true
     var connectedDevices : [String]?
-    let bluetoothService = BluetoothService()
+    var bluetoothService = BluetoothService(withRoomName: "imperial")
     var isMaster = true
-    var currentRoom = "jack3"
-    
+    var currentRoom = "imperial"
     var centreX : CGFloat!
     var centreY : CGFloat!
 
@@ -39,9 +36,6 @@ class ViewController: UIViewController, MCSessionDelegate, MCBrowserViewControll
         super.viewDidLoad()
 
         peerID = MCPeerID(displayName: UIDevice.current.name)
-        mcSession = MCSession(peer: peerID, securityIdentity: nil, encryptionPreference: .required)
-        mcSession.delegate = self
-        drawView.mcSession = mcSession
         drawView.bluetoothService = bluetoothService
         colourPickerVC = sb.instantiateViewController(
             withIdentifier: "colourPickerViewController") as? ColourPickerViewController
@@ -68,6 +62,7 @@ class ViewController: UIViewController, MCSessionDelegate, MCBrowserViewControll
         
         centreX = drawView.center.x
         centreY = drawView.center.y
+        
     }
     
     @IBAction func getGesture(_ gesture : UIPanGestureRecognizer){
@@ -84,37 +79,22 @@ class ViewController: UIViewController, MCSessionDelegate, MCBrowserViewControll
         
     }
 
-    @IBAction func showConnectionPrompt() {
-        let ac = UIAlertController(title: "Connect to others", message: nil, preferredStyle: .actionSheet)
-        ac.addAction(UIAlertAction(title: "Host a session", style: .default, handler: startHosting))
-        ac.addAction(UIAlertAction(title: "Join a session", style: .default, handler: joinSession))
-        ac.addAction(UIAlertAction(title: "Cancel", style: .cancel))
-        
-        if let popoverController = ac.popoverPresentationController {
-               popoverController.sourceView = self.view
-               popoverController.sourceRect = CGRect(x: self.view.bounds.midX, y: self.view.bounds.midY, width: 0, height: 0)
-               popoverController.permittedArrowDirections = []
-           }
-        
-        present(ac, animated: true)
-    }
     
     @IBAction func showSessionDetails() {
-        print(mcSession.connectedPeers)
         let sessionDetailsVC = sb.instantiateViewController(
             withIdentifier: "sessionDetailsViewController") as! sessionDetailsViewController
         // Use the popover presentation style for your view controller.
         sessionDetailsVC.modalPresentationStyle = .popover
 
         // Specify the anchor point for the popover.
-        sessionDetailsVC.popoverPresentationController?.barButtonItem =
-                   sessionDetails
-        if (isBluetooth){
-            sessionDetailsVC.datasourceArray = connectedDevices! //mcSession.connectedPeers.map{$0.displayName}
+        sessionDetailsVC.popoverPresentationController?.barButtonItem = sessionDetails
+        
+        if (connectedDevices != nil) {
+            sessionDetailsVC.datasourceArray = connectedDevices!
         } else {
-            sessionDetailsVC.datasourceArray = [] //self.xmppController!.returnMembers()
-            
+            sessionDetailsVC.datasourceArray = []
         }
+
 
         sessionDetailsVC.mainViewController = self
         
@@ -150,71 +130,6 @@ class ViewController: UIViewController, MCSessionDelegate, MCBrowserViewControll
     }
     
 
-    func startHosting(action: UIAlertAction) {
-        mcAdvertiserAssistant = MCAdvertiserAssistant(serviceType: "hws-project25", discoveryInfo: nil, session: mcSession)
-        mcAdvertiserAssistant.start()
-    }
-
-    func joinSession(action: UIAlertAction) {
-        let mcBrowser = MCBrowserViewController(serviceType: "hws-project25", session: mcSession)
-        mcBrowser.delegate = self
-        present(mcBrowser, animated: true)
-    }
-
-    func session(_ session: MCSession, didReceive stream: InputStream, withName streamName: String, fromPeer peerID: MCPeerID) {
-
-    }
-
-    func session(_ session: MCSession, didStartReceivingResourceWithName resourceName: String, fromPeer peerID: MCPeerID, with progress: Progress) {
-
-    }
-
-    func session(_ session: MCSession, didFinishReceivingResourceWithName resourceName: String, fromPeer peerID: MCPeerID, at localURL: URL?, withError error: Error?) {
-
-    }
-
-    func browserViewControllerDidFinish(_ browserViewController: MCBrowserViewController) {
-        dismiss(animated: true)
-    }
-
-    func browserViewControllerWasCancelled(_ browserViewController: MCBrowserViewController) {
-        dismiss(animated: true)
-    }
-
-    func session(_ session: MCSession, peer peerID: MCPeerID, didChange state: MCSessionState) {
-        switch state {
-        case MCSessionState.connected:
-            print("Connected: \(peerID.displayName)")
-            AutomergeJavaScript.shared.getAllChanges() { (returnValue) in
-                self.drawView.sendPath(returnValue)
-            }
-
-        case MCSessionState.connecting:
-            print("Connecting: \(peerID.displayName)")
-
-        case MCSessionState.notConnected:
-            print("Not Connected: \(peerID.displayName)")
-        @unknown default:
-            print("fatal error")
-        }
-    }
-
-    func session(_ session: MCSession, didReceive data: Data, fromPeer peerID: MCPeerID) {
-        do {
-            let data = String(data: data, encoding: .utf8)!
-            DispatchQueue.main.async { [unowned self] in
-                print("here")
-                self.drawView.incomingChange(data)
-            }
-        } catch {
-            print(error)
-        }
-        
-    }
-    
-    @IBAction func disconnectSession() {
-        mcSession.disconnect();
-    }
 }
 
 
@@ -222,8 +137,8 @@ extension ViewController : BluetoothServiceDelegate {
     
     func receiveData(manager: BluetoothService, data: String) {
         DispatchQueue.main.async { [unowned self] in
-            print("here")
             // Only do this if the change's user is not myself?
+            print("** Recieving data via bluetooth")
             self.drawView.incomingChange(data)
             //Send to XMPP if master
             if (self.isMaster) {
@@ -238,16 +153,24 @@ extension ViewController : BluetoothServiceDelegate {
 
     func connectedDevicesChanged(manager: BluetoothService, connectedDevices: [String]) {
         OperationQueue.main.addOperation {
+            print("** Connected devices via bluetooth changed")
             if (connectedDevices.count > 0) {
                 if (connectedDevices.count > 1){
                     self.connectedDevices = connectedDevices.sorted{$0 < $1}
                 } else {
                     self.connectedDevices = connectedDevices
                 }
-                print(connectedDevices)
+                print("** Connected Devices: ", connectedDevices)
                 self.isMaster = !(connectedDevices[0] > self.peerID.displayName)
-                print(self.isMaster)
+                print("** Is master: ", self.isMaster)
+                
+                //New person joined room, so send them all the changes
+                AutomergeJavaScript.shared.getAllChanges() { (returnValue) in
+                    self.drawView.sendPath(returnValue)
+                }
+                
             } else {
+                self.connectedDevices = []
                 self.isMaster = true
             }
         }

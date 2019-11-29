@@ -36,46 +36,18 @@ class sessionDetailsViewController: UIViewController {
             print("** Connect XMPP to room: ", sender.text!)
             mainViewController!.xmppController!.connect(sender.text!)
             
+            mainViewController!.connectedDevices = []
             //Then update bluetooth room
-            
+            print("** Disconnect Bluetooth")
+            mainViewController!.bluetoothService.disconnect()
+            print("** Connect Bluetooth to room: ", sender.text!)
+            mainViewController!.bluetoothService = BluetoothService(withRoomName: sender.text!)
+            mainViewController!.bluetoothService.delegate = mainViewController!
+            AutomergeJavaScript.shared.getAllChanges() { (returnValue) in
+                self.mainViewController!.drawView.sendPath(returnValue)
+            }
         }
 
-    }
-    
-    @IBAction func showConnectionPrompt() {
-        if (mainViewController!.isBluetooth){
-            print("** Connect Bluetooth")
-            self.dismiss(animated: true, completion: nil)
-            mainViewController?.showConnectionPrompt()
-        } else {
-            print("** Connect XMPP")
-            //XMPP Join Room
-            mainViewController!.xmppController!.connect(mainViewController!.currentRoom)
-        }
-    }
-    
-    @IBAction func disconnectSession() {
-        if (mainViewController!.isBluetooth){
-            print("** Disconnect Bluetooth")
-            mainViewController?.disconnectSession();
-        } else {
-            //XMPP Leave Room
-            print("** Disconnect XMPP")
-            mainViewController!.xmppController!.disconnect()
-        }
-    }
-    
-    @IBAction func changeConnectionType() {
-        if mainViewController!.isBluetooth {
-            print("** Connection type set to XMPP")
-            disconnectSession()
-            mainViewController!.isBluetooth = false
-        } else {
-            print("** Connection type set to Bluetooth")
-            disconnectSession()
-            mainViewController!.isBluetooth = true
-            //Disconnect XMPP
-        }
     }
 
     
