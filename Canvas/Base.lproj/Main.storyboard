@@ -70,13 +70,49 @@
                     <view key="view" contentMode="scaleToFill" id="C6o-tt-C6Q">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="7.75" minValue="0.5" maxValue="15" translatesAutoresizingMaskIntoConstraints="NO" id="GtG-k6-Div">
+                                <rect key="frame" x="48" y="790" width="318" height="31"/>
+                                <connections>
+                                    <action selector="sliderValueChanged:" destination="YXA-Cp-nnx" eventType="valueChanged" id="tB9-mn-uWt"/>
+                                </connections>
+                            </slider>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" image="circle.fill" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="ldw-Gp-TQn">
+                                <rect key="frame" x="374" y="792.33333333333337" width="30" height="28.666666666666629"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="30" id="oYG-Jf-oXZ"/>
+                                    <constraint firstAttribute="height" constant="30" id="uu2-KH-buk"/>
+                                </constraints>
+                            </imageView>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" image="circle.fill" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="ndd-f1-ibX">
+                                <rect key="frame" x="22" y="797" width="5" height="19"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="5" id="uYS-Ol-JKt"/>
+                                </constraints>
+                            </imageView>
+                        </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <constraints>
+                            <constraint firstItem="8AN-bH-PHi" firstAttribute="bottom" secondItem="GtG-k6-Div" secondAttribute="bottom" constant="42" id="66l-ZL-8Mp"/>
+                            <constraint firstItem="8AN-bH-PHi" firstAttribute="trailing" secondItem="GtG-k6-Div" secondAttribute="trailing" constant="50" id="8qK-Kk-ctk"/>
+                            <constraint firstItem="ndd-f1-ibX" firstAttribute="leading" secondItem="8AN-bH-PHi" secondAttribute="leading" constant="22" id="Mdi-OO-03Y"/>
+                            <constraint firstItem="GtG-k6-Div" firstAttribute="leading" secondItem="8AN-bH-PHi" secondAttribute="leading" constant="50" id="NXS-II-pAc"/>
+                            <constraint firstItem="8AN-bH-PHi" firstAttribute="bottom" secondItem="ndd-f1-ibX" secondAttribute="bottom" constant="45.670000000000002" id="jtQ-81-Na2"/>
+                            <constraint firstItem="8AN-bH-PHi" firstAttribute="trailing" secondItem="ldw-Gp-TQn" secondAttribute="trailing" constant="10" id="l1B-nm-RtQ"/>
+                            <constraint firstItem="8AN-bH-PHi" firstAttribute="bottom" secondItem="ldw-Gp-TQn" secondAttribute="bottom" constant="40.670000000000002" id="l88-CR-YaP"/>
+                            <constraint firstItem="8AN-bH-PHi" firstAttribute="leading" secondItem="GtG-k6-Div" secondAttribute="trailing" constant="-364" id="pTr-wm-dIX"/>
+                            <constraint firstItem="GtG-k6-Div" firstAttribute="centerX" secondItem="C6o-tt-C6Q" secondAttribute="centerX" id="r5G-6v-AhT"/>
+                            <constraint firstItem="GtG-k6-Div" firstAttribute="leading" secondItem="8AN-bH-PHi" secondAttribute="trailing" constant="-364" id="vAR-nN-win"/>
+                        </constraints>
                         <viewLayoutGuide key="safeArea" id="8AN-bH-PHi"/>
                     </view>
+                    <connections>
+                        <outlet property="slider" destination="GtG-k6-Div" id="QyJ-pt-838"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="zQh-pb-qn4" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1583" y="110"/>
+            <point key="canvasLocation" x="1582.608695652174" y="109.82142857142857"/>
         </scene>
         <!--View Controller-->
         <scene sceneID="tne-QT-ifu">
@@ -225,6 +261,7 @@
     <resources>
         <image name="arrowshape.turn.up.left.fill" catalog="system" width="64" height="52"/>
         <image name="arrowshape.turn.up.right.fill" catalog="system" width="64" height="52"/>
+        <image name="circle.fill" catalog="system" width="64" height="60"/>
         <image name="clear.fill" catalog="system" width="64" height="56"/>
         <image name="paintbrush.fill" catalog="system" width="64" height="62"/>
         <image name="pencil.slash" catalog="system" width="64" height="56"/>
