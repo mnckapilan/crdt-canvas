@@ -37,7 +37,7 @@ class ViewController: UIViewController {
         drawView.bluetoothService = bluetoothService
         colourPickerVC = sb.instantiateViewController(
             withIdentifier: "colourPickerViewController") as? ColourPickerViewController
-        
+        colourPicker.tintColor = UIColor.blue
         try! self.xmppController = XMPPController(hostName: "cloud-vm-41-92.doc.ic.ac.uk",
         userJIDString: "jack@cloud-vm-41-92.doc.ic.ac.uk",
              password: "testtest")
@@ -114,6 +114,7 @@ class ViewController: UIViewController {
         
         //colourPickerVC.datasourceArray = mcSession.connectedPeers
         colourPickerVC.mainViewController = self
+        colourPickerVC.thickness = self.drawView.thickness
         // Present the view controller (in a popover).
         self.present(colourPickerVC, animated: true) {
            // The popover is visible.
@@ -124,7 +125,8 @@ class ViewController: UIViewController {
     
     func colourChange(_ sender: ColourPickerViewController) {
         let chosenColour = sender.selectedColor
-        drawView.colourChosen(chosenColour)
+        let chosenThickness = sender.thickness!
+        drawView.colourChosen(chosenColour, chosenThickness)
         colourPicker.tintColor = chosenColour
     }
     
