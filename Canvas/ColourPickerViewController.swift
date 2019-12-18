@@ -23,6 +23,7 @@ class ColourPickerViewController: DefaultColorPickerViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         slider.setValue(thickness!, animated: true)
+        super.selectedColor = UIColor.blue
     }
     
     override func viewDidDisappear(_ animated: Bool) {

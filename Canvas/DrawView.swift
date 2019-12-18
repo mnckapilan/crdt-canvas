@@ -13,7 +13,7 @@ class DrawView: UIView {
 
     var lines: [String: Stroke] = [:]
     
-    var drawColour = UIColor.black
+    var drawColour = UIColor.blue
     var thickness : Float = 1.0
     var currentIdentifier: String!
     var pointsToWrite: [Point] = []
