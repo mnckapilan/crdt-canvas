@@ -37,7 +37,7 @@ class ViewController: UIViewController {
         drawView.bluetoothService = bluetoothService
         colourPickerVC = sb.instantiateViewController(
             withIdentifier: "colourPickerViewController") as? ColourPickerViewController
-        
+        colourPicker.tintColor = UIColor.blue
         try! self.xmppController = XMPPController(hostName: "cloud-vm-41-92.doc.ic.ac.uk",
         userJIDString: "jack@cloud-vm-41-92.doc.ic.ac.uke",
              password: "testtest")
