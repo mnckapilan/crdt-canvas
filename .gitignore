@@ -48,6 +48,7 @@ xcuserdata/
 *.moved-aside
 *.xccheckout
 *.xcscmblueprint
+*.ipynb_checkpoints
 
 ## Obj-C/Swift specific
 *.hmap
