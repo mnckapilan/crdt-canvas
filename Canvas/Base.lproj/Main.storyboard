@@ -40,18 +40,17 @@
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <constraints>
-                            <constraint firstItem="Dy6-19-Wrn" firstAttribute="top" secondItem="Gm5-XN-863" secondAttribute="top" constant="40" id="4PL-Tq-Bfc"/>
-                            <constraint firstItem="1Ni-w7-pap" firstAttribute="trailing" secondItem="Gm5-XN-863" secondAttribute="trailing" constant="50" id="7nI-Ji-lSF"/>
+                            <constraint firstItem="Dy6-19-Wrn" firstAttribute="top" secondItem="Gm5-XN-863" secondAttribute="bottom" constant="19" id="2qo-WJ-S64"/>
+                            <constraint firstItem="Gm5-XN-863" firstAttribute="leading" secondItem="Dy6-19-Wrn" secondAttribute="leading" id="4kq-9u-2tU"/>
+                            <constraint firstItem="Gm5-XN-863" firstAttribute="trailing" secondItem="Dy6-19-Wrn" secondAttribute="trailing" id="ABY-ge-aUU"/>
                             <constraint firstItem="1Ni-w7-pap" firstAttribute="trailing" secondItem="Dy6-19-Wrn" secondAttribute="trailing" constant="50" id="KXL-xF-CNC"/>
+                            <constraint firstItem="Gm5-XN-863" firstAttribute="top" secondItem="1Ni-w7-pap" secondAttribute="top" constant="25" id="MIs-db-SfD"/>
                             <constraint firstItem="1Ni-w7-pap" firstAttribute="trailing" secondItem="4Kb-JJ-06e" secondAttribute="trailing" id="NCt-VG-mF1"/>
-                            <constraint firstItem="Gm5-XN-863" firstAttribute="leading" secondItem="1Ni-w7-pap" secondAttribute="leading" constant="50" id="Nwc-i9-nJ7"/>
-                            <constraint firstItem="Gm5-XN-863" firstAttribute="top" secondItem="1Ni-w7-pap" secondAttribute="top" constant="25" id="SNR-x9-OPj"/>
                             <constraint firstItem="4Kb-JJ-06e" firstAttribute="top" secondItem="1Ni-w7-pap" secondAttribute="top" constant="142" id="SPE-KV-Ijn"/>
                             <constraint firstItem="Dy6-19-Wrn" firstAttribute="centerX" secondItem="7XA-E9-kUS" secondAttribute="centerX" id="X4s-4c-Lbp"/>
                             <constraint firstItem="1Ni-w7-pap" firstAttribute="bottom" secondItem="4Kb-JJ-06e" secondAttribute="bottom" id="cKT-E3-Zm6"/>
                             <constraint firstItem="4Kb-JJ-06e" firstAttribute="leading" secondItem="1Ni-w7-pap" secondAttribute="leading" id="goi-tz-v32"/>
                             <constraint firstItem="Dy6-19-Wrn" firstAttribute="leading" secondItem="1Ni-w7-pap" secondAttribute="leading" constant="50" id="jpg-Ec-vZU"/>
-                            <constraint firstItem="Gm5-XN-863" firstAttribute="centerX" secondItem="7XA-E9-kUS" secondAttribute="centerX" id="pTV-sU-D9Q"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="1Ni-w7-pap"/>
                     </view>
@@ -71,13 +70,49 @@
                     <view key="view" contentMode="scaleToFill" id="C6o-tt-C6Q">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="7.75" minValue="0.5" maxValue="15" translatesAutoresizingMaskIntoConstraints="NO" id="GtG-k6-Div">
+                                <rect key="frame" x="48" y="790" width="318" height="31"/>
+                                <connections>
+                                    <action selector="sliderValueChanged:" destination="YXA-Cp-nnx" eventType="valueChanged" id="tB9-mn-uWt"/>
+                                </connections>
+                            </slider>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" image="circle.fill" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="ldw-Gp-TQn">
+                                <rect key="frame" x="374" y="792.33333333333337" width="30" height="28.666666666666629"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="30" id="oYG-Jf-oXZ"/>
+                                    <constraint firstAttribute="height" constant="30" id="uu2-KH-buk"/>
+                                </constraints>
+                            </imageView>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" image="circle.fill" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="ndd-f1-ibX">
+                                <rect key="frame" x="22" y="797" width="5" height="19"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="5" id="uYS-Ol-JKt"/>
+                                </constraints>
+                            </imageView>
+                        </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <constraints>
+                            <constraint firstItem="8AN-bH-PHi" firstAttribute="bottom" secondItem="GtG-k6-Div" secondAttribute="bottom" constant="42" id="66l-ZL-8Mp"/>
+                            <constraint firstItem="8AN-bH-PHi" firstAttribute="trailing" secondItem="GtG-k6-Div" secondAttribute="trailing" constant="50" id="8qK-Kk-ctk"/>
+                            <constraint firstItem="ndd-f1-ibX" firstAttribute="leading" secondItem="8AN-bH-PHi" secondAttribute="leading" constant="22" id="Mdi-OO-03Y"/>
+                            <constraint firstItem="GtG-k6-Div" firstAttribute="leading" secondItem="8AN-bH-PHi" secondAttribute="leading" constant="50" id="NXS-II-pAc"/>
+                            <constraint firstItem="8AN-bH-PHi" firstAttribute="bottom" secondItem="ndd-f1-ibX" secondAttribute="bottom" constant="45.670000000000002" id="jtQ-81-Na2"/>
+                            <constraint firstItem="8AN-bH-PHi" firstAttribute="trailing" secondItem="ldw-Gp-TQn" secondAttribute="trailing" constant="10" id="l1B-nm-RtQ"/>
+                            <constraint firstItem="8AN-bH-PHi" firstAttribute="bottom" secondItem="ldw-Gp-TQn" secondAttribute="bottom" constant="40.670000000000002" id="l88-CR-YaP"/>
+                            <constraint firstItem="8AN-bH-PHi" firstAttribute="leading" secondItem="GtG-k6-Div" secondAttribute="trailing" constant="-364" id="pTr-wm-dIX"/>
+                            <constraint firstItem="GtG-k6-Div" firstAttribute="centerX" secondItem="C6o-tt-C6Q" secondAttribute="centerX" id="r5G-6v-AhT"/>
+                            <constraint firstItem="GtG-k6-Div" firstAttribute="leading" secondItem="8AN-bH-PHi" secondAttribute="trailing" constant="-364" id="vAR-nN-win"/>
+                        </constraints>
                         <viewLayoutGuide key="safeArea" id="8AN-bH-PHi"/>
                     </view>
+                    <connections>
+                        <outlet property="slider" destination="GtG-k6-Div" id="QyJ-pt-838"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="zQh-pb-qn4" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1583" y="110"/>
+            <point key="canvasLocation" x="1582.608695652174" y="109.82142857142857"/>
         </scene>
         <!--View Controller-->
         <scene sceneID="tne-QT-ifu">
@@ -92,8 +127,8 @@
                                 <items/>
                                 <color key="barTintColor" cocoaTouchSystemColor="darkTextColor"/>
                             </toolbar>
-                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" ambiguous="YES" scrollEnabled="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HVl-Sw-a0d">
-                                <rect key="frame" x="0.0" y="50" width="834" height="1074"/>
+                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" scrollEnabled="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HVl-Sw-a0d">
+                                <rect key="frame" x="0.0" y="88" width="414" height="725"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Nsp-Ud-L6L" customClass="DrawView" customModule="Canvas" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="0.0" width="1366" height="904"/>
@@ -110,6 +145,8 @@
                                             <constraint firstAttribute="height" constant="904" id="d5J-33-b7f"/>
                                         </constraints>
                                         <connections>
+                                            <outlet property="eraserButton" destination="liX-JY-aM9" id="Tf7-Qp-dS7"/>
+                                            <outlet property="partialButton" destination="b40-Ek-mUS" id="Q1m-w0-kp3"/>
                                             <outlet property="shapeRecognitionButton" destination="F31-i6-jGh" id="64p-AC-ad2"/>
                                             <outlet property="tracker" destination="wkP-FS-V79" id="Gxh-fl-Zar"/>
                                         </connections>
@@ -117,8 +154,10 @@
                                 </subviews>
                                 <gestureRecognizers/>
                                 <constraints>
+                                    <constraint firstAttribute="bottom" secondItem="Nsp-Ud-L6L" secondAttribute="bottom" constant="170" id="4J0-Rw-vPa"/>
                                     <constraint firstItem="Nsp-Ud-L6L" firstAttribute="top" secondItem="kg0-ir-EMg" secondAttribute="top" id="5AX-ee-sEK"/>
                                     <constraint firstItem="Nsp-Ud-L6L" firstAttribute="leading" secondItem="kg0-ir-EMg" secondAttribute="leading" id="TxR-Lq-Gr7"/>
+                                    <constraint firstAttribute="trailing" secondItem="Nsp-Ud-L6L" secondAttribute="trailing" constant="-532" id="VxP-ow-lgH"/>
                                 </constraints>
                                 <viewLayoutGuide key="contentLayoutGuide" id="j3H-s6-vYf"/>
                                 <viewLayoutGuide key="frameLayoutGuide" id="kg0-ir-EMg"/>
@@ -204,7 +243,6 @@
                     <connections>
                         <outlet property="colourPicker" destination="k9m-Gf-FRz" id="cxc-vw-H9O"/>
                         <outlet property="drawView" destination="Nsp-Ud-L6L" id="SGm-pC-uOW"/>
-                        <outlet property="eraser" destination="liX-JY-aM9" id="hZq-vE-aca"/>
                         <outlet property="gestureRecogniser" destination="NST-aB-nVC" id="qnK-p2-lwD"/>
                         <outlet property="scrollView" destination="HVl-Sw-a0d" id="cOG-5T-R8X"/>
                         <outlet property="sessionDetails" destination="0bf-Rv-UNg" id="00s-WS-XUR"/>
@@ -223,6 +261,7 @@
     <resources>
         <image name="arrowshape.turn.up.left.fill" catalog="system" width="64" height="52"/>
         <image name="arrowshape.turn.up.right.fill" catalog="system" width="64" height="52"/>
+        <image name="circle.fill" catalog="system" width="64" height="60"/>
         <image name="clear.fill" catalog="system" width="64" height="56"/>
         <image name="paintbrush.fill" catalog="system" width="64" height="62"/>
         <image name="pencil.slash" catalog="system" width="64" height="56"/>

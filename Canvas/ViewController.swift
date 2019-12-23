@@ -13,9 +13,7 @@ import XMPPFrameworkSwift
 class ViewController: UIViewController {
     
     @IBOutlet var drawView: DrawView!
-    @IBOutlet var eraser: UIBarButtonItem!
     @IBOutlet var sessionDetails: UIBarButtonItem!
-    @IBOutlet var shapeRecognition: UIBarButtonItem!
     @IBOutlet var colourPicker: UIBarButtonItem!
     @IBOutlet var scrollView: UIScrollView!
     @IBOutlet var gestureRecogniser: UIPanGestureRecognizer!
@@ -39,7 +37,7 @@ class ViewController: UIViewController {
         drawView.bluetoothService = bluetoothService
         colourPickerVC = sb.instantiateViewController(
             withIdentifier: "colourPickerViewController") as? ColourPickerViewController
-        
+        colourPicker.tintColor = UIColor.blue
         try! self.xmppController = XMPPController(hostName: "cloud-vm-41-92.doc.ic.ac.uk",
         userJIDString: "jack@cloud-vm-41-92.doc.ic.ac.uk",
              password: "testtest")
@@ -107,6 +105,7 @@ class ViewController: UIViewController {
     
     @IBAction func showColorPicker() {
         // Use the popover presentation style for your view controller.
+        drawView!.setButtonColour(name: "none")
         colourPickerVC.modalPresentationStyle = .popover
 
         // Specify the anchor point for the popover.
@@ -115,6 +114,7 @@ class ViewController: UIViewController {
         
         //colourPickerVC.datasourceArray = mcSession.connectedPeers
         colourPickerVC.mainViewController = self
+        colourPickerVC.thickness = self.drawView.thickness
         // Present the view controller (in a popover).
         self.present(colourPickerVC, animated: true) {
            // The popover is visible.
@@ -125,7 +125,8 @@ class ViewController: UIViewController {
     
     func colourChange(_ sender: ColourPickerViewController) {
         let chosenColour = sender.selectedColor
-        drawView.colourChosen(chosenColour)
+        let chosenThickness = sender.thickness!
+        drawView.colourChosen(chosenColour, chosenThickness)
         colourPicker.tintColor = chosenColour
     }
     
