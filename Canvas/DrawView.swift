@@ -13,7 +13,8 @@ class DrawView: UIView {
 
     var lines: [String: Stroke] = [:]
     
-    var drawColour = UIColor.black
+    var drawColour = UIColor.blue
+    var thickness : Float = 1.0
     var currentIdentifier: String!
     var pointsToWrite: [Point] = []
     var shapeRecognition = false
@@ -24,6 +25,9 @@ class DrawView: UIView {
     var bluetoothService:BluetoothService?
     
     @IBOutlet var shapeRecognitionButton: UIBarButtonItem!
+    @IBOutlet var eraserButton: UIBarButtonItem!
+    @IBOutlet var partialButton: UIBarButtonItem!
+
     
     var undoStack: [(String, Stroke, Stroke.ActionType)] = []
     var redoStack: [(String, Stroke, Stroke.ActionType)] = []
@@ -67,7 +71,7 @@ class DrawView: UIView {
         
         switch mode {
         case .DRAWING:
-            let stroke = Stroke(points: [point], colour: drawColour)
+            let stroke = Stroke(points: [point], colour: drawColour, thickness: thickness)
             currentIdentifier = getIdentifier()
             pointsToWrite = [point]
             handleChange(change: Change.addStroke(stroke, currentIdentifier))
@@ -90,7 +94,7 @@ class DrawView: UIView {
             tracker.clipsToBounds = true
             tracker.center = point.cgPoint
         case .SHAPE_RECOGNITION:
-            let stroke = Stroke(points: [point], colour: drawColour)
+            let stroke = Stroke(points: [point], colour: drawColour, thickness: thickness)
             currentIdentifier = getIdentifier()
             pointsToWrite = [point]
             handleChange(change: Change.addStroke(stroke, currentIdentifier))
@@ -171,6 +175,8 @@ class DrawView: UIView {
                 
         for (_, stroke) in lines {
             context.setStrokeColor(stroke.colour.cgColor)
+            context.setLineWidth(CGFloat(stroke.thickness))
+            context.setLineCap(CGLineCap.round)
             context.addPath(stroke.cgPath)
             context.strokePath()
         }
@@ -182,7 +188,7 @@ class DrawView: UIView {
         let start = line.points[0]
         let end = line.points[count - 1]
         handleChange(change: Change.removeStroke(id, 0))
-        let stroke = Stroke(points: [start, end], colour: line.colour, isShape: true)
+        let stroke = Stroke(points: [start, end], colour: line.colour, isShape: true, thickness: line.thickness)
         print("stroke to be redrawn:", stroke.points)
         currentIdentifier = getIdentifier()
         handleChange(change: Change.addStroke(stroke, currentIdentifier))
@@ -217,7 +223,7 @@ class DrawView: UIView {
             
             handleChange(change: Change.removeStroke(id, 0))
               
-            let stroke = Stroke(points: corners, colour: line.colour, isShape: true)
+            let stroke = Stroke(points: corners, colour: line.colour, isShape: true, thickness: line.thickness)
             currentIdentifier = getIdentifier()
             handleChange(change: Change.addStroke(stroke, currentIdentifier))
         } else {
@@ -310,30 +316,34 @@ class DrawView: UIView {
         shapeRecognition = !shapeRecognition
         if (shapeRecognition) {
             mode = .SHAPE_RECOGNITION
-            shapeRecognitionButton.tintColor = UIColor.red
+            setButtonColour(name: "shape")
         } else {
             mode = .DRAWING
-            shapeRecognitionButton.tintColor = UIColor.white
+            setButtonColour(name: "none")
         }
     }
 
-    func colourChosen(_ chosenColour: UIColor) {
+    func colourChosen(_ chosenColour: UIColor, _ chosenThickness: Float) {
         drawColour = chosenColour
+        thickness = chosenThickness
         mode = mode == .SHAPE_RECOGNITION ? .SHAPE_RECOGNITION : .DRAWING
+        setButtonColour(name: "none")
     }
+    
     
     @IBAction func eraserChosen(_ sender: UIBarButtonItem) {
         let chosen = sender.tag
         mode = chosen == 20 ? .COMPLETE_REMOVE : .DRAWING
         shapeRecognition = false
-        shapeRecognitionButton.tintColor = UIColor.white
+        setButtonColour(name: "eraser")
     }
+
   
     @IBAction func partialChosen(_ sender: UIBarButtonItem) {
         let chosen = sender.tag
         mode = chosen == 21 ? .PARTIAL_REMOVE : .DRAWING
         shapeRecognition = false
-        shapeRecognitionButton.tintColor = UIColor.white
+        setButtonColour(name: "partial")
     }
     
     @IBAction func clearCanvas(_ sender: Any) {
@@ -394,5 +404,30 @@ class DrawView: UIView {
         }
         bluetoothService!.send(data: change)
         
+    }
+    
+    func setButtonColour(name: String) {
+        switch name {
+        case "shape":
+            shapeRecognitionButton.tintColor = UIColor.red
+            partialButton.tintColor = UIColor.white
+            eraserButton.tintColor = UIColor.white
+            mode = Mode.SHAPE_RECOGNITION
+        case "eraser":
+            shapeRecognitionButton.tintColor = UIColor.white
+            partialButton.tintColor = UIColor.white
+            eraserButton.tintColor = UIColor.red
+            mode = Mode.COMPLETE_REMOVE
+        case "partial":
+            shapeRecognitionButton.tintColor = UIColor.white
+            partialButton.tintColor = UIColor.red
+            eraserButton.tintColor = UIColor.white
+            mode = Mode.PARTIAL_REMOVE
+        default:
+            shapeRecognitionButton.tintColor = UIColor.white
+            partialButton.tintColor = UIColor.white
+            eraserButton.tintColor = UIColor.white
+            mode = Mode.DRAWING
+        }
     }
 }
