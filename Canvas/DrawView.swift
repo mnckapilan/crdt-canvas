@@ -427,23 +427,13 @@ class DrawView: UIView {
     }
     
     func setButtonColour() {
-        switch mode {
-        case .DRAWING:
-            shapeRecognitionButton.tintColor = UIColor.white
-            partialButton.tintColor = UIColor.white
-            eraserButton.tintColor = UIColor.white
-        case .COMPLETE_REMOVE:
-            shapeRecognitionButton.tintColor = UIColor.white
-            partialButton.tintColor = UIColor.white
-            eraserButton.tintColor = UIColor.red
-        case .PARTIAL_REMOVE:
-            shapeRecognitionButton.tintColor = UIColor.white
-            partialButton.tintColor = UIColor.red
-            eraserButton.tintColor = UIColor.white
-        case .SHAPE_RECOGNITION:
-            shapeRecognitionButton.tintColor = UIColor.red
-            partialButton.tintColor = UIColor.white
-            eraserButton.tintColor = UIColor.white
+        let MAPPING = [
+            Mode.COMPLETE_REMOVE: eraserButton,
+            Mode.SHAPE_RECOGNITION: shapeRecognitionButton,
+            Mode.PARTIAL_REMOVE: partialButton,
+        ]
+        for (k, v) in MAPPING {
+            v?.tintColor = k == mode ? UIColor.red : UIColor.white
         }
     }
 }

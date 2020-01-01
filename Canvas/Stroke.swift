@@ -278,18 +278,7 @@ class Stroke: Codable {
         }
         return nil;
     }
-    
-    func getPoint(_ i: Double) -> Point {
-        let lower = Int(floor(i))
-        let upper = Int(ceil(i))
-        let lPoint = points[lower]
-        let uPoint = points[upper]
-        let uWeight = Float(i - floor(i))
-        let lWeight = 1 - uWeight
-        let p = Point(x: lWeight * lPoint.x + uWeight * uPoint.x, y: lWeight * lPoint.y + uWeight * uPoint.y)
-        return p
-    }
-    
+        
     func getPoints(_ start: Int, _ end: Int) -> [Shape] {
         var returnValue: [Shape] = []
         if isShape {
@@ -333,95 +322,48 @@ class Stroke: Codable {
         return returnValue
     }
         
-    private static func lerp(_ t: Float, _ a: Point, _ b: Point) -> Point {
-        return Point(x: (1 - t) * a.x + t * b.x, y: (1 - t) * a.y + t * b.y)
-    }
-    
-    static func split(_ t: Float, _ curve: (Point, Point, Point, Point)) -> ((Point, Point, Point, Point), (Point, Point, Point, Point)) {
-        let (cp0, cp1, cp2, cp3) = curve
-        let e = Stroke.lerp(t, cp0, cp1)
-        let f = Stroke.lerp(t, cp1, cp2)
-        let g = Stroke.lerp(t, cp2, cp3)
-        let h = Stroke.lerp(t, e, f)
-        let j = Stroke.lerp(t, f, g)
-        let k = Stroke.lerp(t, h, j)
-        return ((cp0, e, h, k), (k, j, g, cp3))
-    }
-    
     var cgPath: CGPath {
         get {
-            if (isShape) {
-                let path = UIBezierPath.init()
-                path.lineCapStyle = CGLineCap.round
-                path.lineWidth = 3
+            let path = UIBezierPath.init()
+            path.lineCapStyle = CGLineCap.round
+            path.lineWidth = 3
 
-                for segment in segments {
-                    path.move(to: getPoint(segment.start).cgPoint)
-                    
-                    var i = segment.start
-                    while i < segment.end {
-                        i += 1
-                        i = floor(i)
-                        i = min(i, segment.end)
-                        
-                        path.addLine(to: getPoint(i).cgPoint)
-                    }
-                    
-                    print("draw: ", segment.start, segment.end)
+            for segment in segments {
+                if segment.start > segment.end {
+                    continue
                 }
                 
-                return path.cgPath
-
-            } else {
-                let path = UIBezierPath.init()
-                path.lineCapStyle = CGLineCap.round
-                path.lineWidth = 3
+                let start = Int(floor(segment.start))
+                let startDist = segment.start - floor(segment.start)
+                let end = Int(ceil(segment.end))
+                let endDist = segment.end - floor(segment.end)
+                let curves = getPoints(start, end)
                 
-                for segment in segments {
-                    if segment.start > segment.end {
-                        continue
-                    }
-                    
-                    let start = Int(floor(segment.start))
-                    let end = Int(ceil(segment.end))
-                    let curve = getPoints(start, end)
-                    
-                    if curve.count == 0 {
-                        continue
-                    }
-                    
-                    var last = points[start]
-                    //path.move(to: last)
-                    
-                    for i in 0...(curve.count - 1) {
-                        guard case let .Curve(_, cp1, cp2, end) = curve[i] else {
-                            continue
-                        }
-                        var (last_, cp1_, cp2_, end_) = (last, cp1, cp2, end)
-
-                        if i == 0 {
-                            (last_, cp1_, cp2_, end_) = Stroke.split(Float(segment.start - floor(segment.start)), (last, cp1, cp2, end)).1
-                            if segment.start - floor(segment.start) != 0 {
-                                print("srender ", segment.start, segment.start - floor(segment.start))
-                            }
-                        } else if i == curve.count - 1 {
-                            (last_, cp1_, cp2_, end_) = Stroke.split(Float(segment.end - floor(segment.end)), (last, cp1, cp2, end)).0
-                            if ceil(segment.end) - segment.end != 0 {
-                                print("erender ", segment.end, segment.end - floor(segment.end))
-                            }
-                        }
-               
-                        path.move(to: last_.cgPoint)
-                        //path.addCurve(to: end.cgPoint, controlPoint1: cp1.cgPoint, controlPoint2: cp2.cgPoint)
-                        path.addCurve(to: end_.cgPoint, controlPoint1: cp1_.cgPoint, controlPoint2: cp2_.cgPoint)
-                        last = end
-                    }
-                    
-                    
+                if curves.count == 0 {
+                    continue
                 }
                 
-                return path.cgPath
+                for i in 0...(curves.count - 1) {
+                    var curve = curves[i]
+                    
+                    if i == 0 && i == curves.count - 1 && endDist != 0 {
+                        curve = Geometry.trim(curve, Float(startDist), Float(endDist))
+                    } else if i == 0 {
+                        curve = Geometry.trim(curve, Float(startDist), 1)
+                    } else if i == curves.count - 1 && endDist != 0 {
+                        curve = Geometry.trim(curve, 1, Float(endDist))
+                    }
+                    
+                    if case let .Line(cp0, cp3) = curve {
+                        path.move(to: cp0.cgPoint)
+                        path.addLine(to: cp3.cgPoint)
+                    } else if case let .Curve(cp0, cp1, cp2, cp3) = curve {
+                        path.move(to: cp0.cgPoint)
+                        path.addCurve(to: cp3.cgPoint, controlPoint1: cp1.cgPoint, controlPoint2: cp2.cgPoint)
+                    }
+                }
             }
+            return path.cgPath
         }
     }
 }

@@ -66,7 +66,7 @@ enum IntersectionResult {
 
 class Geometry {
     static func findIntersectionPoints(shape: Shape, circle: Point, radius: Float, depth: Int) -> IntersectionResult {
-        let (results, cp0, cp3) = Geometry.helperFunction(shape: shape, circle: circle, radius: radius, depth: depth)
+        let (results, cp0, cp3) = Geometry.helperFunction(shape, circle, radius, depth)
         if results.count == 0 {
             return .OPEN
         } else if results.count == 1 {
@@ -88,7 +88,33 @@ class Geometry {
         }
     }
     
-    private static func helperFunction(shape: Shape, circle: Point, radius: Float, depth: Int) -> ([Float], Point, Point) {
+    static func trim(_ shape: Shape, _ lower: Float, _ upper: Float) -> Shape {
+        switch shape {
+        case let .Line(cp0, cp3):
+            return .Line(Geometry.lerp(lower, cp0, cp3), Geometry.lerp(upper, cp0, cp3))
+        case let .Curve(cp0, cp1, cp2, cp3):
+            let (_, curve1) = Geometry.split(lower, (cp0, cp1, cp2, cp3))
+            let ((cp0_, cp1_, cp2_, cp3_), _) = Geometry.split(lower + (upper * (1 - lower)), curve1)
+            return .Curve(cp0_, cp1_, cp2_, cp3_)
+        }
+    }
+    
+    private static func lerp(_ t: Float, _ a: Point, _ b: Point) -> Point {
+        return Point(x: (1 - t) * a.x + t * b.x, y: (1 - t) * a.y + t * b.y)
+    }
+    
+    private static func split(_ t: Float, _ curve: (Point, Point, Point, Point)) -> ((Point, Point, Point, Point), (Point, Point, Point, Point)) {
+        let (cp0, cp1, cp2, cp3) = curve
+        let e = Geometry.lerp(t, cp0, cp1)
+        let f = Geometry.lerp(t, cp1, cp2)
+        let g = Geometry.lerp(t, cp2, cp3)
+        let h = Geometry.lerp(t, e, f)
+        let j = Geometry.lerp(t, f, g)
+        let k = Geometry.lerp(t, h, j)
+        return ((cp0, e, h, k), (k, j, g, cp3))
+    }
+    
+    private static func helperFunction(_ shape: Shape, _ circle: Point, _ radius: Float, _ depth: Int) -> ([Float], Point, Point) {
         switch shape {
         case let .Line(cp0, cp3):
             let points = Geometry.findIntersectionPointsLine(line: (cp0, cp3), circle: circle, radius: radius)
@@ -104,7 +130,7 @@ class Geometry {
         if depth == 0 {
             return Geometry.findIntersectionPointsLine(line: (cp0, cp3), circle: circle, radius: radius)
         } else {
-            let (curve1, curve2) = Stroke.split(0.5, curve)
+            let (curve1, curve2) = Geometry.split(0.5, curve)
             let results1 = Geometry.findIntersectionPointsCurve(curve: curve1, circle: circle, radius: radius, depth: depth - 1)
             let results2 = Geometry.findIntersectionPointsCurve(curve: curve2, circle: circle, radius: radius, depth: depth - 1)
             return results1.map { $0 / 2 } + results2.map { 0.5 + $0 / 2 }
