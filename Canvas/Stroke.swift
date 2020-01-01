@@ -193,86 +193,27 @@ class Stroke: Codable {
     
     let ERROR_BOUND = Float(20)
     
-    func getClosestPoint(_ a: Point, _ b: Point, _ p: Point) -> Double? {
-        let a_to_p = (
-            p.x - a.x,
-            p.y - a.y
-        )
-        let a_to_b = (
-            b.x - a.x,
-            b.y - a.y
-        )
-        let atb_2 = pow(a_to_b.0, 2) + pow(a_to_b.1, 2)
-        let atb_dot_atp = a_to_p.0 * a_to_b.0 + a_to_p.1 * a_to_b.1
-        let t = atb_dot_atp / atb_2
-        
-        let nPoint = (a.x + a_to_b.0 * t, a.y + a_to_b.1 * t)
-        
-        if sqrt(pow(p.x - nPoint.0, 2) + pow(p.y - nPoint.1, 2)) > ERROR_BOUND {
-            return nil
-        }
-        
-        return Double(t)
-    }
-    
-    func isInLine(_ lPoint: Point, _ uPoint: Point, _ givenPoint: Point) -> Double? {
-        if lPoint.x == uPoint.x {
-            if abs(givenPoint.x - lPoint.x) > ERROR_BOUND {
-                return nil
-            }
-            let ratio = (givenPoint.y - lPoint.y) / (uPoint.y - lPoint.y)
-            //print("ratio 2: ", ratio)
-            if ratio < 0 || ratio > 1 {
-                return nil
-            }
-            return Double(ratio)
-        } else {
-            let ratio = (givenPoint.x - lPoint.x) / (uPoint.x - lPoint.x)
-            print("ratio 1: ", ratio)
-            if ratio < 0 || ratio > 1 {
-                return nil
-            }
-            let interpolatedY = (uPoint.y - lPoint.y) * ratio + lPoint.y
-            print("ys: ", interpolatedY, givenPoint.y)
-            if abs(interpolatedY - givenPoint.y) > ERROR_BOUND {
-                return nil
-            }
-            return Double(ratio)
-        }
-    }
-    
     func indexOf(givenPoint: Point) -> (Double, Double)? {
-        if isShape {
-            for segment in segments {
-                var i = segment.start // 1, 1.5
-                while i < segment.end {
-                    let l = Int(floor(i)) // 1, 1
-                    let u = Int(floor(i + 1)) // 2, 2
-                    
-                    let lPoint = points[l]
-                    let uPoint = points[u]
-                    
-                    let t = getClosestPoint(lPoint, uPoint, givenPoint)
-                    if let tNotNil = t {
-                        let k = Double(l) + tNotNil
-                        if k > i && k < segment.end {
-                            return (segment.start, segment.end)
-                        }
-                    }
-                    
-                    
-                    i += 1
-                    i = floor(i)
-                }
+        for segment in segments {
+            let start = Int(floor(segment.start))
+            let end = Int(ceil(segment.end))
+            let curves = getPoints(start, end)
+        
+            if curves.count == 0 {
+                continue
             }
-        } else {
-            for segment in segments {
-                for i in Int(ceil(segment.start))...Int(floor(segment.end)) {
-                    let point = points[i]
-                    if ((givenPoint.x <= point.x + 10 && givenPoint.x >= point.x - 10) && (givenPoint.y <= point.y + 10 && givenPoint.y >= point.y - 10)) {
-                        //return Double(i)
-                        return (segment.start, segment.end)
-                    }
+            
+            for i in 0...(curves.count - 1) {
+                let curve = curves[i]
+                
+                let (t, n) = Geometry.getClosest(curve, givenPoint)
+                
+                let k = Double(start + i) + t
+
+                if Point.dist(n, givenPoint) < ERROR_BOUND
+                    && k > segment.start
+                    && k < segment.end {
+                    return (segment.start, segment.end)
                 }
             }
         }

@@ -21,14 +21,14 @@ class ViewController: UIViewController {
     var peerID: MCPeerID!
     var mcAdvertiserAssistant: MCAdvertiserAssistant!
     let sb = UIStoryboard(name: "Main", bundle: nil)
-    var colourPickerVC : ColourPickerViewController!
-    var xmppController : XMPPController?
-    var connectedDevices : [String]?
+    var colourPickerVC: ColourPickerViewController!
+    var xmppController: XMPPController?
+    var connectedDevices: [String]?
     var bluetoothService = BluetoothService(withRoomName: "imperial")
     var isMaster = true
     var currentRoom = "imperial"
-    var centreX : CGFloat!
-    var centreY : CGFloat!
+    var centreX: CGFloat!
+    var centreY: CGFloat!
 
     override func viewDidLoad() {
         super.viewDidLoad()

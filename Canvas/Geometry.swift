@@ -26,12 +26,20 @@ class Point: Codable, Equatable, CustomStringConvertible {
         self.y = y
     }
     
+    static func +(a: Point, b: Point) -> Point {
+        return Point(x: a.x + b.x, y: a.y + b.y)
+    }
+    
     static func -(a: Point, b: Point) -> Point {
         return Point(x: a.x - b.x, y: a.y - b.y)
     }
     
     static func *(a: Point, b: Point) -> Float {
         return a.x * b.x + a.y * b.y
+    }
+    
+    static func *(a: Float, b: Point) -> Point {
+        return Point(x: a * b.x, y: a * b.y)
     }
     
     var abs: Float {
@@ -64,6 +72,8 @@ enum IntersectionResult {
     case MIDDLE_OPEN(Float, Float)
 }
 
+typealias Curve = (Point, Point, Point, Point)
+
 class Geometry {
     static func findIntersectionPoints(shape: Shape, circle: Point, radius: Float, depth: Int) -> IntersectionResult {
         let (results, cp0, cp3) = Geometry.helperFunction(shape, circle, radius, depth)
@@ -87,7 +97,7 @@ class Geometry {
             return .MIDDLE_OPEN(smallest, biggest)
         }
     }
-    
+        
     static func trim(_ shape: Shape, _ lower: Float, _ upper: Float) -> Shape {
         switch shape {
         case let .Line(cp0, cp3):
@@ -103,7 +113,7 @@ class Geometry {
         return Point(x: (1 - t) * a.x + t * b.x, y: (1 - t) * a.y + t * b.y)
     }
     
-    private static func split(_ t: Float, _ curve: (Point, Point, Point, Point)) -> ((Point, Point, Point, Point), (Point, Point, Point, Point)) {
+    private static func split(_ t: Float, _ curve: Curve) -> (Curve, Curve) {
         let (cp0, cp1, cp2, cp3) = curve
         let e = Geometry.lerp(t, cp0, cp1)
         let f = Geometry.lerp(t, cp1, cp2)
@@ -117,27 +127,27 @@ class Geometry {
     private static func helperFunction(_ shape: Shape, _ circle: Point, _ radius: Float, _ depth: Int) -> ([Float], Point, Point) {
         switch shape {
         case let .Line(cp0, cp3):
-            let points = Geometry.findIntersectionPointsLine(line: (cp0, cp3), circle: circle, radius: radius)
+            let points = Geometry.findIntersectionPointsLine((cp0, cp3), circle, radius)
             return (points, cp0, cp3)
         case let .Curve(cp0, cp1, cp2, cp3):
-            let points = Geometry.findIntersectionPointsCurve(curve: (cp0, cp1, cp2, cp3), circle: circle, radius: radius, depth: depth)
+            let points = Geometry.findIntersectionPointsCurve((cp0, cp1, cp2, cp3), circle, radius, depth)
             return (points, cp0, cp3)
         }
     }
     
-    private static func findIntersectionPointsCurve(curve: (Point, Point, Point, Point), circle: Point, radius: Float, depth: Int) -> [Float] {
+    private static func findIntersectionPointsCurve(_ curve: Curve, _ circle: Point, _ radius: Float, _ depth: Int) -> [Float] {
         let (cp0, _, _, cp3) = curve
         if depth == 0 {
-            return Geometry.findIntersectionPointsLine(line: (cp0, cp3), circle: circle, radius: radius)
+            return findIntersectionPointsLine((cp0, cp3), circle, radius)
         } else {
             let (curve1, curve2) = Geometry.split(0.5, curve)
-            let results1 = Geometry.findIntersectionPointsCurve(curve: curve1, circle: circle, radius: radius, depth: depth - 1)
-            let results2 = Geometry.findIntersectionPointsCurve(curve: curve2, circle: circle, radius: radius, depth: depth - 1)
+            let results1 = findIntersectionPointsCurve(curve1, circle, radius, depth - 1)
+            let results2 = findIntersectionPointsCurve(curve2, circle, radius, depth - 1)
             return results1.map { $0 / 2 } + results2.map { 0.5 + $0 / 2 }
         }
     }
 
-    private static func findIntersectionPointsLine(line: (Point, Point), circle: Point, radius: Float) -> [Float] {
+    private static func findIntersectionPointsLine(_ line: (Point, Point), _ circle: Point, _ radius: Float) -> [Float] {
         //print("centre ", circle)
         let m = (line.1.y - line.0.y) / (line.1.x - line.0.x)
         let n = line.1.y - m * line.1.x
@@ -159,5 +169,105 @@ class Geometry {
         results = results.map { ($0 - line.0.x) / (line.1.x - line.0.x) }
         results = results.filter { $0 >= 0 && $0 <= 1 }
         return results
+    }
+    
+    static func isStraightLine(_ points: [Point?]) -> Bool {
+        let startPt = points[0]!.cgPoint
+        let endPt = points[points.count - 1]!.cgPoint
+        
+        var almostStraightLine = true
+        for point in points {
+            let res = isInLine(point!.cgPoint, startPt, endPt)
+            if (!res) {
+                almostStraightLine = res
+                break
+            }
+        }
+        
+        return almostStraightLine
+    }
+    
+    static func atan3(_ a: Point, _ b: Point) -> Float {
+        return atan2(a.y - b.y, a.x - b.x)
+    }
+    
+    static func attemptToBunchLines(_ points: [Point]) -> [Int] {
+        var retValue: [Int] = []
+        
+        let m = 10
+        
+        var initialAngle: Float? = nil
+        var start = 0
+        var i = 0
+        retValue.append(0)
+        while i < points.count - m {
+            let angle = atan3(points[start], points[i + m])
+            if let initialAngleNotNil = initialAngle {
+                if abs(initialAngleNotNil - angle) > 0.4 {
+                    retValue.append(i)
+                    initialAngle = atan3(points[i + m - 1], points[i + m])
+                    i += m
+                    start = i
+                    continue
+                }
+            } else {
+                initialAngle = angle
+            }
+            i += 1
+        }
+        retValue.append(0)
+        
+        print("output from corner detection: ", retValue)
+        return retValue
+    }
+    
+    static func isRectangle(_ points: [Point?]) -> (Bool, [Point]) {
+        let corners = attemptToBunchLines(points as! [Point])
+        if (corners.count != 5) {
+            print("Too many/few corners")
+            return (false, [])
+        }
+        
+        var rectanglePoints : [Point?] = []
+        for i in 0...corners.count - 2 {
+            let side = [points[i], points[i + 1]]
+            if (!isStraightLine(side)) {
+                print("side is not a straight line")
+                return (false, [])
+            }
+            rectanglePoints.append(points[corners[i]])
+        }
+        return (true, rectanglePoints as! [Point])
+    }
+    
+    static func isInLine(_ coords: CGPoint, _ startPt: CGPoint, _ endPt: CGPoint) -> Bool {
+        if (endPt.x <= startPt.x + 20 && endPt.x >= startPt.x - 20) {
+            let verticalLineEqn = startPt.x
+            return coords.x <= verticalLineEqn + 20 && coords.x >= verticalLineEqn - 20
+        } else {
+            let grad = (startPt.y - endPt.y) / (startPt.x - endPt.x)
+            let yOnLineForGivenX = (grad * (coords.x - startPt.x)) + startPt.y
+            return coords.y <= yOnLineForGivenX + 20 && coords.y >= yOnLineForGivenX - 20
+        }
+    }
+    
+    static func getClosest(_ shape: Shape, _ p: Point) -> (Double, Point) {
+        switch shape {
+        case let .Line(cp0, cp3):
+            return getClosestPoint(cp0, cp3, p)
+        case let .Curve(cp0, _, _, cp3):
+            return getClosestPoint(cp0, cp3, p)
+        }
+    }
+    
+    static func getClosestPoint(_ a: Point, _ b: Point, _ p: Point) -> (Double, Point) {
+        let a_to_p = p - a
+        let a_to_b = b - a
+        let atb_dot_atp = a_to_b * a_to_p
+        let atb_2 = a_to_b * a_to_b
+        let t = atb_dot_atp / atb_2
+        let nPoint = a + t * a_to_b
+        
+        return (Double(t), nPoint)
     }
 }

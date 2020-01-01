@@ -152,7 +152,7 @@ class DrawView: UIView {
     override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
         let point = Point(fromCGPoint: Array(touches)[0].location(in: self))
         switch mode {
-        case .DRAWING:
+        case .DRAWING, .SHAPE_RECOGNITION:
             if pointsToWrite.count > 0 && pointsToWrite.last! != point {
                 pointsToWrite.append(point)
             }
@@ -161,34 +161,24 @@ class DrawView: UIView {
                 handleChange(change: Change.addPoint(pointsToWrite, currentIdentifier))
                 pointsToWrite = [pointsToWrite.last!]
             }
-    
         case .PARTIAL_REMOVE:
             partialRemove(point)
             tracker.center = point.cgPoint
         case .COMPLETE_REMOVE:
             break
-        case .SHAPE_RECOGNITION:
-            if pointsToWrite.count > 0 && pointsToWrite.last! != point {
-                pointsToWrite.append(point)
-            }
-            if pointsToWrite.count >= 5 {
-                pointsToWrite.remove(at: 0)
-                handleChange(change: Change.addPoint(pointsToWrite, currentIdentifier))
-                pointsToWrite = [pointsToWrite.last!]
-            }
         }
     }
-    
+        
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
         if (mode == Mode.SHAPE_RECOGNITION) {
             let currentLine = lines[currentIdentifier]!
-            let isStraight = isStraightLine(currentLine.points)
+            let isStraight = Geometry.isStraightLine(currentLine.points)
             if (isStraight) {
                 // If your rectangle gets corrected to a straight line, it's because you drew a rectangle that was too small
                 print("found straight line")
                 redrawStraightLine(currentIdentifier)
             } else {
-                let (rectangle, corners) = isRectangle(currentLine.points)
+                let (rectangle, corners) = Geometry.isRectangle(currentLine.points)
                 if (rectangle) {
                     print("found rectangle")
                     redrawRectangle(currentIdentifier, corners, currentLine.points)
@@ -266,86 +256,6 @@ class DrawView: UIView {
            // User drew a rectangle at an angle, so do not correct to a shape, leave as is
         }
         
-    }
-    
-    func isStraightLine(_ points: [Point?]) -> Bool {
-        let startPt = points[0]!.cgPoint
-        let endPt = points[points.count - 1]!.cgPoint
-        
-        var almostStraightLine = true
-        for point in points {
-            let res = isInLine(point!.cgPoint, startPt, endPt)
-            if (!res) {
-                almostStraightLine = res
-                break
-            }
-        }
-        
-        return almostStraightLine
-    }
-    
-    func atan3(_ a: Point, _ b: Point) -> Float {
-        return atan2(a.y - b.y, a.x - b.x)
-    }
-    
-    func attemptToBunchLines(_ points: [Point]) -> [Int] {
-        var retValue: [Int] = []
-        
-        let m = 10
-        
-        var initialAngle: Float? = nil
-        var start = 0
-        var i = 0
-        retValue.append(0)
-        while i < points.count - m {
-            let angle = atan3(points[start], points[i + m])
-            if let initialAngleNotNil = initialAngle {
-                if abs(initialAngleNotNil - angle) > 0.4 {
-                    retValue.append(i)
-                    initialAngle = atan3(points[i + m - 1], points[i + m])
-                    i += m
-                    start = i
-                    continue
-                }
-            } else {
-                initialAngle = angle
-            }
-            i += 1
-        }
-        retValue.append(0)
-        
-        print("output from corner detection: ", retValue)
-        return retValue
-    }
-    
-    func isRectangle(_ points: [Point?]) -> (Bool, [Point]) {
-        let corners = attemptToBunchLines(points as! [Point])
-        if (corners.count != 5) {
-            print("Too many/few corners")
-            return (false, [])
-        }
-        
-        var rectanglePoints : [Point?] = []
-        for i in 0...corners.count - 2 {
-            let side = [points[i], points[i + 1]]
-            if (!isStraightLine(side)) {
-                print("side is not a straight line")
-                return (false, [])
-            }
-            rectanglePoints.append(points[corners[i]])
-        }
-        return (true, rectanglePoints as! [Point])
-    }
-    
-    func isInLine(_ coords: CGPoint, _ startPt: CGPoint, _ endPt: CGPoint) -> Bool {
-        if (endPt.x <= startPt.x + 20 && endPt.x >= startPt.x - 20) {
-            let verticalLineEqn = startPt.x
-            return coords.x <= verticalLineEqn + 20 && coords.x >= verticalLineEqn - 20
-        } else {
-            let grad = (startPt.y - endPt.y) / (startPt.x - endPt.x)
-            let yOnLineForGivenX = (grad * (coords.x - startPt.x)) + startPt.y
-            return coords.y <= yOnLineForGivenX + 20 && coords.y >= yOnLineForGivenX - 20
-        }
     }
     
     @IBAction func toggleShapeRecognition(_ sender: UIBarButtonItem) {
