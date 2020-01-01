@@ -10,27 +10,26 @@ import UIKit
 import MultipeerConnectivity
 
 class DrawView: UIView {
-
+    
     var lines: [String: Stroke] = [:]
+    var cache: [String: CGPath] = [:]
+    let engine: CRDTEngine = NativeCRDTEngine() //AutomergeJavaScript.shared
     
     var drawColour = UIColor.blue
-    var thickness : Float = 1.0
+    var thickness: Float = 1.0
     var currentIdentifier: String!
     var pointsToWrite: [Point] = []
-    var shapeRecognition = false
+    var xmppController: XMPPController?
+    var mainViewController: ViewController?
+    var bluetoothService: BluetoothService?
+    
     @IBOutlet var tracker: UIImageView!
-    var xmppController : XMPPController?
-    var mainViewController : ViewController?
-    
-    var bluetoothService:BluetoothService?
-    
     @IBOutlet var shapeRecognitionButton: UIBarButtonItem!
     @IBOutlet var eraserButton: UIBarButtonItem!
     @IBOutlet var partialButton: UIBarButtonItem!
 
-    
-    var undoStack: [(String, Stroke, Stroke.ActionType)] = []
-    var redoStack: [(String, Stroke, Stroke.ActionType)] = []
+    var undoStack: [Change] = []
+    var redoStack: [Change] = []
     
     var mode = Mode.DRAWING
     
@@ -43,25 +42,101 @@ class DrawView: UIView {
         return UUID().uuidString
     }
     
-    func lookUpStroke(_ point: Point) -> (String, Double) {
+    func lookUpStroke(_ point: Point) -> (String, Double, Double)? {
         for (str, stroke) in lines {
-            if let t = stroke.indexOf(givenPoint: point) {
-                return (str, t);
+            if let (t1, t2) = stroke.indexOf(givenPoint: point) {
+                return (str, t1, t2);
             }
         }
-        return ("", -1)
+        return nil
     }
     
     func partialRemove(_ point: Point) {
         for (str, stroke) in lines {
-            let p = stroke.indexOf(givenPoint: point)
-            if let t = p {
-                if stroke.isShape {
-                    //print(t)
-                    handleChange(change: Change.betterPartial(str, t - 0.02, t + 0.02))
-                } else {
-                    handleChange(change: Change.partialRemoveStroke(str, Int(t)))
+            for segment in stroke.segments {
+                let start = Int(floor(segment.start))
+                let end = Int(ceil(segment.end))
+                
+                if start >= end {
+                    continue
                 }
+                
+                if stroke.isShape {
+                    for i in start...(end - 1) {
+                        let cp0 = stroke.points[i]
+                        let cp3 = stroke.points[i + 1]
+                        let result = Stroke.findIntersectionsPoint(line: (cp0, cp3), circle: point, radius: 15)
+                        
+                        print(result)
+                        switch result {
+                        case let .LEFT_OPEN(t):
+                            handleChange(change: Change.betterPartial(str, Double(i) + Double(t), Double(i + 1)))
+                            print(t)
+                            return
+                        case let .RIGHT_OPEN(t):
+                            handleChange(change: Change.betterPartial(str, Double(i), Double(i) + Double(t)))
+                            print(t)
+                            return
+                        case let .MIDDLE_OPEN(t1, t2):
+                            //print(t1, t2)
+                            handleChange(change: Change.betterPartial(str, Double(i) + Double(t1), Double(i) + Double(t2)))
+                            return
+                        case .CLOSED:
+                            handleChange(change: Change.betterPartial(str, Double(i), Double(i + 1)))
+                            return
+                        default:
+                            break
+                        }
+                    }
+                } else {
+                    let points = stroke.getPoints(start, end)
+                    var dept = stroke.points[start]
+                    
+                    if points.count == 0 {
+                        continue
+                    }
+                
+                    for i in 0...(points.count - 1) {
+                        let (cp1, cp2, end) = points[i]
+                        let z = i + start
+                        let minX = min(dept.x, end.x) - 15
+                        let minY = min(dept.y, end.y) - 15
+                        let maxX = max(dept.x, end.x) + 15
+                        let maxY = max(dept.y, end.y) + 15
+                        if minX <= point.x && minY <= point.y && point.x <= maxX && point.y <= maxY {
+                            print("===LIKELY")
+                            print(dept)
+                            print(end)
+                            print(point)
+                            print()
+                            print("")
+                            let result = Stroke.findIntersectionsAdvanced(curve: (dept, cp1, cp2, end), circle: point, radius: 15)
+                            print(result)
+                            switch result {
+                            case let .LEFT_OPEN(t):
+                                handleChange(change: Change.betterPartial(str, Double(z) + Double(t), Double(z + 1)))
+                                print(t)
+                                return
+                            case let .RIGHT_OPEN(t):
+                                handleChange(change: Change.betterPartial(str, Double(z), Double(z) + Double(t)))
+                                print(t)
+                                return
+                            case let .MIDDLE_OPEN(t1, t2):
+                                //print(t1, t2)
+                                handleChange(change: Change.betterPartial(str, Double(z) + Double(t1), Double(z) + Double(t2)))
+                                return
+                            case .CLOSED:
+                                handleChange(change: Change.betterPartial(str, Double(z), Double(z + 1)))
+                                return
+                            default:
+                                break
+                            }
+                        }
+                        dept = end
+                    }
+                    
+                }
+            
             }
         }
     }
@@ -70,20 +145,19 @@ class DrawView: UIView {
         let point = Point(fromCGPoint: Array(touches)[0].location(in: self))
         
         switch mode {
-        case .DRAWING:
+        case .SHAPE_RECOGNITION, .DRAWING:
             let stroke = Stroke(points: [point], colour: drawColour, thickness: thickness)
             currentIdentifier = getIdentifier()
             pointsToWrite = [point]
-            handleChange(change: Change.addStroke(stroke, currentIdentifier))
-            undoStack.append((currentIdentifier, stroke, Stroke.ActionType.add))
+            let change = Change.addStroke(stroke, currentIdentifier)
+            undoStack.append(getInverseChange(change: change)!)
+            handleChange(change: change)
             redoStack = []
         case .COMPLETE_REMOVE:
-            let (strokeId, t) = lookUpStroke(point)
-            if (strokeId != "") {
-                let stroke = lines[strokeId]!
-                handleChange(change: Change.removeStroke(strokeId, Int(t)))
-                undoStack.append((strokeId, stroke, Stroke.ActionType.remove))
+            if let (strokeId, t, t2) = lookUpStroke(point) {
+                handleChange(change: Change.betterPartial(strokeId, t, t2))
             }
+            redoStack = []
         case .PARTIAL_REMOVE:
             partialRemove(point)
             tracker.isHidden = false
@@ -93,22 +167,31 @@ class DrawView: UIView {
             tracker.layer.cornerRadius = tracker.frame.height/2
             tracker.clipsToBounds = true
             tracker.center = point.cgPoint
-        case .SHAPE_RECOGNITION:
-            let stroke = Stroke(points: [point], colour: drawColour, thickness: thickness)
-            currentIdentifier = getIdentifier()
-            pointsToWrite = [point]
-            handleChange(change: Change.addStroke(stroke, currentIdentifier))
-            undoStack.append((currentIdentifier, stroke, Stroke.ActionType.add))
             redoStack = []
         }
     }
     
     func handleChange(change: Change) {
-        AutomergeJavaScript.shared.addChange(change) { (returnValue) in
-            self.lines = returnValue.0
-            self.sendPath(returnValue.1)
-            self.setNeedsDisplay()
+        let returnValue = engine.addChange(change)
+        self.lines = returnValue.0
+        //self.sendPath(returnValue.1)
+        switch change {
+        case let .addPoint(_, i):
+            self.setStale(i)
+        case let .addStroke(_, i):
+            self.setStale(i)
+        case let .removeStroke(i):
+            cache.removeValue(forKey: i)
+        case .clearCanvas:
+            cache = [:]
+        case let .betterPartial(i, _, _):
+            self.setStale(i)
         }
+        self.setNeedsDisplay()
+    }
+    
+    func setStale(_ id: String) {
+        cache[id] = lines[id]?.cgPath
     }
     
     override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -138,12 +221,10 @@ class DrawView: UIView {
                 handleChange(change: Change.addPoint(pointsToWrite, currentIdentifier))
                 pointsToWrite = [pointsToWrite.last!]
             }
-            
         }
     }
     
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
-        
         if (mode == Mode.SHAPE_RECOGNITION) {
             let currentLine = lines[currentIdentifier]!
             let isStraight = isStraightLine(currentLine.points)
@@ -173,11 +254,11 @@ class DrawView: UIView {
             return
         }
                 
-        for (_, stroke) in lines {
+        for (id, stroke) in lines {
             context.setStrokeColor(stroke.colour.cgColor)
             context.setLineWidth(CGFloat(stroke.thickness))
             context.setLineCap(CGLineCap.round)
-            context.addPath(stroke.cgPath)
+            context.addPath(cache[id]!)
             context.strokePath()
         }
     }
@@ -187,12 +268,12 @@ class DrawView: UIView {
         let count = line.points.count
         let start = line.points[0]
         let end = line.points[count - 1]
-        handleChange(change: Change.removeStroke(id, 0))
+        handleChange(change: Change.removeStroke(id))
         let stroke = Stroke(points: [start, end], colour: line.colour, isShape: true, thickness: line.thickness)
         print("stroke to be redrawn:", stroke.points)
         currentIdentifier = getIdentifier()
         handleChange(change: Change.addStroke(stroke, currentIdentifier))
-        undoStack.append((currentIdentifier, line, Stroke.ActionType.redraw))
+        //undoStack.append((currentIdentifier, line, Stroke.ActionType.redraw))
     }
     
     func redrawRectangle(_ id: String, _ points: [Point], _ full_points: [Point]) {
@@ -221,7 +302,7 @@ class DrawView: UIView {
                 corners = [points[0], Point(x: x2, y: y1), Point(x: x2, y: y2), Point(x: x1, y: y2), points[0]]
             }
             
-            handleChange(change: Change.removeStroke(id, 0))
+            handleChange(change: Change.removeStroke(id))
               
             let stroke = Stroke(points: corners, colour: line.colour, isShape: true, thickness: line.thickness)
             currentIdentifier = getIdentifier()
@@ -313,87 +394,72 @@ class DrawView: UIView {
     }
     
     @IBAction func toggleShapeRecognition(_ sender: UIBarButtonItem) {
-        shapeRecognition = !shapeRecognition
-        if (shapeRecognition) {
-            mode = .SHAPE_RECOGNITION
-            setButtonColour(name: "shape")
-        } else {
+        if (mode == .SHAPE_RECOGNITION) {
             mode = .DRAWING
-            setButtonColour(name: "none")
+        } else {
+            mode = .SHAPE_RECOGNITION
         }
+        setButtonColour()
     }
 
     func colourChosen(_ chosenColour: UIColor, _ chosenThickness: Float) {
         drawColour = chosenColour
         thickness = chosenThickness
         mode = mode == .SHAPE_RECOGNITION ? .SHAPE_RECOGNITION : .DRAWING
-        setButtonColour(name: "none")
+        setButtonColour()
     }
-    
     
     @IBAction func eraserChosen(_ sender: UIBarButtonItem) {
-        let chosen = sender.tag
-        mode = chosen == 20 ? .COMPLETE_REMOVE : .DRAWING
-        shapeRecognition = false
-        setButtonColour(name: "eraser")
+        mode = .COMPLETE_REMOVE
+        setButtonColour()
     }
 
-  
     @IBAction func partialChosen(_ sender: UIBarButtonItem) {
-        let chosen = sender.tag
-        mode = chosen == 21 ? .PARTIAL_REMOVE : .DRAWING
-        shapeRecognition = false
-        setButtonColour(name: "partial")
+        mode = .PARTIAL_REMOVE
+        setButtonColour()
     }
     
     @IBAction func clearCanvas(_ sender: Any) {
-        // TODO: be able to undo a clear
-        lines = [:]
         undoStack = []
         redoStack = []
         handleChange(change: Change.clearCanvas)
         self.setNeedsDisplay()
-        
+    }
+    
+    func getInverseChange(change: Change) -> Change? {
+        switch change {
+        case .addPoint(_, _):
+            return nil
+        case let .addStroke(_, str):
+            return Change.removeStroke(str)
+        case let .removeStroke(str):
+            return Change.addStroke(lines[str]!, getIdentifier())
+        case .clearCanvas:
+            return nil
+        case .betterPartial(_, _, _):
+            return nil
+        }
     }
 
     @IBAction func undoLastStroke(_ sender: Any) {
-        if let (id, stroke, actionType) = undoStack.popLast() {
-            if (actionType == Stroke.ActionType.add) {
-                //handleChange(change: Change.removeStroke(id))
-                redoStack.append((id, lines[id]!, actionType))
-            } else if (actionType == Stroke.ActionType.remove) {
-                handleChange(change: Change.addStroke(stroke, id))
-                redoStack.append((id, stroke, actionType))
-            } else if (actionType == Stroke.ActionType.redraw) {
-                let s = lines[id]
-//                handleChange(change: Change.removeStroke(id))
-                handleChange(change: Change.addStroke(stroke, id))
-                redoStack.append((id, s!, actionType))
-            }
-            
+        if let change = undoStack.popLast() {
+            let inverse = getInverseChange(change: change)!
+            redoStack.append(inverse)
+            handleChange(change: change)
         }
     }
     
     @IBAction func redoLastStroke(_ sender: Any) {
-        if let (id, stroke, actionType) = redoStack.popLast() {
-            if (actionType == Stroke.ActionType.add) {
-                handleChange(change: Change.addStroke(stroke, id))
-                undoStack.append((id, stroke, actionType))
-            }
-            else if (actionType == Stroke.ActionType.remove) {
-                //handleChange(change: Change.removeStroke(id))
-                undoStack.append((id, stroke, actionType))
-            } else if (actionType == Stroke.ActionType.redraw) {
-                 redrawStraightLine(id)
-            }
+        if let change = redoStack.popLast() {
+            let inverse = getInverseChange(change: change)!
+            undoStack.append(inverse)
+            handleChange(change: change)
         }
     }
 
     func incomingChange(_ change: String) {
-        AutomergeJavaScript.shared.applyExternalChanges(change) { (returnValue) in
-            self.lines = returnValue
-            self.setNeedsDisplay()
-        }
+        self.lines = engine.applyExternalChanges(change)
+        self.setNeedsDisplay()
     }
     
     func sendPath(_ change: String) {
@@ -403,31 +469,26 @@ class DrawView: UIView {
             }
         }
         bluetoothService!.send(data: change)
-        
     }
     
-    func setButtonColour(name: String) {
-        switch name {
-        case "shape":
-            shapeRecognitionButton.tintColor = UIColor.red
+    func setButtonColour() {
+        switch mode {
+        case .DRAWING:
+            shapeRecognitionButton.tintColor = UIColor.white
             partialButton.tintColor = UIColor.white
             eraserButton.tintColor = UIColor.white
-            mode = Mode.SHAPE_RECOGNITION
-        case "eraser":
+        case .COMPLETE_REMOVE:
             shapeRecognitionButton.tintColor = UIColor.white
             partialButton.tintColor = UIColor.white
             eraserButton.tintColor = UIColor.red
-            mode = Mode.COMPLETE_REMOVE
-        case "partial":
+        case .PARTIAL_REMOVE:
             shapeRecognitionButton.tintColor = UIColor.white
             partialButton.tintColor = UIColor.red
             eraserButton.tintColor = UIColor.white
-            mode = Mode.PARTIAL_REMOVE
-        default:
-            shapeRecognitionButton.tintColor = UIColor.white
+        case .SHAPE_RECOGNITION:
+            shapeRecognitionButton.tintColor = UIColor.red
             partialButton.tintColor = UIColor.white
             eraserButton.tintColor = UIColor.white
-            mode = Mode.DRAWING
         }
     }
 }
