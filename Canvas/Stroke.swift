@@ -10,36 +10,6 @@ import Foundation
 import UIKit
 import CoreGraphics
 
-class Point: Codable, Equatable, CustomStringConvertible {
-    static func == (lhs: Point, rhs: Point) -> Bool {
-        return lhs.x == rhs.x && lhs.y == rhs.y
-    }
-    
-    var x: Float
-    var y: Float
-    
-    convenience init(fromCGPoint cgPoint: CGPoint) {
-        self.init(x: Float(cgPoint.x), y: Float(cgPoint.y))
-    }
-    
-    init(x: Float, y: Float) {
-        self.x = x
-        self.y = y
-    }
-    
-    static func -(a: Point, b: Point) -> Point {
-        return Point(x: a.x - b.x, y: a.y - b.y)
-    }
-    
-    var cgPoint: CGPoint {
-        get {
-            return CGPoint(x: CGFloat(x), y: CGFloat(y))
-        }
-    }
-    
-    public var description: String { return "x: \(x) y: \(y)" }
-}
-
 enum Change: Encodable, Decodable {
     init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
@@ -142,14 +112,6 @@ class Segment: Codable {
         try container.encode(end, forKey: CodingKeys.end)
     }
 
-}
-
-enum IntersectionResult {
-    case OPEN
-    case CLOSED
-    case LEFT_OPEN(Float)
-    case RIGHT_OPEN(Float)
-    case MIDDLE_OPEN(Float, Float)
 }
 
 class Stroke: Codable {
@@ -328,137 +290,49 @@ class Stroke: Codable {
         return p
     }
     
-    func getPoints(_ start: Int, _ end: Int) -> [(Point, Point, Point)] {
-        var returnValue: [(Point, Point, Point)] = []
-        
-        var pPrevPoint: Point!
-        var prevPoint: Point!
-        var s = 0
-        
-        for i in start...end {
-            let point = points[i]
-            
-            if s >= 2 {
-                let cp1 = Point(
-                    x: (2 * pPrevPoint.x + prevPoint.x) / 3,
-                    y: (2 * pPrevPoint.y + prevPoint.y) / 3
-                )
-                let cp2 = Point(
-                    x: (pPrevPoint.x + 2 * prevPoint.x) / 3,
-                    y: (pPrevPoint.y + 2 * prevPoint.y) / 3
-                )
-                let end = Point(
-                    x: (pPrevPoint.x + 4 * prevPoint.x + point.x) / 6,
-                    y: (pPrevPoint.y + 4 * prevPoint.y + point.y) / 6
-                )
-
-                returnValue.append((cp1, cp2, end))
+    func getPoints(_ start: Int, _ end: Int) -> [Shape] {
+        var returnValue: [Shape] = []
+        if isShape {
+            for i in start...(end - 1) {
+                returnValue.append(.Line(points[i], points[i + 1]))
             }
+        } else {
+            var pPrevPoint: Point!
+            var prevPoint: Point!
+            var s = 0
             
-            pPrevPoint = prevPoint
-            prevPoint = point
-            s += 1
+            var last = points[start]
+            
+            for i in start...end {
+                let point = points[i]
+                
+                if s >= 2 {
+                    let cp1 = Point(
+                        x: (2 * pPrevPoint.x + prevPoint.x) / 3,
+                        y: (2 * pPrevPoint.y + prevPoint.y) / 3
+                    )
+                    let cp2 = Point(
+                        x: (pPrevPoint.x + 2 * prevPoint.x) / 3,
+                        y: (pPrevPoint.y + 2 * prevPoint.y) / 3
+                    )
+                    let end = Point(
+                        x: (pPrevPoint.x + 4 * prevPoint.x + point.x) / 6,
+                        y: (pPrevPoint.y + 4 * prevPoint.y + point.y) / 6
+                    )
+
+                    //returnValue.append((cp1, cp2, end))
+                    returnValue.append(.Curve(last, cp1, cp2, end))
+                    last = end
+                }
+                
+                pPrevPoint = prevPoint
+                prevPoint = point
+                s += 1
+            }
         }
-        
         return returnValue
     }
-    
-    static func dotProduct(_ a: Point, _ b: Point) -> Float {
-        return a.x * b.x + a.y * b.y
-    }
-    
-    static func abs2(_ a: Point) -> Float {
-        return sqrt(dotProduct(a, a))
-    }
-    
-    static func dist(_ a: Point, _ b: Point) -> Float {
-        return abs2(a - b)
-    }
-            
-    static func findIntersectionsLine(line: (Point, Point), circle: Point, radius: Float) -> [Float] {
-        //print("centre ", circle)
-        let m = (line.1.y - line.0.y) / (line.1.x - line.0.x)
-        let n = line.1.y - m * line.1.x
-        //print("m ", m)
-        //print("n ", n)
-        let a = 1 + m * m
-        let b = -circle.x * 2 + (m * (n - circle.y)) * 2
-        let c = circle.x * circle.x + (n - circle.y) * (n - circle.y) - (radius * radius)
-        //print("a b c ", a, b, c)
-        let d = b * b - 4 * a * c
-        //print("d ", d)
-        var results: [Float] = []
-        if d == 0 {
-            results.append((-b + sqrt(d)) / (2 * a))
-        } else if d >= 0 {
-            results.append((-b + sqrt(d)) / (2 * a))
-            results.append((-b - sqrt(d)) / (2 * a))
-        }
-        results = results.map { ($0 - line.0.x) / (line.1.x - line.0.x) }
-        results = results.filter { $0 >= 0 && $0 <= 1 }
-        return results
-    }
-    
-    static func findIntersectionPoints(curve: (Point, Point, Point, Point), circle: Point, radius: Float, depth: Int) -> [Float] {
-        let (cp0, _, _, cp3) = curve
-        if depth == 0 {
-            return findIntersectionsLine(line: (cp0, cp3), circle: circle, radius: radius)
-        } else {
-            let (curve1, curve2) = split(0.5, curve)
-            let results1 = findIntersectionPoints(curve: curve1, circle: circle, radius: radius, depth: depth - 1)
-            let results2 = findIntersectionPoints(curve: curve2, circle: circle, radius: radius, depth: depth - 1)
-            return results1.map { $0 / 2 } + results2.map { 0.5 + $0 / 2 }
-        }
-    }
-    
-    static func findIntersectionsPoint(line: (Point, Point), circle: Point, radius: Float) -> IntersectionResult {
-        let results = Stroke.findIntersectionsLine(line: line, circle: circle, radius: radius)
-        if results.count == 0 {
-            return .OPEN
-        } else if results.count == 1 {
-            let (cp0, cp3) = line
-            let distA = dist(cp0, circle)
-            let distB = dist(cp3, circle)
-            if distA < radius && distB > radius {
-                return .RIGHT_OPEN(results[0])
-            } else if distB < radius && distA > radius {
-                return .LEFT_OPEN(results[0])
-            } else {
-                // WTF
-                // Like seriously, WTF
-                return .OPEN
-            }
-        } else {
-            let smallest = results.min()!
-            let biggest = results.max()!
-            return .MIDDLE_OPEN(smallest, biggest)
-        }
-    }
-    
-    static func findIntersectionsAdvanced(curve: (Point, Point, Point, Point), circle: Point, radius: Float) -> IntersectionResult {
-        let results = findIntersectionPoints(curve: curve, circle: circle, radius: radius, depth: 0)
-        if results.count == 0 {
-            return .OPEN
-        } else if results.count == 1 {
-            let (cp0, _, _, cp3) = curve
-            let distA = dist(cp0, circle)
-            let distB = dist(cp3, circle)
-            if distA < radius && distB > radius {
-                return .RIGHT_OPEN(results[0])
-            } else if distB < radius && distA > radius {
-                return .LEFT_OPEN(results[0])
-            } else {
-                // WTF
-                // Like seriously, WTF
-                return .OPEN
-            }
-        } else {
-            let smallest = results.min()!
-            let biggest = results.max()!
-            return .MIDDLE_OPEN(smallest, biggest)
-        }
-    }
-    
+        
     private static func lerp(_ t: Float, _ a: Point, _ b: Point) -> Point {
         return Point(x: (1 - t) * a.x + t * b.x, y: (1 - t) * a.y + t * b.y)
     }
@@ -520,7 +394,9 @@ class Stroke: Codable {
                     //path.move(to: last)
                     
                     for i in 0...(curve.count - 1) {
-                        let (cp1, cp2, end) = curve[i]
+                        guard case let .Curve(_, cp1, cp2, end) = curve[i] else {
+                            continue
+                        }
                         var (last_, cp1_, cp2_, end_) = (last, cp1, cp2, end)
 
                         if i == 0 {

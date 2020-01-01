@@ -61,82 +61,37 @@ class DrawView: UIView {
                     continue
                 }
                 
-                if stroke.isShape {
-                    for i in start...(end - 1) {
-                        let cp0 = stroke.points[i]
-                        let cp3 = stroke.points[i + 1]
-                        let result = Stroke.findIntersectionsPoint(line: (cp0, cp3), circle: point, radius: 15)
-                        
-                        print(result)
-                        switch result {
-                        case let .LEFT_OPEN(t):
-                            handleChange(change: Change.betterPartial(str, Double(i) + Double(t), Double(i + 1)))
-                            print(t)
-                            return
-                        case let .RIGHT_OPEN(t):
-                            handleChange(change: Change.betterPartial(str, Double(i), Double(i) + Double(t)))
-                            print(t)
-                            return
-                        case let .MIDDLE_OPEN(t1, t2):
-                            //print(t1, t2)
-                            handleChange(change: Change.betterPartial(str, Double(i) + Double(t1), Double(i) + Double(t2)))
-                            return
-                        case .CLOSED:
-                            handleChange(change: Change.betterPartial(str, Double(i), Double(i + 1)))
-                            return
-                        default:
-                            break
-                        }
-                    }
-                } else {
-                    let points = stroke.getPoints(start, end)
-                    var dept = stroke.points[start]
-                    
-                    if points.count == 0 {
-                        continue
-                    }
+                let shapes = stroke.getPoints(start, end)
                 
-                    for i in 0...(points.count - 1) {
-                        let (cp1, cp2, end) = points[i]
-                        let z = i + start
-                        let minX = min(dept.x, end.x) - 15
-                        let minY = min(dept.y, end.y) - 15
-                        let maxX = max(dept.x, end.x) + 15
-                        let maxY = max(dept.y, end.y) + 15
-                        if minX <= point.x && minY <= point.y && point.x <= maxX && point.y <= maxY {
-                            print("===LIKELY")
-                            print(dept)
-                            print(end)
-                            print(point)
-                            print()
-                            print("")
-                            let result = Stroke.findIntersectionsAdvanced(curve: (dept, cp1, cp2, end), circle: point, radius: 15)
-                            print(result)
-                            switch result {
-                            case let .LEFT_OPEN(t):
-                                handleChange(change: Change.betterPartial(str, Double(z) + Double(t), Double(z + 1)))
-                                print(t)
-                                return
-                            case let .RIGHT_OPEN(t):
-                                handleChange(change: Change.betterPartial(str, Double(z), Double(z) + Double(t)))
-                                print(t)
-                                return
-                            case let .MIDDLE_OPEN(t1, t2):
-                                //print(t1, t2)
-                                handleChange(change: Change.betterPartial(str, Double(z) + Double(t1), Double(z) + Double(t2)))
-                                return
-                            case .CLOSED:
-                                handleChange(change: Change.betterPartial(str, Double(z), Double(z + 1)))
-                                return
-                            default:
-                                break
-                            }
-                        }
-                        dept = end
-                    }
-                    
+                if shapes.count == 0 {
+                    continue
                 }
-            
+                
+                for i in 0...(shapes.count - 1) {
+                    let shape = shapes[i]
+                    let z = i + start
+                    let result = Geometry.findIntersectionPoints(shape: shape, circle: point, radius: 15, depth: 0)
+                    print(result)
+                    switch result {
+                    case let .LEFT_OPEN(t):
+                        handleChange(change: Change.betterPartial(str, Double(z) + Double(t), Double(z + 1)))
+                        print(t)
+                        return
+                    case let .RIGHT_OPEN(t):
+                        handleChange(change: Change.betterPartial(str, Double(z), Double(z) + Double(t)))
+                        print(t)
+                        return
+                    case let .MIDDLE_OPEN(t1, t2):
+                        //print(t1, t2)
+                        handleChange(change: Change.betterPartial(str, Double(z) + Double(t1), Double(z) + Double(t2)))
+                        return
+                    case .CLOSED:
+                        handleChange(change: Change.betterPartial(str, Double(z), Double(z + 1)))
+                        return
+                    default:
+                        break
+                    }
+                }
             }
         }
     }
