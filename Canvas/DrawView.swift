@@ -352,7 +352,7 @@ class DrawView: UIView {
             Mode.PARTIAL_REMOVE: partialButton,
         ]
         for (k, v) in MAPPING {
-            v?.tintColor = k == mode ? UIColor.red : UIColor.white
+            v?.tintColor = k == mode ? UIColor.red : UIColor.label
         }
     }
 }
