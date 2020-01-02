@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		152EA1EA23BD166C0066DC94 /* Geometry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 152EA1E923BD166C0066DC94 /* Geometry.swift */; };
+		15AF146823BB755000BC4368 /* CRDTEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15AF146723BB755000BC4368 /* CRDTEngine.swift */; };
+		15AF146C23BB7C3F00BC4368 /* NativeCRDTEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15AF146B23BB7C3F00BC4368 /* NativeCRDTEngine.swift */; };
 		15F9B347235E068600A6F790 /* Stroke.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15F9B346235E068600A6F790 /* Stroke.swift */; };
 		C1C1C0F32350E3E2006DED27 /* AutomergeJavaScript.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1C1C0F22350E3E2006DED27 /* AutomergeJavaScript.swift */; };
 		C1C1C0F52350E404006DED27 /* Canvas.bundle.js in Resources */ = {isa = PBXBuildFile; fileRef = C1C1C0F42350E404006DED27 /* Canvas.bundle.js */; };
@@ -58,6 +61,9 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		152EA1E923BD166C0066DC94 /* Geometry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Geometry.swift; sourceTree = "<group>"; };
+		15AF146723BB755000BC4368 /* CRDTEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CRDTEngine.swift; sourceTree = "<group>"; };
+		15AF146B23BB7C3F00BC4368 /* NativeCRDTEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NativeCRDTEngine.swift; sourceTree = "<group>"; };
 		15F9B346235E068600A6F790 /* Stroke.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Stroke.swift; sourceTree = "<group>"; };
 		C1C1C0F22350E3E2006DED27 /* AutomergeJavaScript.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AutomergeJavaScript.swift; sourceTree = "<group>"; };
 		C1C1C0F42350E404006DED27 /* Canvas.bundle.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; name = Canvas.bundle.js; path = Javascript/dist/Canvas.bundle.js; sourceTree = SOURCE_ROOT; };
@@ -150,6 +156,9 @@
 				E01B0BB02369F66600545F83 /* sessionDetailsViewController.swift */,
 				E095ED76237D67EE00D929D2 /* XMPPController.swift */,
 				E05B2B13238D7FC1003D48B6 /* BluetoothService.swift */,
+				15AF146723BB755000BC4368 /* CRDTEngine.swift */,
+				15AF146B23BB7C3F00BC4368 /* NativeCRDTEngine.swift */,
+				152EA1E923BD166C0066DC94 /* Geometry.swift */,
 			);
 			path = Canvas;
 			sourceTree = "<group>";
@@ -190,6 +199,7 @@
 				TargetAttributes = {
 					E0BE81F62350C3A100D93BF1 = {
 						CreatedOnToolsVersion = 11.1;
+						LastSwiftMigration = 1130;
 					};
 				};
 			};
@@ -300,8 +310,11 @@
 				E0EEA22E235494C10076D540 /* DrawView.swift in Sources */,
 				E095ED77237D67EE00D929D2 /* XMPPController.swift in Sources */,
 				E097F4422373203D00050137 /* ColourPickerViewController.swift in Sources */,
+				152EA1EA23BD166C0066DC94 /* Geometry.swift in Sources */,
+				15AF146823BB755000BC4368 /* CRDTEngine.swift in Sources */,
 				E05B2B14238D7FC1003D48B6 /* BluetoothService.swift in Sources */,
 				E0BE81FB2350C3A100D93BF1 /* AppDelegate.swift in Sources */,
+				15AF146C23BB7C3F00BC4368 /* NativeCRDTEngine.swift in Sources */,
 				E0BE82002350C3A100D93BF1 /* Canvas.xcdatamodeld in Sources */,
 				E009D221235520EB00B55EA0 /* ViewController.swift in Sources */,
 				E01B0BB12369F66600545F83 /* sessionDetailsViewController.swift in Sources */,
@@ -448,22 +461,30 @@
 		E0BE820F2350C3A300D93BF1 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD)";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
+				DEFINES_MODULE = NO;
 				DEVELOPMENT_ASSET_PATHS = "";
-				DEVELOPMENT_TEAM = Q995L82K7R;
+				DEVELOPMENT_TEAM = UR5MCBX8KL;
 				ENABLE_PREVIEWS = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Carthage/Build/iOS",
+					"$(PROJECT_DIR)",
 				);
 				INFOPLIST_FILE = Canvas/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.jm.PKTest;
+				ONLY_ACTIVE_ARCH = YES;
+				OTHER_LDFLAGS = "";
+				PRODUCT_BUNDLE_IDENTIFIER = com.hsp.PKTest;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -472,22 +493,29 @@
 		E0BE82102350C3A300D93BF1 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD)";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
+				DEFINES_MODULE = NO;
 				DEVELOPMENT_ASSET_PATHS = "";
-				DEVELOPMENT_TEAM = Q995L82K7R;
+				DEVELOPMENT_TEAM = UR5MCBX8KL;
 				ENABLE_PREVIEWS = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Carthage/Build/iOS",
+					"$(PROJECT_DIR)",
 				);
 				INFOPLIST_FILE = Canvas/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.jm.PKTest;
+				ONLY_ACTIVE_ARCH = YES;
+				OTHER_LDFLAGS = "";
+				PRODUCT_BUNDLE_IDENTIFIER = com.hsp.PKTest;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
