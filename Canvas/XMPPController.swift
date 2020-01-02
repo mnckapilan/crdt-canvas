@@ -85,9 +85,7 @@ extension XMPPController: XMPPRoomDelegate {
     
     func xmppRoom(_ sender: XMPPRoom, occupantDidJoin occupantJID: XMPPJID, with presence: XMPPPresence) {
         print("joined", occupantJID)
-        AutomergeJavaScript.shared.getAllChanges() { (returnValue) in
-            self.room!.sendMessage(withBody: returnValue)
-        }
+        self.room!.sendMessage(withBody: self.drawView!.engine.getAllChanges())
     }
     
     func xmppRoom(_ sender: XMPPRoom, occupantDidLeave occupantJID: XMPPJID, with presence: XMPPPresence) {

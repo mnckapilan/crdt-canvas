@@ -8,7 +8,7 @@
 
 import JavaScriptCore
 
-class AutomergeJavaScript: NSObject {
+class AutomergeJavaScript: NSObject, CRDTEngine {
     
     // Singleton instance. More resource-friendly than creating multiple new instances.
     static let shared = AutomergeJavaScript()
@@ -34,10 +34,10 @@ class AutomergeJavaScript: NSObject {
         self.context.evaluateScript(jsCode)
     }
     
-    func applyExternalChanges(_ changes: String, completion: @escaping (_ returnValue: [String: Stroke]) -> Void) {
+    func applyExternalChanges(_ changes: String) -> CRDTDocument {
         // Run this asynchronously in the background
         
-        DispatchQueue.global(qos: .userInitiated).async {
+        //DispatchQueue.global(qos: .userInitiated).async {
             var returnString: [String: Stroke]!
             let jsModule = self.context.objectForKeyedSubscript("Canvas")
             let jsAutomerger = jsModule?.objectForKeyedSubscript("Automerger")
@@ -56,20 +56,21 @@ class AutomergeJavaScript: NSObject {
                 }
             
                // Call the completion block on the main thread
-               DispatchQueue.main.async {
-                   completion(returnString)
-               }
-       }
+           //    DispatchQueue.main.async {
+                   //completion(returnString)
+            return returnString
+         //      }
+       //}
     }
        
-    func addChange(_ change: Change, completion: @escaping (_ returnValue: ([String: Stroke], String)) -> Void) {
+    func addChange(_ change: Change) -> CRDTResult {
         // Run this asynchronously in the background
-        do {
+        //do {
             let jsonEncoder = JSONEncoder()
-            let jsonData = try jsonEncoder.encode(change)
+            let jsonData = try! jsonEncoder.encode(change)
             let jsonString = String(data: jsonData, encoding: .utf8)
             
-            DispatchQueue.global(qos: .userInitiated).async {
+            //DispatchQueue.global(qos: .userInitiated).async {
                 var returnValue: ([String: Stroke], String)!
                  let jsModule = self.context.objectForKeyedSubscript("Canvas")
                  let jsAutomerger = jsModule?.objectForKeyedSubscript("Automerger")
@@ -87,20 +88,21 @@ class AutomergeJavaScript: NSObject {
                     }
                  
                     // Call the completion block on the main thread
-                    DispatchQueue.main.async {
-                        completion(returnValue)
-                    }
-            }
-        } catch {
+                    //DispatchQueue.main.async {
+                        //completion(returnValue)
+                        return returnValue
+                    //}
+            //}
+        //} catch {
             
-        }
+        //}
                 
         
     }
     
-    func getAllChanges(completion: @escaping (_ returnValue: String) -> Void) {
+    func getAllChanges() -> String {
         // Run this asynchronously in the background
-        DispatchQueue.global(qos: .userInitiated).async {
+        // DispatchQueue.global(qos: .userInitiated).async {
              var returnValue: String!
              let jsModule = self.context.objectForKeyedSubscript("Canvas")
              let jsAutomerger = jsModule?.objectForKeyedSubscript("Automerger")
@@ -113,10 +115,11 @@ class AutomergeJavaScript: NSObject {
                 }
              
                 // Call the completion block on the main thread
-                DispatchQueue.main.async {
-                    completion(returnValue)
-                }
-        }
+          //      DispatchQueue.main.async {
+                   // completion(returnValue)
+            return returnValue
+            //    }
+        //}
                 
         
     }
