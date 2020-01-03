@@ -19,6 +19,13 @@ class Point: Codable, Equatable, CustomStringConvertible {
         try container.encode([x, y])
     }
     
+    required init(from decoder: Decoder) throws {
+        let container = try decoder.singleValueContainer()
+        let value = try container.decode([Float].self)
+        self.x = value[0]
+        self.y = value[1]
+    }
+    
     var x: Float
     var y: Float
     
