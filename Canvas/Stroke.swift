@@ -53,8 +53,13 @@ enum Change: Encodable, Decodable {
         var container = encoder.container(keyedBy: CodingKeys.self)
         switch self {
         case let .addPoint(point, i, index):
+<<<<<<< HEAD
             try container.encode("APPEND", forKey: CodingKeys.type)
             try container.encode(point, forKey: CodingKeys.points)
+=======
+            try container.encode("ADD_POINT", forKey: CodingKeys.type)
+            try container.encode(point, forKey: CodingKeys.point)
+>>>>>>> 7e8f1bc9b8fa9f70b8a38404b974b1f5265a81d8
             try container.encode(i, forKey: CodingKeys.identifier)
             try container.encode(index, forKey: CodingKeys.index)
         case let .addStroke(stroke, i):
