@@ -88,9 +88,15 @@ enum Mode {
     case SHAPE_RECOGNITION
 }
 
-class Segment: Codable {
+class Segment: Codable, CustomStringConvertible {
     var start: Double
     var end: Double
+    
+    var description: String {
+        get {
+            return "(\(start), \(end))"
+        }
+    }
     
     enum CodingKeys: String, CodingKey {
         case start
@@ -221,10 +227,10 @@ class Stroke: Codable {
             var pPrevPoint: Point!
             var prevPoint: Point!
             var s = 0
-            
+            let realEnd = min(end + 1, points.count - 1)
             var last = points[start]
             
-            for i in start...end {
+            for i in start...realEnd {
                 let point = points[i]
                 
                 if s >= 2 {
@@ -275,6 +281,7 @@ class Stroke: Codable {
                     continue
                 }
                 
+                print(curves.count)
                 for i in 0...(curves.count - 1) {
                     var curve = curves[i]
                     
@@ -283,7 +290,9 @@ class Stroke: Codable {
                     } else if i == 0 {
                         curve = Geometry.trim(curve, Float(startDist), 1)
                     } else if i == curves.count - 1 && endDist != 0 {
-                        curve = Geometry.trim(curve, 1, Float(endDist))
+                        print("end", endDist)
+                        //curve = Geometry.trim(curve, 0, 1)
+                        curve = Geometry.trim(curve, 0, Float(endDist))
                     }
                     
                     if case let .Line(cp0, cp3) = curve {

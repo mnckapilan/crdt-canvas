@@ -89,11 +89,15 @@ typealias Curve = (Point, Point, Point, Point)
 class Geometry {
     static func findIntersectionPoints(shape: Shape, circle: Point, radius: Float, depth: Int) -> IntersectionResult {
         let (results, cp0, cp3) = Geometry.helperFunction(shape, circle, radius, depth)
+        let distA = Point.dist(cp0, circle)
+        let distB = Point.dist(cp3, circle)
         if results.count == 0 {
-            return .OPEN
+            if distA < radius && distB < radius {
+                return .CLOSED
+            } else {
+                return .OPEN
+            }
         } else if results.count == 1 {
-            let distA = Point.dist(cp0, circle)
-            let distB = Point.dist(cp3, circle)
             if distA < radius && distB > radius {
                 return .RIGHT_OPEN(results[0])
             } else if distB < radius && distA > radius {
@@ -160,25 +164,38 @@ class Geometry {
     }
 
     private static func findIntersectionPointsLine(_ line: (Point, Point), _ circle: Point, _ radius: Float) -> [Float] {
-        //print("centre ", circle)
-        let m = (line.1.y - line.0.y) / (line.1.x - line.0.x)
-        let n = line.1.y - m * line.1.x
-        //print("m ", m)
-        //print("n ", n)
-        let a = 1 + m * m
-        let b = -circle.x * 2 + (m * (n - circle.y)) * 2
-        let c = circle.x * circle.x + (n - circle.y) * (n - circle.y) - (radius * radius)
-        //print("a b c ", a, b, c)
-        let d = b * b - 4 * a * c
-        //print("d ", d)
         var results: [Float] = []
-        if d == 0 {
-            results.append((-b + sqrt(d)) / (2 * a))
-        } else if d >= 0 {
-            results.append((-b + sqrt(d)) / (2 * a))
-            results.append((-b - sqrt(d)) / (2 * a))
+        if (abs(line.0.x - line.1.x) < 0.05) {
+            let x = (line.0.x + line.1.x) / 2
+            let q = (x - circle.x)
+            let d = (radius * radius) - (q * q)
+            if d == 0 {
+                results.append(circle.y)
+            } else if d >= 0 {
+                results.append(circle.y + sqrt(d))
+                results.append(circle.y - sqrt(d))
+            }
+            results = results.map { ($0 - line.0.y) / (line.1.y - line.0.y) }
+        } else {
+            //print("centre ", circle)
+            let m = (line.1.y - line.0.y) / (line.1.x - line.0.x)
+            let n = line.1.y - m * line.1.x
+            //print("m ", m)
+            //print("n ", n)
+            let a = 1 + m * m
+            let b = -circle.x * 2 + (m * (n - circle.y)) * 2
+            let c = circle.x * circle.x + (n - circle.y) * (n - circle.y) - (radius * radius)
+            //print("a b c ", a, b, c)
+            let d = b * b - 4 * a * c
+            //print("d ", d)
+            if d == 0 {
+                results.append((-b + sqrt(d)) / (2 * a))
+            } else if d >= 0 {
+                results.append((-b + sqrt(d)) / (2 * a))
+                results.append((-b - sqrt(d)) / (2 * a))
+            }
+            results = results.map { ($0 - line.0.x) / (line.1.x - line.0.x) }
         }
-        results = results.map { ($0 - line.0.x) / (line.1.x - line.0.x) }
         results = results.filter { $0 >= 0 && $0 <= 1 }
         return results
     }

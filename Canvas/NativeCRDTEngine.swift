@@ -8,7 +8,7 @@
 
 import Foundation
 
-class NativeCRDTEngine: CRDTEngine {
+class NativeCRDTEngine: CRDTEngine {    
     var doc: CRDTDocument = [:]
     
     private func handleChange(_ change: Change) {
@@ -29,8 +29,8 @@ class NativeCRDTEngine: CRDTEngine {
             var j = 0
             while j < end {
                 let segment = stroke.segments[j]
-                if segment.start <= lower && lower <= segment.end {
-                    if segment.start <= upper && upper <= segment.end {
+                if segment.start < lower && lower <= segment.end {
+                    if segment.start <= upper && upper < segment.end {
                         stroke.segments.append(Segment.init(upper, segment.end))
                         segment.end = lower
                     }
@@ -44,6 +44,7 @@ class NativeCRDTEngine: CRDTEngine {
                 }
                 j += 1
             }
+            print(stroke.segments)
         case let .removeStroke(str):
             doc.removeValue(forKey: str)
         case .clearCanvas:
