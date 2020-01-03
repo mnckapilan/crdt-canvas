@@ -10,33 +10,35 @@ import Foundation
 import UIKit
 import CoreGraphics
 
-class Point: Codable, Equatable, CustomStringConvertible {
-    static func == (lhs: Point, rhs: Point) -> Bool {
-        return lhs.x == rhs.x && lhs.y == rhs.y
-    }
-    
-    var x: Float
-    var y: Float
-    
-    convenience init(fromCGPoint cgPoint: CGPoint) {
-        self.init(x: Float(cgPoint.x), y: Float(cgPoint.y))
-    }
-    
-    init(x: Float, y: Float) {
-        self.x = x
-        self.y = y
-    }
-    
-    var cgPoint: CGPoint {
-        get {
-            return CGPoint(x: CGFloat(x), y: CGFloat(y))
+enum Change: Encodable, Decodable {
+    init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        let type = try container.decode(String.self, forKey: CodingKeys.type)
+        switch type {
+        case "ADD_POINT":
+            let point = try container.decode([Point].self, forKey: CodingKeys.point)
+            let identifier = try container.decode(String.self, forKey: CodingKeys.identifier)
+            let index = try container.decode(Int.self, forKey: CodingKeys.index)
+            self = .addPoint(point, identifier, index)
+        case "ADD_STROKE":
+            let stroke = try container.decode(Stroke.self, forKey: CodingKeys.stroke)
+            let identifier = try container.decode(String.self, forKey: CodingKeys.identifier)
+            self = .addStroke(stroke, identifier)
+        case "CLEAR_CANVAS":
+            self = .clearCanvas
+        case "REMOVE_STROKE":
+            let identifier = try container.decode(String.self, forKey: CodingKeys.identifier)
+            self = .removeStroke(identifier)
+        case "BETTER_PARTIAL":
+            let identifier = try container.decode(String.self, forKey: CodingKeys.identifier)
+            let lower = try container.decode(Double.self, forKey: CodingKeys.lower)
+            let upper = try container.decode(Double.self, forKey: CodingKeys.upper)
+            self = .betterPartial(identifier, lower, upper)
+        default:
+            self = .clearCanvas
         }
     }
     
-    public var description: String { return "x: \(x) y: \(y)" }
-}
-
-enum Change: Encodable {
     enum CodingKeys: String, CodingKey {
         case type
         case stroke
@@ -50,24 +52,20 @@ enum Change: Encodable {
     func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         switch self {
-        case let .addPoint(point, i):
+        case let .addPoint(point, i, index):
             try container.encode("ADD_POINT", forKey: CodingKeys.type)
             try container.encode(point, forKey: CodingKeys.point)
             try container.encode(i, forKey: CodingKeys.identifier)
+            try container.encode(index, forKey: CodingKeys.index)
         case let .addStroke(stroke, i):
             try container.encode("ADD_STROKE", forKey: CodingKeys.type)
             try container.encode(stroke, forKey: CodingKeys.stroke)
             try container.encode(i, forKey: CodingKeys.identifier)
         case .clearCanvas:
             try container.encode("CLEAR_CANVAS", forKey: CodingKeys.type)
-        case let .removeStroke(str, i):
+        case let .removeStroke(str):
             try container.encode("REMOVE_STROKE", forKey: CodingKeys.type)
             try container.encode(str, forKey: CodingKeys.identifier)
-            try container.encode(i, forKey: CodingKeys.index)
-        case let .partialRemoveStroke(str, i):
-            try container.encode("PARTIAL_REMOVE_STROKE", forKey: CodingKeys.type)
-            try container.encode(str, forKey: CodingKeys.identifier)
-            try container.encode(i, forKey: CodingKeys.index)
         case let .betterPartial(str, i, j):
             try container.encode("BETTER_PARTIAL", forKey: CodingKeys.type)
             try container.encode(str, forKey: CodingKeys.identifier)
@@ -77,10 +75,9 @@ enum Change: Encodable {
     }
     
     case addStroke(Stroke, String)
-    case removeStroke(String, Int)
-    case addPoint([Point], String)
+    case removeStroke(String)
+    case addPoint([Point], String, Int)
     case clearCanvas
-    case partialRemoveStroke(String, Int)
     case betterPartial(String, Double, Double)
 }
 
@@ -198,170 +195,118 @@ class Stroke: Codable {
     
     let ERROR_BOUND = Float(20)
     
-    func getClosestPoint(_ a: Point, _ b: Point, _ p: Point) -> Double? {
-        let a_to_p = (
-            p.x - a.x,
-            p.y - a.y
-        )
-        let a_to_b = (
-            b.x - a.x,
-            b.y - a.y
-        )
-        let atb_2 = pow(a_to_b.0, 2) + pow(a_to_b.1, 2)
-        let atb_dot_atp = a_to_p.0 * a_to_b.0 + a_to_p.1 * a_to_b.1
-        let t = atb_dot_atp / atb_2
+    func indexOf(givenPoint: Point) -> (Double, Double)? {
+        for segment in segments {
+            let start = Int(floor(segment.start))
+            let end = Int(ceil(segment.end))
+            let curves = getPoints(start, end)
         
-        let nPoint = (a.x + a_to_b.0 * t, a.y + a_to_b.1 * t)
-        
-        if sqrt(pow(p.x - nPoint.0, 2) + pow(p.y - nPoint.1, 2)) > ERROR_BOUND {
-            return nil
-        }
-        
-        return Double(t)
-    }
-    
-    func isInLine(_ lPoint: Point, _ uPoint: Point, _ givenPoint: Point) -> Double? {
-        if lPoint.x == uPoint.x {
-            if abs(givenPoint.x - lPoint.x) > ERROR_BOUND {
-                return nil
+            if curves.count == 0 {
+                continue
             }
-            let ratio = (givenPoint.y - lPoint.y) / (uPoint.y - lPoint.y)
-            //print("ratio 2: ", ratio)
-            if ratio < 0 || ratio > 1 {
-                return nil
-            }
-            return Double(ratio)
-        } else {
-            let ratio = (givenPoint.x - lPoint.x) / (uPoint.x - lPoint.x)
-            print("ratio 1: ", ratio)
-            if ratio < 0 || ratio > 1 {
-                return nil
-            }
-            let interpolatedY = (uPoint.y - lPoint.y) * ratio + lPoint.y
-            print("ys: ", interpolatedY, givenPoint.y)
-            if abs(interpolatedY - givenPoint.y) > ERROR_BOUND {
-                return nil
-            }
-            return Double(ratio)
-        }
-    }
-    
-    func indexOf(givenPoint: Point) -> Double? {
-        if isShape {
-            for segment in segments {
-                var i = segment.start // 1, 1.5
-                while i < segment.end {
-                    let l = Int(floor(i)) // 1, 1
-                    let u = Int(floor(i + 1)) // 2, 2
-                    
-                    let lPoint = points[l]
-                    let uPoint = points[u]
-                    
-                    let t = getClosestPoint(lPoint, uPoint, givenPoint)
-                    if let tNotNil = t {
-                        let k = Double(l) + tNotNil
-                        if k > i && k < segment.end {
-                            return k
-                        }
-                    }
-                    
-                    
-                    i += 1
-                    i = floor(i)
-                }
-            }
-        } else {
-            for segment in segments {
-                for i in Int(ceil(segment.start))...Int(floor(segment.end)) {
-                    let point = points[i]
-                    if ((givenPoint.x <= point.x + 10 && givenPoint.x >= point.x - 10) && (givenPoint.y <= point.y + 10 && givenPoint.y >= point.y - 10)) {
-                        return Double(i)
-                    }
+            
+            for i in 0...(curves.count - 1) {
+                let curve = curves[i]
+                
+                let (t, n) = Geometry.getClosest(curve, givenPoint)
+                
+                let k = Double(start + i) + t
+
+                if Point.dist(n, givenPoint) < ERROR_BOUND
+                    && k > segment.start
+                    && k < segment.end {
+                    return (segment.start, segment.end)
                 }
             }
         }
         return nil;
     }
-    
-    func getPoint(_ i: Double) -> Point {
-        let lower = Int(floor(i))
-        let upper = Int(ceil(i))
-        let lPoint = points[lower]
-        let uPoint = points[upper]
-        let uWeight = Float(i - floor(i))
-        let lWeight = 1 - uWeight
-        let p = Point(x: lWeight * lPoint.x + uWeight * uPoint.x, y: lWeight * lPoint.y + uWeight * uPoint.y)
-        return p
+        
+    func getPoints(_ start: Int, _ end: Int) -> [Shape] {
+        var returnValue: [Shape] = []
+        if isShape {
+            for i in start...(end - 1) {
+                returnValue.append(.Line(points[i], points[i + 1]))
+            }
+        } else {
+            var pPrevPoint: Point!
+            var prevPoint: Point!
+            var s = 0
+            
+            var last = points[start]
+            
+            for i in start...end {
+                let point = points[i]
+                
+                if s >= 2 {
+                    let cp1 = Point(
+                        x: (2 * pPrevPoint.x + prevPoint.x) / 3,
+                        y: (2 * pPrevPoint.y + prevPoint.y) / 3
+                    )
+                    let cp2 = Point(
+                        x: (pPrevPoint.x + 2 * prevPoint.x) / 3,
+                        y: (pPrevPoint.y + 2 * prevPoint.y) / 3
+                    )
+                    let end = Point(
+                        x: (pPrevPoint.x + 4 * prevPoint.x + point.x) / 6,
+                        y: (pPrevPoint.y + 4 * prevPoint.y + point.y) / 6
+                    )
+
+                    //returnValue.append((cp1, cp2, end))
+                    returnValue.append(.Curve(last, cp1, cp2, end))
+                    last = end
+                }
+                
+                pPrevPoint = prevPoint
+                prevPoint = point
+                s += 1
+            }
+        }
+        return returnValue
     }
-    
+        
     var cgPath: CGPath {
         get {
-            if (isShape) {
-                let path = UIBezierPath.init()
-                path.lineCapStyle = CGLineCap.round
-                path.lineWidth = 3
+            let path = UIBezierPath.init()
+            path.lineCapStyle = CGLineCap.round
+            path.lineWidth = 3
 
-                for segment in segments {
-                    path.move(to: getPoint(segment.start).cgPoint)
-                    
-                    var i = segment.start
-                    while i < segment.end {
-                        i += 1
-                        i = floor(i)
-                        i = min(i, segment.end)
-                        
-                        path.addLine(to: getPoint(i).cgPoint)
-                    }
-                    
-                    print("draw: ", segment.start, segment.end)
+            for segment in segments {
+                if segment.start > segment.end {
+                    continue
                 }
                 
-                return path.cgPath
-
-            } else {
-                var pPrevPoint: Point!
-                var prevPoint: Point!
-                let path = UIBezierPath.init()
-                path.lineCapStyle = CGLineCap.round
-                path.lineWidth = 3
+                let start = Int(floor(segment.start))
+                let startDist = segment.start - floor(segment.start)
+                let end = Int(ceil(segment.end))
+                let endDist = segment.end - floor(segment.end)
+                let curves = getPoints(start, end)
                 
-                for segment in segments {
-                    var s = 0
-                    
-                    if segment.start > segment.end {
-                        continue
-                    }
-                    
-                    for i in Int(ceil(segment.start))...Int(floor(segment.end)) {
-                        let point = points[i]
-                        
-                        if s == 0 {
-                            path.move(to: point.cgPoint)
-                        } else if s >= 2 {
-                            let cp1 = Point(
-                                x: (2 * pPrevPoint.x + prevPoint.x) / 3,
-                                y: (2 * pPrevPoint.y + prevPoint.y) / 3
-                            )
-                            let cp2 = Point(
-                                x: (pPrevPoint.x + 2 * prevPoint.x) / 3,
-                                y: (pPrevPoint.y + 2 * prevPoint.y) / 3
-                            )
-                            let end = Point(
-                                x: (pPrevPoint.x + 4 * prevPoint.x + point.x) / 6,
-                                y: (pPrevPoint.y + 4 * prevPoint.y + point.y) / 6
-                            )
-                            path.addCurve(to: end.cgPoint, controlPoint1: cp1.cgPoint, controlPoint2: cp2.cgPoint)
-                        }
-                        
-                        pPrevPoint = prevPoint
-                        prevPoint = point
-                        s += 1
-
-                    }
+                if curves.count == 0 {
+                    continue
                 }
                 
-                return path.cgPath
+                for i in 0...(curves.count - 1) {
+                    var curve = curves[i]
+                    
+                    if i == 0 && i == curves.count - 1 && endDist != 0 {
+                        curve = Geometry.trim(curve, Float(startDist), Float(endDist))
+                    } else if i == 0 {
+                        curve = Geometry.trim(curve, Float(startDist), 1)
+                    } else if i == curves.count - 1 && endDist != 0 {
+                        curve = Geometry.trim(curve, 1, Float(endDist))
+                    }
+                    
+                    if case let .Line(cp0, cp3) = curve {
+                        path.move(to: cp0.cgPoint)
+                        path.addLine(to: cp3.cgPoint)
+                    } else if case let .Curve(cp0, cp1, cp2, cp3) = curve {
+                        path.move(to: cp0.cgPoint)
+                        path.addCurve(to: cp3.cgPoint, controlPoint1: cp1.cgPoint, controlPoint2: cp2.cgPoint)
+                    }
+                }
             }
-            }
+            return path.cgPath
+        }
     }
 }
