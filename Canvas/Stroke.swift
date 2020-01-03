@@ -15,12 +15,12 @@ enum Change: Encodable, Decodable {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         let type = try container.decode(String.self, forKey: CodingKeys.type)
         switch type {
-        case "ADD_POINT":
-            let point = try container.decode([Point].self, forKey: CodingKeys.point)
+        case "APPEND":
+            let point = try container.decode([Point].self, forKey: CodingKeys.points)
             let identifier = try container.decode(String.self, forKey: CodingKeys.identifier)
             let index = try container.decode(Int.self, forKey: CodingKeys.index)
             self = .addPoint(point, identifier, index)
-        case "ADD_STROKE":
+        case "ADD":
             let stroke = try container.decode(Stroke.self, forKey: CodingKeys.stroke)
             let identifier = try container.decode(String.self, forKey: CodingKeys.identifier)
             self = .addStroke(stroke, identifier)
@@ -42,7 +42,7 @@ enum Change: Encodable, Decodable {
     enum CodingKeys: String, CodingKey {
         case type
         case stroke
-        case point
+        case points
         case identifier
         case index
         case lower
@@ -53,12 +53,12 @@ enum Change: Encodable, Decodable {
         var container = encoder.container(keyedBy: CodingKeys.self)
         switch self {
         case let .addPoint(point, i, index):
-            try container.encode("ADD_POINT", forKey: CodingKeys.type)
-            try container.encode(point, forKey: CodingKeys.point)
+            try container.encode("APPEND", forKey: CodingKeys.type)
+            try container.encode(point, forKey: CodingKeys.points)
             try container.encode(i, forKey: CodingKeys.identifier)
             try container.encode(index, forKey: CodingKeys.index)
         case let .addStroke(stroke, i):
-            try container.encode("ADD_STROKE", forKey: CodingKeys.type)
+            try container.encode("ADD", forKey: CodingKeys.type)
             try container.encode(stroke, forKey: CodingKeys.stroke)
             try container.encode(i, forKey: CodingKeys.identifier)
         case .clearCanvas:
@@ -151,12 +151,8 @@ class Stroke: Codable {
         isShape = try container.decode(Bool.self, forKey: CodingKeys.isShape)
         thickness = try container.decode(Float.self, forKey: CodingKeys.thickness)
         
-        let nested = try container.nestedContainer(keyedBy: ColourCodingKeys.self, forKey: CodingKeys.colour)
-        let red = try nested.decode(CGFloat.self, forKey: ColourCodingKeys.red)
-        let green = try nested.decode(CGFloat.self, forKey: ColourCodingKeys.green)
-        let blue = try nested.decode(CGFloat.self, forKey: ColourCodingKeys.blue)
-        let alpha = try nested.decode(CGFloat.self, forKey: ColourCodingKeys.alpha)
-        colour = UIColor(red: red, green: green, blue: blue, alpha: alpha)
+        let components = try container.decode([CGFloat].self, forKey: CodingKeys.colour)
+        colour = UIColor(red: components[0], green: components[1], blue: components[2], alpha: 0)
     }
     
     init(points: [Point], colour: UIColor, isShape: Bool = false, thickness: Float) {
@@ -173,20 +169,13 @@ class Stroke: Codable {
         try container.encode(segments, forKey: CodingKeys.segments)
         try container.encode(isShape, forKey: CodingKeys.isShape)
         try container.encode(thickness, forKey: CodingKeys.thickness)
-        
-        var nested = container.nestedContainer(keyedBy: ColourCodingKeys.self, forKey: CodingKeys.colour)
-        
         var red: CGFloat = 0
         var green: CGFloat = 0
         var blue: CGFloat = 0
         var alpha: CGFloat = 0
         
         colour.getRed(&red, green: &green, blue: &blue, alpha: &alpha)
-        
-        try nested.encode(red, forKey: ColourCodingKeys.red)
-        try nested.encode(green, forKey: ColourCodingKeys.green)
-        try nested.encode(blue, forKey: ColourCodingKeys.blue)
-        try nested.encode(alpha, forKey: ColourCodingKeys.alpha)
+        try container.encode([red, green, blue], forKey: CodingKeys.colour)
     }
     
     func contains(givenPoint: Point) -> Bool {

@@ -14,6 +14,18 @@ class Point: Codable, Equatable, CustomStringConvertible {
         return lhs.x == rhs.x && lhs.y == rhs.y
     }
     
+    func encode(to encoder: Encoder) throws {
+        var container = encoder.singleValueContainer()
+        try container.encode([x, y])
+    }
+    
+    required init(from decoder: Decoder) throws {
+        let container = try decoder.singleValueContainer()
+        let value = try container.decode([Float].self)
+        self.x = value[0]
+        self.y = value[1]
+    }
+    
     var x: Float
     var y: Float
     
