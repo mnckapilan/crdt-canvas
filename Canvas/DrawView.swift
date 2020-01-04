@@ -195,7 +195,7 @@ class DrawView: UIView {
                 let (rectangle, corners) = Geometry.isRectangle(currentLine.points)
                 if (rectangle) {
                     print("found rectangle")
-                    redrawRectangle(currentIdentifier, corners, currentLine.points)
+                    redrawRectangle(currentIdentifier, corners)
                 }
             }
         }
@@ -241,41 +241,12 @@ class DrawView: UIView {
         //undoStack.append((currentIdentifier, line, Stroke.ActionType.redraw))
     }
     
-    func redrawRectangle(_ id: String, _ points: [Point], _ full_points: [Point]) {
+    func redrawRectangle(_ id: String, _ points: [Point]) {
         let line = lines[id]!
-        
-        print("corners: ", points)
-        
-        let x1 = points[0].x
-        let y1 = points[0].y
-        let x2 = points[2].x
-        let y2 = points[2].y
-        
-        // User drew a rectangle at an angle (not relative to x, y axis) so do not correct to a shape, leave as is
-        var corners : [Point] = []
-        let drewVerticalLine = points[0].x <= points[1].x + 20 && points[0].x >= points[1].x - 20
-        let drewHorizontalLine = points[0].y <= points[1].y + 20 && points[0].y >= points[1].y - 20
-        
-        if (drewVerticalLine || drewHorizontalLine) {
-            if (drewVerticalLine) {
-                // User drew a vertical line first
-                print("User drew a vertical line first")
-                corners = [points[0], Point(x: x1, y: y2), Point(x: x2, y: y2), Point(x: x2, y: y1), points[0]]
-            } else if (drewHorizontalLine) {
-                // User drew a horizontal line first
-                print("User drew a horizontal line first")
-                corners = [points[0], Point(x: x2, y: y1), Point(x: x2, y: y2), Point(x: x1, y: y2), points[0]]
-            }
-            
-            handleChange(change: Change.removeStroke(id))
-              
-            let stroke = Stroke(points: corners, colour: line.colour, isShape: true, thickness: line.thickness)
-            currentIdentifier = getIdentifier()
-            handleChange(change: Change.addStroke(stroke, currentIdentifier))
-        } else {
-           // User drew a rectangle at an angle, so do not correct to a shape, leave as is
-        }
-        
+        handleChange(change: Change.removeStroke(id))
+        let stroke = Stroke(points: points, colour: line.colour, isShape: true, thickness: line.thickness)
+        currentIdentifier = getIdentifier()
+        handleChange(change: Change.addStroke(stroke, currentIdentifier))
     }
     
     @IBAction func toggleShapeRecognition(_ sender: UIBarButtonItem) {

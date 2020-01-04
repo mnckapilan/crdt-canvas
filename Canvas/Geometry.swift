@@ -251,7 +251,107 @@ class Geometry {
     }
     
     static func isRectangle(_ points: [Point?]) -> (Bool, [Point]) {
-        let corners = attemptToBunchLines(points as! [Point])
+        var minX = Float.infinity
+        var maxX = -Float.infinity
+        var minY = Float.infinity
+        var maxY = -Float.infinity
+        
+        for point in points {
+            minX = min(minX, point!.x)
+            maxX = max(maxX, point!.x)
+            minY = min(minY, point!.y)
+            maxY = max(maxY, point!.y)
+        }
+        
+        if maxX - minX < 10 || maxY - minY < 10 {
+            // NOPE
+            print("NOPE")
+            return (false, [])
+        }
+        
+        let targets = [
+            Point(x: minX, y: minY),
+            Point(x: minX, y: maxY),
+            Point(x: maxX, y: maxY),
+            Point(x: maxX, y: minY)
+        ]
+        
+        var best = [-1, -1, -1, -1]
+        var closest = [Float.infinity, Float.infinity, Float.infinity, Float.infinity]
+        
+        for i in 0...(points.count - 1) {
+            let point = points[i]!
+            for j in 0...0 {
+                let dist = Point.dist(point, targets[j])
+                if dist < closest[j] {
+                    closest[j] = dist
+                    best[j] = i
+                }
+            }
+        }
+        
+        var nPoints = points
+        
+        if best[0] != 0 {
+            let before = points[0...(best[0] - 1)]
+            let after = points[best[0]...]
+            nPoints = Array(after + before)
+            best[0] = 0
+        }
+        
+        for i in 0...(nPoints.count - 1) {
+            let point = nPoints[i]!
+            for j in 1...3 {
+                let dist = Point.dist(point, targets[j])
+                if dist < closest[j] {
+                    closest[j] = dist
+                    best[j] = i
+                }
+            }
+        }
+        
+        print(best)
+        if best[0] < best[3] && best[3] < best[2] && best[2] < best[1] {
+            nPoints = nPoints[0...0] + nPoints[1...].reversed()
+            best[1] = nPoints.count - best[1]
+            best[2] = nPoints.count - best[2]
+            best[3] = nPoints.count - best[3]
+        } else if !(best[0] < best[1] && best[1] < best[2] && best[2] < best[3]) {
+            print("NOPE2", best[1], best[2], best[3])
+            return (false, [])
+        }
+        
+        for i in best {
+            print(i)
+            print(nPoints[i]!)
+        }
+        
+        var isRectangle = true
+        var preReturnValue: [Point] = []
+        
+        for i in 0...3 {
+            preReturnValue.append(nPoints[best[i]]!)
+            if i < 3 {
+               isRectangle = isRectangle && isStraightLine(Array(nPoints[best[i]...best[i + 1]]))
+            } else {
+               isRectangle = isRectangle && isStraightLine(Array(nPoints[best[i]...(nPoints.count - 1)]))
+            }
+        }
+        
+        let betterMinX = (preReturnValue[0].x + preReturnValue[1].x) / 2
+        let betterMaxX = (preReturnValue[2].x + preReturnValue[3].x) / 2
+        let betterMinY = (preReturnValue[0].y + preReturnValue[3].y) / 2
+        let betterMaxY = (preReturnValue[1].y + preReturnValue[2].y) / 2
+        
+        return (isRectangle, [
+            Point(x: betterMinX, y: betterMinY),
+            Point(x: betterMinX, y: betterMaxY),
+            Point(x: betterMaxX, y: betterMaxY),
+            Point(x: betterMaxX, y: betterMinY),
+            Point(x: betterMinX, y: betterMinY)
+        ])
+        
+        /*let corners = attemptToBunchLines(points as! [Point])
         if (corners.count != 5) {
             print("Too many/few corners")
             return (false, [])
@@ -266,7 +366,7 @@ class Geometry {
             }
             rectanglePoints.append(points[corners[i]])
         }
-        return (true, rectanglePoints as! [Point])
+        return (true, rectanglePoints as! [Point])*/
     }
     
     static func isInLine(_ coords: CGPoint, _ startPt: CGPoint, _ endPt: CGPoint) -> Bool {
