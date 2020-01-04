@@ -52,6 +52,7 @@ class DrawView: UIView {
     }
     
     func partialRemove(_ point: Point) {
+        var changes: [Change] = []
         for (str, stroke) in lines {
             for segment in stroke.segments {
                 let start = Int(floor(segment.start))
@@ -70,29 +71,42 @@ class DrawView: UIView {
                 for i in 0...(shapes.count - 1) {
                     let shape = shapes[i]
                     let z = i + start
+                    //print(shape)
+                    //print(point)
                     let result = Geometry.findIntersectionPoints(shape: shape, circle: point, radius: 15, depth: 0)
-                    print(result)
+                    //print(i, result)
                     switch result {
                     case let .LEFT_OPEN(t):
-                        handleChange(change: Change.betterPartial(str, Double(z) + Double(t), Double(z + 1)))
-                        print(t)
-                        return
+                        print(i, result)
+                        changes.append(Change.betterPartial(str, Double(z) + Double(t), Double(z + 1)))
+                        //handleChange(change: Change.betterPartial(str, Double(z) + Double(t), Double(z + 1)))
+                        //print(t)
+                        //return
                     case let .RIGHT_OPEN(t):
-                        handleChange(change: Change.betterPartial(str, Double(z), Double(z) + Double(t)))
-                        print(t)
-                        return
+                        print(i, result)
+                        changes.append(Change.betterPartial(str, Double(z), Double(z) + Double(t)))
+                        //handleChange(change: )
+                        //print(t)
+                        //return
                     case let .MIDDLE_OPEN(t1, t2):
                         //print(t1, t2)
-                        handleChange(change: Change.betterPartial(str, Double(z) + Double(t1), Double(z) + Double(t2)))
-                        return
+                        print(i, result)
+                        changes.append(Change.betterPartial(str, Double(z) + Double(t1), Double(z) + Double(t2)))
+                        //handleChange(change: )
+                        //return
                     case .CLOSED:
-                        handleChange(change: Change.betterPartial(str, Double(z), Double(z + 1)))
-                        return
+                        print(i, result)
+                        changes.append(Change.betterPartial(str, Double(z), Double(z + 1)))
+                        //handleChange(change: )
+                        //return
                     default:
                         break
                     }
                 }
             }
+        }
+        for change in changes {
+            handleChange(change: change)
         }
     }
     
@@ -337,6 +351,7 @@ class DrawView: UIView {
     }
     
     func sendPath(_ change: String) {
+        print(change)
         if (mainViewController!.isMaster) {
             if xmppController!.isConnected(){
                 xmppController!.room!.sendMessage(withBody: change)
