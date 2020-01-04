@@ -212,6 +212,12 @@
                                             <action selector="toggleShapeRecognition:" destination="Nsp-Ud-L6L" id="8db-3z-ocs"/>
                                         </connections>
                                     </barButtonItem>
+                                    <barButtonItem title="Share" image="square.and.arrow.up" catalog="system" id="O4s-ek-4RL" userLabel="Share Button">
+                                        <color key="tintColor" systemColor="labelColor" cocoaTouchSystemColor="darkTextColor"/>
+                                        <connections>
+                                            <action selector="share:" destination="Nsp-Ud-L6L" id="hWa-Mw-VNG"/>
+                                        </connections>
+                                    </barButtonItem>
                                     <barButtonItem style="plain" systemItem="flexibleSpace" id="7Cy-Mm-Lj0"/>
                                     <barButtonItem title="Session Details" image="person.3.fill" catalog="system" id="0bf-Rv-UNg">
                                         <color key="tintColor" systemColor="labelColor" cocoaTouchSystemColor="darkTextColor"/>
@@ -269,5 +275,6 @@
         <image name="pencil.tip.crop.circle.badge.minus" catalog="system" width="64" height="50"/>
         <image name="person.3.fill" catalog="system" width="71" height="34"/>
         <image name="skew" catalog="system" width="64" height="54"/>
+        <image name="square.and.arrow.up" catalog="system" width="56" height="64"/>
     </resources>
 </document>
