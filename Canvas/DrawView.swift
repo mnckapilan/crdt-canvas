@@ -257,6 +257,17 @@ class DrawView: UIView {
         }
         setButtonColour()
     }
+    
+    @IBAction func share(_ send: UIBarButtonItem) {
+        UIGraphicsBeginImageContext(self.frame.size)
+        self.layer.render(in: UIGraphicsGetCurrentContext()!)
+        let image = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+        let activityVC = UIActivityViewController(activityItems: [image as Any], applicationActivities: nil)
+        activityVC.popoverPresentationController?.sourceView = self
+        activityVC.popoverPresentationController?.barButtonItem = send
+        self.mainViewController?.present(activityVC, animated: true, completion: nil)
+    }
 
     func colourChosen(_ chosenColour: UIColor, _ chosenThickness: Float) {
         drawColour = chosenColour
