@@ -56,6 +56,7 @@ class BluetoothService : NSObject {
 
         if session.connectedPeers.count > 0 {
             do {
+                print("** sending via BT")
                 try self.session.send(data.data(using: .utf8)!, toPeers: session.connectedPeers, with: .reliable)
             }
             catch let error {
@@ -117,7 +118,7 @@ extension BluetoothService : MCSessionDelegate {
     func session(_ session: MCSession, didReceive data: Data, fromPeer peerID: MCPeerID) {
         //NSLog("%@", "didReceiveData: \(data)")
         let str = String(data: data, encoding: .utf8)!
-        self.delegate?.receiveData(manager: self, data: str)
+        self.delegate!.receiveData(manager: self, data: str)
     }
 
     func session(_ session: MCSession, didReceive stream: InputStream, withName streamName: String, fromPeer peerID: MCPeerID) {
