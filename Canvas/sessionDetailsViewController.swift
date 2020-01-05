@@ -43,7 +43,7 @@ class sessionDetailsViewController: UIViewController {
             print("** Connect Bluetooth to room: ", sender.text!)
             mainViewController!.bluetoothService = BluetoothService(withRoomName: sender.text!)
             mainViewController!.bluetoothService.delegate = mainViewController!
-            self.mainViewController!.drawView.sendPath(AutomergeJavaScript.shared.getAllChanges())
+            self.mainViewController!.drawView.sendPath(self.mainViewController!.drawView.engine.getAllChanges())
         }
 
     }
