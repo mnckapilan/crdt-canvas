@@ -158,7 +158,7 @@ class Stroke: Codable {
         thickness = try container.decode(Float.self, forKey: CodingKeys.thickness)
         
         let components = try container.decode([CGFloat].self, forKey: CodingKeys.colour)
-        colour = UIColor(red: components[0], green: components[1], blue: components[2], alpha: 0)
+        colour = UIColor(red: components[0], green: components[1], blue: components[2], alpha: 1)
     }
     
     init(points: [Point], colour: UIColor, isShape: Bool = false, thickness: Float) {

@@ -219,6 +219,12 @@
                                         </connections>
                                     </barButtonItem>
                                     <barButtonItem style="plain" systemItem="flexibleSpace" id="7Cy-Mm-Lj0"/>
+                                    <barButtonItem title="Share" image="square.and.arrow.up" catalog="system" id="O4s-ek-4RL" userLabel="Share Button">
+                                        <color key="tintColor" systemColor="labelColor" cocoaTouchSystemColor="darkTextColor"/>
+                                        <connections>
+                                            <action selector="share:" destination="Nsp-Ud-L6L" id="hWa-Mw-VNG"/>
+                                        </connections>
+                                    </barButtonItem>
                                     <barButtonItem title="Session Details" image="person.3.fill" catalog="system" id="0bf-Rv-UNg">
                                         <color key="tintColor" systemColor="labelColor" cocoaTouchSystemColor="darkTextColor"/>
                                         <connections>
