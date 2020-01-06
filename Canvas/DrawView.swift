@@ -331,6 +331,7 @@ class DrawView: UIView {
     }
 
     func incomingChange(_ change: String) {
+        print("** incoming:" + change)
         self.lines = engine.applyExternalChanges(change)
         let decoder = JSONDecoder()
         //let value = try! decoder.decode(Change.self, from: NativeCRDTEngine.stringToData(change))
@@ -339,7 +340,7 @@ class DrawView: UIView {
     }
     
     func sendPath(_ change: String) {
-        print(change)
+        print("** sending change: " + change)
         if (mainViewController!.isMaster) {
             if xmppController!.isConnected() {
                 let t = XMPPMessage.init(type: XMPPMessage.MessageType.groupchat.rawValue, elementID: UIDevice.current.identifierForVendor!.uuidString)
