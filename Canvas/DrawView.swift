@@ -149,6 +149,22 @@ class DrawView: UIView {
         self.setNeedsDisplay()
     }
     
+    func refreshDisplay() {
+        undoStack = []
+        redoStack = []
+        for (key, value) in lines {
+            if value.segments.count > 0 {
+                let change = Change.betterPartial(key, 0, Double(value.points.count))
+                let returnValue = engine.addChange(change)
+                self.lines = returnValue.0
+                updateCache(change)
+                self.setNeedsDisplay()
+            }
+        }
+        //handleChange(change: Change.clearCanvas)
+        self.setNeedsDisplay()
+    }
+    
     func updateCache(_ change: Change) {
         /*switch change {
         case let .addPoint(_, i):

@@ -75,6 +75,11 @@ class NativeCRDTEngine: CRDTEngine {
         }
     }
     
+    func clearCRDT() {
+        doc = [:]
+        return
+    }
+    
     func addChange(_ change: Change) -> CRDTResult {
         handleChange(change)
         let encoder = JSONEncoder()

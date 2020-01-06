@@ -9,6 +9,7 @@ import MultipeerConnectivity
 import UIKit
 import FlexColorPicker
 import XMPPFrameworkSwift
+import Network
 
 class ViewController: UIViewController {
     
@@ -29,6 +30,7 @@ class ViewController: UIViewController {
     var currentRoom = "imperial4"
     var centreX: CGFloat!
     var centreY: CGFloat!
+    var monitor = NWPathMonitor()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -61,6 +63,20 @@ class ViewController: UIViewController {
         centreX = drawView.center.x
         centreY = drawView.center.y
         
+        monitor.pathUpdateHandler = { path in
+            if path.status == .satisfied {
+                print("** Internet Connected")
+                // Ask for all changes from someone
+                self.xmppController!.connect(self.currentRoom)
+                
+            } else {
+                print("** Internet Disconnected")
+                // Have an icon which displays the status of internet and bluetooth
+            }
+        }
+        
+        let queue = DispatchQueue(label: "Monitor")
+        monitor.start(queue: queue)
     }
     
     @IBAction func getGesture(_ gesture : UIPanGestureRecognizer){
@@ -170,6 +186,8 @@ extension ViewController : BluetoothServiceDelegate {
             }
         }
     }
+    
+    
 
 
 }

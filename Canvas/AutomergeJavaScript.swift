@@ -123,4 +123,8 @@ class AutomergeJavaScript: NSObject, CRDTEngine {
                 
         
     }
+    
+    func clearCRDT() {
+        print("TODO")
+    }
 }

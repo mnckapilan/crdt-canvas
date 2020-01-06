@@ -16,4 +16,5 @@ protocol CRDTEngine {
     func addChange(_ change: Change) -> CRDTResult
     func applyExternalChanges(_ changes: String) -> CRDTDocument
     func getAllChanges() -> String
+    func clearCRDT()
 }
