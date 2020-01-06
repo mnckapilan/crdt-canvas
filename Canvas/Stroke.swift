@@ -79,7 +79,7 @@ enum Change: Encodable, Decodable {
             var blue: CGFloat = 0
             var alpha: CGFloat = 0
             stroke.colour.getRed(&red, green: &green, blue: &blue, alpha: &alpha)
-            try container.encode([red * 255, green * 255, blue * 255], forKey: CodingKeys.colour)
+            try container.encode([floor(red * 255), floor(green * 255), floor(blue * 255)], forKey: CodingKeys.colour)
             try container.encode(i, forKey: CodingKeys.identifier)
        // case .clearCanvas:
        //     try container.encode("CLEAR_CANVAS", forKey: CodingKeys.type)

@@ -31,6 +31,9 @@ class sessionDetailsViewController: UIViewController {
     @IBAction func changeRoom(sender: UITextField) {
         if (sender.text != nil) {
             mainViewController!.currentRoom = sender.text!
+            mainViewController!.drawView!.refreshDisplay()
+            mainViewController!.drawView!.engine.clearCRDT()
+            print("CRDT Emptied")
             print("** Disconnect XMPP")
             mainViewController!.xmppController!.disconnect()
             print("** Connect XMPP to room: ", sender.text!)

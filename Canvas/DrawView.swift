@@ -149,6 +149,22 @@ class DrawView: UIView {
         self.setNeedsDisplay()
     }
     
+    func refreshDisplay() {
+        undoStack = []
+        redoStack = []
+        for (key, value) in lines {
+            if value.segments.count > 0 {
+                let change = Change.betterPartial(key, 0, Double(value.points.count))
+                let returnValue = engine.addChange(change)
+                self.lines = returnValue.0
+                updateCache(change)
+                self.setNeedsDisplay()
+            }
+        }
+        //handleChange(change: Change.clearCanvas)
+        self.setNeedsDisplay()
+    }
+    
     func updateCache(_ change: Change) {
         /*switch change {
         case let .addPoint(_, i):
@@ -244,10 +260,12 @@ class DrawView: UIView {
     
     func redrawRectangle(_ id: String, _ points: [Point]) {
         let line = lines[id]!
-        handleChange(change: Change.removeStroke(id))
+        handleChange(change: Change.betterPartial(id, 0, Double(lines[id]!.points.count)))
+        //handleChange(change: Change.removeStroke(id))
         let stroke = Stroke(points: points, colour: line.colour, isShape: true, thickness: line.thickness)
         currentIdentifier = getIdentifier()
         handleChange(change: Change.addStroke(stroke, currentIdentifier))
+        handleChange(change: Change.addPoint(Array(stroke.points[1...]), currentIdentifier))
     }
     
     @IBAction func toggleShapeRecognition(_ sender: UIBarButtonItem) {
@@ -306,9 +324,12 @@ class DrawView: UIView {
         case let .addStroke(_, str):
             return Change.removeStroke(str)
         case let .removeStroke(str):
-            return Change.addStroke(lines[str]!, getIdentifier())
+            //return Change.addStroke(lines[str]!, getIdentifier())
+            return Change.megaAction([str:lines[str]!])
         //case .clearCanvas:
         //    return nil
+        case let .megaAction(t):
+            return Change.removeStroke(t.keys.first!)
         default:
             return nil
         }
@@ -326,6 +347,7 @@ class DrawView: UIView {
         if let change = redoStack.popLast() {
             let inverse = getInverseChange(change: change)!
             undoStack.append(inverse)
+            print("***" , change)
             handleChange(change: change)
         }
     }

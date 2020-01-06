@@ -18,7 +18,12 @@ class NativeCRDTEngine: CRDTEngine {
             if doc[i] != nil {
                 //print("add point")
                 doc[i]?.points.append(contentsOf: point)
-                doc[i]?.segments[0].end += Double(point.count)
+                if doc[i]!.segments.count == 0 {
+                    var l = doc[i]!.points.count
+                    doc[i]!.segments = [Segment(Double(l), Double(l + point.count))]
+                } else {
+                    doc[i]?.segments[0].end += Double(point.count)
+                }
             }
         case let .addStroke(stroke, i):
             //print("add stroke \(i)")
@@ -73,6 +78,11 @@ class NativeCRDTEngine: CRDTEngine {
         //case .clearCanvas:
         //    doc = [:]
         }
+    }
+    
+    func clearCRDT() {
+        doc = [:]
+        return
     }
     
     func addChange(_ change: Change) -> CRDTResult {
