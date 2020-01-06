@@ -8,6 +8,7 @@
 
 import UIKit
 import MultipeerConnectivity
+import XMPPFrameworkSwift
 
 class DrawView: UIView {
     
@@ -172,7 +173,7 @@ class DrawView: UIView {
             }
             if pointsToWrite.count >= 5 {
                 pointsToWrite.remove(at: 0)
-                handleChange(change: Change.addPoint(pointsToWrite, currentIdentifier, lines[currentIdentifier]!.points.count))
+                handleChange(change: Change.addPoint(pointsToWrite, currentIdentifier))
                 pointsToWrite = [pointsToWrite.last!]
             }
         case .PARTIAL_REMOVE:
@@ -213,9 +214,9 @@ class DrawView: UIView {
             return
         }
         
-        print(lines.count)
+        //print(lines.count)
         for (id, stroke) in lines {
-            print(id)
+            //print(id)
             context.setStrokeColor(stroke.colour.cgColor)
             context.setLineWidth(CGFloat(stroke.thickness))
             context.setLineCap(CGLineCap.round)
@@ -289,21 +290,26 @@ class DrawView: UIView {
     @IBAction func clearCanvas(_ sender: Any) {
         undoStack = []
         redoStack = []
-        handleChange(change: Change.clearCanvas)
+        for (key, value) in lines {
+            if value.segments.count > 0 {
+                handleChange(change: Change.betterPartial(key, 0, Double(value.points.count)))
+            }
+        }
+        //handleChange(change: Change.clearCanvas)
         self.setNeedsDisplay()
     }
     
     func getInverseChange(change: Change) -> Change? {
         switch change {
-        case .addPoint(_, _, _):
+        case .addPoint(_, _):
             return nil
         case let .addStroke(_, str):
             return Change.removeStroke(str)
         case let .removeStroke(str):
             return Change.addStroke(lines[str]!, getIdentifier())
-        case .clearCanvas:
-            return nil
-        case .betterPartial(_, _, _):
+        //case .clearCanvas:
+        //    return nil
+        default:
             return nil
         }
     }
@@ -327,16 +333,18 @@ class DrawView: UIView {
     func incomingChange(_ change: String) {
         self.lines = engine.applyExternalChanges(change)
         let decoder = JSONDecoder()
-        let value = try! decoder.decode([Change].self, from: NativeCRDTEngine.stringToData(change))
-        value.forEach { self.updateCache($0) }
+        //let value = try! decoder.decode(Change.self, from: NativeCRDTEngine.stringToData(change))
+        //value.forEach { self.updateCache($0) }
         self.setNeedsDisplay()
     }
     
     func sendPath(_ change: String) {
         print(change)
         if (mainViewController!.isMaster) {
-            if xmppController!.isConnected(){
-                xmppController!.room!.sendMessage(withBody: change)
+            if xmppController!.isConnected() {
+                let t = XMPPMessage.init(type: XMPPMessage.MessageType.groupchat.rawValue, elementID: UIDevice.current.identifierForVendor!.uuidString)
+                t.addBody(change)
+                xmppController!.room!.send(t)
             }
         }
         bluetoothService!.send(data: change)

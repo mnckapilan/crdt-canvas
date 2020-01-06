@@ -18,67 +18,91 @@ enum Change: Encodable, Decodable {
         case "APPEND":
             let point = try container.decode([Point].self, forKey: CodingKeys.points)
             let identifier = try container.decode(String.self, forKey: CodingKeys.identifier)
-            let index = try container.decode(Int.self, forKey: CodingKeys.index)
-            self = .addPoint(point, identifier, index)
+            //let index = try container.decode(Int.self, forKey: CodingKeys.index)
+            self = .addPoint(point, identifier)
         case "ADD":
-            let stroke = try container.decode(Stroke.self, forKey: CodingKeys.stroke)
+            //let stroke = try container.decode(Stroke.self, forKey: CodingKeys.stroke)
+            let point = try container.decode(Point.self, forKey: CodingKeys.start)
+            let thickness = try container.decode(Float.self, forKey: CodingKeys.weight)
+            let components = try container.decode([CGFloat].self, forKey: CodingKeys.colour)
+            let colour = UIColor(red: components[0] / 255, green: components[1] / 255, blue: components[2] / 255, alpha: 1)
             let identifier = try container.decode(String.self, forKey: CodingKeys.identifier)
-            self = .addStroke(stroke, identifier)
-        case "CLEAR_CANVAS":
-            self = .clearCanvas
+            self = .addStroke(Stroke(points: [point], colour: colour, isShape: false, thickness: thickness), identifier)
+        //case "CLEAR_CANVAS":
+        //    self = .clearCanvas
         case "REMOVE_STROKE":
             let identifier = try container.decode(String.self, forKey: CodingKeys.identifier)
             self = .removeStroke(identifier)
-        case "BETTER_PARTIAL":
+        case "DELETE":
             let identifier = try container.decode(String.self, forKey: CodingKeys.identifier)
-            let lower = try container.decode(Double.self, forKey: CodingKeys.lower)
-            let upper = try container.decode(Double.self, forKey: CodingKeys.upper)
+            let lower = try container.decode(Double.self, forKey: CodingKeys.start_offset)
+            let upper = try container.decode(Double.self, forKey: CodingKeys.end_offset)
             self = .betterPartial(identifier, lower, upper)
+        case "MEGA":
+            let data = try container.decode([String: Stroke].self, forKey: CodingKeys.data)
+            self = .megaAction(data)
         default:
-            self = .clearCanvas
+            fatalError("Fatal error")
+            //    self = .clearCanvas
         }
     }
     
     enum CodingKeys: String, CodingKey {
+        case weight
+        case colour
+        case start
         case type
         case stroke
         case points
         case identifier
         case index
-        case lower
-        case upper
+        case start_offset
+        case end_offset
+        case data
     }
     
     func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         switch self {
-        case let .addPoint(point, i, index):
+        case let .addPoint(point, i):
             try container.encode("APPEND", forKey: CodingKeys.type)
             try container.encode(point, forKey: CodingKeys.points)
             try container.encode(i, forKey: CodingKeys.identifier)
-            try container.encode(index, forKey: CodingKeys.index)
+            //try container.encode(index, forKey: CodingKeys.index)
         case let .addStroke(stroke, i):
             try container.encode("ADD", forKey: CodingKeys.type)
-            try container.encode(stroke, forKey: CodingKeys.stroke)
+            //try container.encode(stroke, forKey: CodingKeys.stroke)
+            try container.encode(stroke.thickness, forKey: CodingKeys.weight)
+            try container.encode(stroke.points[0], forKey: CodingKeys.start)
+            var red: CGFloat = 0
+            var green: CGFloat = 0
+            var blue: CGFloat = 0
+            var alpha: CGFloat = 0
+            stroke.colour.getRed(&red, green: &green, blue: &blue, alpha: &alpha)
+            try container.encode([red * 255, green * 255, blue * 255], forKey: CodingKeys.colour)
             try container.encode(i, forKey: CodingKeys.identifier)
-        case .clearCanvas:
-            try container.encode("CLEAR_CANVAS", forKey: CodingKeys.type)
+       // case .clearCanvas:
+       //     try container.encode("CLEAR_CANVAS", forKey: CodingKeys.type)
         case let .removeStroke(str):
             try container.encode("REMOVE_STROKE", forKey: CodingKeys.type)
             try container.encode(str, forKey: CodingKeys.identifier)
         case let .betterPartial(str, i, j):
-            try container.encode("BETTER_PARTIAL", forKey: CodingKeys.type)
+            try container.encode("DELETE", forKey: CodingKeys.type)
             try container.encode(str, forKey: CodingKeys.identifier)
-            try container.encode(i, forKey: CodingKeys.lower)
-            try container.encode(j, forKey: CodingKeys.upper)
+            try container.encode(i, forKey: CodingKeys.start_offset)
+            try container.encode(j, forKey: CodingKeys.end_offset)
+        case let .megaAction(mega):
+            try container.encode("MEGA", forKey: CodingKeys.type)
+            try container.encode(mega, forKey: CodingKeys.data)
         }
     }
     
     case addStroke(Stroke, String)
     case removeStroke(String)
-    case addPoint([Point], String, Int)
-    case clearCanvas
+    case addPoint([Point], String)
+    //case clearCanvas
     case betterPartial(String, Double, Double)
+    case megaAction([String: Stroke])
 }
 
 enum Mode {
@@ -256,7 +280,25 @@ class Stroke: Codable {
                 prevPoint = point
                 s += 1
             }
-        }
+            
+            if realEnd == points.count - 1 && points.count > 1 {
+                let pointBefore = points[realEnd - 1]
+                let point = points[realEnd]
+                
+                let cp1 = Point(
+                    x: (2 * pointBefore.x + point.x) / 3,
+                    y: (2 * pointBefore.y + point.y) / 3
+                )
+                
+                let cp2 = Point(
+                    x: (pointBefore.x + 2 * point.x) / 3,
+                    y: (pointBefore.y + 2 * point.y) / 3
+                )
+                
+                returnValue.append(.Curve(last, cp1, cp2, point))
+            }
+       }
+        
         return returnValue
     }
         
@@ -281,7 +323,7 @@ class Stroke: Codable {
                     continue
                 }
                 
-                print(curves.count)
+                //print(curves.count)
                 for i in 0...(curves.count - 1) {
                     var curve = curves[i]
                     
@@ -290,7 +332,7 @@ class Stroke: Codable {
                     } else if i == 0 {
                         curve = Geometry.trim(curve, Float(startDist), 1)
                     } else if i == curves.count - 1 && endDist != 0 {
-                        print("end", endDist)
+                        //print("end", endDist)
                         //curve = Geometry.trim(curve, 0, 1)
                         curve = Geometry.trim(curve, 0, Float(endDist))
                     }
