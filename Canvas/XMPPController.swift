@@ -77,6 +77,10 @@ extension XMPPController: XMPPRoomDelegate {
     
     func xmppStream(_ sender: XMPPStream, didReceive message: XMPPMessage) {
         // If it is the master, then render it and also send it over bluetooth to every other device
+        print(message.elementID)
+        if (message.elementID != nil && message.elementID! == UIDevice.current.identifierForVendor!.uuidString) {
+            return
+        }
         if (mainViewController!.isMaster && message.body != nil) {
             drawView?.incomingChange(message.body!)
             mainViewController!.bluetoothService.send(data: message.body!)
@@ -107,7 +111,7 @@ extension XMPPController: XMPPStreamDelegate {
     
     func xmppStreamDidAuthenticate(_ sender: XMPPStream) {
         self.xmppStream.send(XMPPPresence())
-        let userID = XMPPJID(string: self.currentRoom! + "@conference.cloud-vm-41-92.doc.ic.ac.uk")!
+        let userID = XMPPJID(string: self.currentRoom! + "@conference.xmpp.lets-draw.live")!
         let roomStorage = XMPPRoomCoreDataStorage.sharedInstance()!
         let room = XMPPRoom(roomStorage: roomStorage, jid: userID)
         self.room = room

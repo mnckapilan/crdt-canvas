@@ -24,9 +24,9 @@ class ViewController: UIViewController {
     var colourPickerVC: ColourPickerViewController!
     var xmppController: XMPPController?
     var connectedDevices: [String]?
-    var bluetoothService = BluetoothService(withRoomName: "imperial")
+    var bluetoothService = BluetoothService(withRoomName: "imperial4")
     var isMaster = true
-    var currentRoom = "imperial"
+    var currentRoom = "imperial4"
     var centreX: CGFloat!
     var centreY: CGFloat!
 
@@ -38,10 +38,10 @@ class ViewController: UIViewController {
         colourPickerVC = sb.instantiateViewController(
             withIdentifier: "colourPickerViewController") as? ColourPickerViewController
         colourPicker.tintColor = UIColor.blue
-        try! self.xmppController = XMPPController(hostName: "cloud-vm-41-92.doc.ic.ac.uk",
-        userJIDString: "jack@cloud-vm-41-92.doc.ic.ac.uk",
-             password: "testtest")
-        
+        try! self.xmppController = XMPPController(hostName: "localhost",
+        userJIDString: "grouptwo@xmpp.lets-draw.live",
+             password: "grouptwo")
+                
         self.xmppController!.connect(currentRoom)
         drawView.xmppController = self.xmppController
         self.xmppController!.drawView = drawView
@@ -117,8 +117,6 @@ class ViewController: UIViewController {
         self.present(colourPickerVC, animated: true) {
            // The popover is visible.
         }
-        
-        
     }
     
     func colourChange(_ sender: ColourPickerViewController) {
@@ -164,6 +162,7 @@ extension ViewController : BluetoothServiceDelegate {
                 print("** Is master: ", self.isMaster)
                 
                 //New person joined room, so send them all the changes
+                
                 self.drawView.sendPath(self.drawView.engine.getAllChanges())
             } else {
                 self.connectedDevices = []
