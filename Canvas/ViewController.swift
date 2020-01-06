@@ -25,9 +25,9 @@ class ViewController: UIViewController {
     var colourPickerVC: ColourPickerViewController!
     var xmppController: XMPPController?
     var connectedDevices: [String]?
-    var bluetoothService = BluetoothService(withRoomName: "imperial4")
+    var bluetoothService = BluetoothService(withRoomName: "imperial")
     var isMaster = true
-    var currentRoom = "imperial4"
+    var currentRoom = "imperial"
     var centreX: CGFloat!
     var centreY: CGFloat!
     var monitor = NWPathMonitor()
@@ -40,7 +40,7 @@ class ViewController: UIViewController {
         colourPickerVC = sb.instantiateViewController(
             withIdentifier: "colourPickerViewController") as? ColourPickerViewController
         colourPicker.tintColor = UIColor.blue
-        try! self.xmppController = XMPPController(hostName: "localhost",
+        try! self.xmppController = XMPPController(hostName: "xmpp.lets-draw.live",
         userJIDString: "grouptwo@xmpp.lets-draw.live",
              password: "grouptwo")
                 
@@ -67,6 +67,7 @@ class ViewController: UIViewController {
             if path.status == .satisfied {
                 print("** Internet Connected")
                 // Ask for all changes from someone
+                self.xmppController!.disconnect()
                 self.xmppController!.connect(self.currentRoom)
                 
             } else {
