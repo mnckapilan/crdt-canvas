@@ -77,7 +77,7 @@ extension XMPPController: XMPPRoomDelegate {
     
     func xmppStream(_ sender: XMPPStream, didReceive message: XMPPMessage) {
         // If it is the master, then render it and also send it over bluetooth to every other device
-        print(message.elementID)
+        print("THIS" , message.elementID)
         if (message.elementID != nil && message.elementID! == UIDevice.current.identifierForVendor!.uuidString) {
             return
         }
