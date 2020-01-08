@@ -15,6 +15,9 @@ class sessionDetailsViewController: UIViewController {
     var mcAdvertiserAssistant: MCAdvertiserAssistant!
     var mainViewController:ViewController?
     @IBOutlet var textField: UITextField!
+    @IBOutlet var connectionIndicator: UIImageView!
+    @IBOutlet var bluetoothIndicator: UIImageView!
+
     
     var datasourceArray : [String]?
     static let CELL_RESUE_ID = "POPOVER_CELL_REUSE_ID"
@@ -22,6 +25,21 @@ class sessionDetailsViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         textField.text = mainViewController!.currentRoom
+        let homeSymbolConfiguration = UIImage.SymbolConfiguration(pointSize: 55, weight: .black)
+        if (mainViewController!.connected) {
+            connectionIndicator.image = UIImage(systemName: "wifi", withConfiguration: homeSymbolConfiguration)
+            connectionIndicator.tintColor = UIColor.green
+        } else {
+            connectionIndicator.image = UIImage(systemName: "wifi.exclamationmark", withConfiguration: homeSymbolConfiguration)
+            connectionIndicator.tintColor = UIColor.red
+
+        }
+        
+        if (mainViewController!.bluetoothService.session.connectedPeers.count > 0){
+            bluetoothIndicator.tintColor = UIColor.green
+        } else {
+            bluetoothIndicator.tintColor = UIColor.red
+        }
     }
     
     override func viewWillAppear(_ animated: Bool) {
