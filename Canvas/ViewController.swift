@@ -25,9 +25,9 @@ class ViewController: UIViewController {
     var colourPickerVC: ColourPickerViewController!
     var xmppController: XMPPController?
     var connectedDevices: [String]?
-    var bluetoothService = BluetoothService(withRoomName: "imperial")
+    var bluetoothService = BluetoothService(withRoomName: "imperial4")
     var isMaster = true
-    var currentRoom = "imperial"
+    var currentRoom = "imperial4"
     var centreX: CGFloat!
     var centreY: CGFloat!
     var monitor = NWPathMonitor()

@@ -251,10 +251,11 @@ class DrawView: UIView {
         let start = line.points[0]
         let end = line.points[count - 1]
         handleChange(change: Change.removeStroke(id))
-        let stroke = Stroke(points: [start, end], colour: line.colour, isShape: true, thickness: line.thickness)
+        let stroke = Stroke(points: [start], colour: line.colour, isShape: true, thickness: line.thickness)
         print("stroke to be redrawn:", stroke.points)
         currentIdentifier = getIdentifier()
         handleChange(change: Change.addStroke(stroke, currentIdentifier))
+        handleChange(change: Change.addPoint([end], currentIdentifier))
         //undoStack.append((currentIdentifier, line, Stroke.ActionType.redraw))
     }
     
@@ -262,10 +263,10 @@ class DrawView: UIView {
         let line = lines[id]!
         handleChange(change: Change.betterPartial(id, 0, Double(lines[id]!.points.count)))
         //handleChange(change: Change.removeStroke(id))
-        let stroke = Stroke(points: points, colour: line.colour, isShape: true, thickness: line.thickness)
+        let stroke = Stroke(points: [points[0]], colour: line.colour, isShape: true, thickness: line.thickness)
         currentIdentifier = getIdentifier()
         handleChange(change: Change.addStroke(stroke, currentIdentifier))
-        handleChange(change: Change.addPoint(Array(stroke.points[1...]), currentIdentifier))
+        handleChange(change: Change.addPoint(Array(points[1...]), currentIdentifier))
     }
     
     @IBAction func toggleShapeRecognition(_ sender: UIBarButtonItem) {

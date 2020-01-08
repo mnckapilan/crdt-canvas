@@ -27,7 +27,13 @@ enum Change: Encodable, Decodable {
             let components = try container.decode([CGFloat].self, forKey: CodingKeys.colour)
             let colour = UIColor(red: components[0] / 255, green: components[1] / 255, blue: components[2] / 255, alpha: 1)
             let identifier = try container.decode(String.self, forKey: CodingKeys.identifier)
-            self = .addStroke(Stroke(points: [point], colour: colour, isShape: false, thickness: thickness), identifier)
+            var isShape = false
+            do {
+                isShape = try container.decode(Bool.self, forKey: CodingKeys.is_shape)
+            } catch {
+                // oh no
+            }
+            self = .addStroke(Stroke(points: [point], colour: colour, isShape: isShape, thickness: thickness), identifier)
         //case "CLEAR_CANVAS":
         //    self = .clearCanvas
         case "REMOVE_STROKE":
@@ -59,6 +65,7 @@ enum Change: Encodable, Decodable {
         case start_offset
         case end_offset
         case data
+        case is_shape
     }
     
     func encode(to encoder: Encoder) throws {
@@ -74,6 +81,7 @@ enum Change: Encodable, Decodable {
             //try container.encode(stroke, forKey: CodingKeys.stroke)
             try container.encode(stroke.thickness, forKey: CodingKeys.weight)
             try container.encode(stroke.points[0], forKey: CodingKeys.start)
+            try container.encode(stroke.isShape, forKey: CodingKeys.is_shape)
             var red: CGFloat = 0
             var green: CGFloat = 0
             var blue: CGFloat = 0
