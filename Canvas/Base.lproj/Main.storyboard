@@ -16,7 +16,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="4Kb-JJ-06e">
-                                <rect key="frame" x="0.0" y="186" width="414" height="676"/>
+                                <rect key="frame" x="0.0" y="216" width="414" height="646"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                                 <connections>
                                     <outlet property="dataSource" destination="Eku-Qk-D68" id="9RU-lk-tnv"/>
@@ -24,7 +24,7 @@
                                 </connections>
                             </tableView>
                             <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Dy6-19-Wrn" customClass="TextFieldWithReturn" customModule="Canvas" customModuleProvider="target">
-                                <rect key="frame" x="50" y="109" width="314" height="34"/>
+                                <rect key="frame" x="50" y="139" width="314" height="34"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits"/>
                                 <connections>
@@ -32,21 +32,41 @@
                                 </connections>
                             </textField>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Please enter a room to connect to:" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Gm5-XN-863">
-                                <rect key="frame" x="50" y="69" width="314" height="21"/>
+                                <rect key="frame" x="50" y="99" width="314" height="21"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" image="wifi" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="1hS-vf-NxK" userLabel="Connection Indicator">
+                                <rect key="frame" x="354" y="56.666666666666657" width="40" height="35.000000000000007"/>
+                                <color key="tintColor" systemColor="systemGreenColor" red="0.20392156859999999" green="0.78039215689999997" blue="0.34901960780000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="40" id="23u-sE-wbe"/>
+                                    <constraint firstAttribute="width" constant="40" id="g84-f1-eLZ"/>
+                                </constraints>
+                            </imageView>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" image="person.3.fill" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="jbG-ux-vf3" userLabel="Connection Indicator">
+                                <rect key="frame" x="304" y="56.000000000000007" width="40" height="36.666666666666664"/>
+                                <color key="tintColor" systemColor="systemGreenColor" red="0.20392156859999999" green="0.78039215689999997" blue="0.34901960780000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="40" id="dwt-Uo-v6F"/>
+                                    <constraint firstAttribute="width" constant="40" id="qGg-r3-ry7"/>
+                                </constraints>
+                            </imageView>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <constraints>
+                            <constraint firstItem="jbG-ux-vf3" firstAttribute="top" secondItem="1Ni-w7-pap" secondAttribute="top" constant="10" id="086-xl-f8b"/>
                             <constraint firstItem="Dy6-19-Wrn" firstAttribute="top" secondItem="Gm5-XN-863" secondAttribute="bottom" constant="19" id="2qo-WJ-S64"/>
+                            <constraint firstItem="1hS-vf-NxK" firstAttribute="leading" secondItem="jbG-ux-vf3" secondAttribute="trailing" constant="10" id="3mb-PW-utF"/>
                             <constraint firstItem="Gm5-XN-863" firstAttribute="leading" secondItem="Dy6-19-Wrn" secondAttribute="leading" id="4kq-9u-2tU"/>
                             <constraint firstItem="Gm5-XN-863" firstAttribute="trailing" secondItem="Dy6-19-Wrn" secondAttribute="trailing" id="ABY-ge-aUU"/>
+                            <constraint firstItem="1hS-vf-NxK" firstAttribute="top" secondItem="7XA-E9-kUS" secondAttribute="topMargin" constant="10" id="BCj-V5-Z6h"/>
+                            <constraint firstItem="1hS-vf-NxK" firstAttribute="trailing" secondItem="7XA-E9-kUS" secondAttribute="trailingMargin" id="EjI-ci-xFd"/>
                             <constraint firstItem="1Ni-w7-pap" firstAttribute="trailing" secondItem="Dy6-19-Wrn" secondAttribute="trailing" constant="50" id="KXL-xF-CNC"/>
-                            <constraint firstItem="Gm5-XN-863" firstAttribute="top" secondItem="1Ni-w7-pap" secondAttribute="top" constant="25" id="MIs-db-SfD"/>
+                            <constraint firstItem="Gm5-XN-863" firstAttribute="top" secondItem="1Ni-w7-pap" secondAttribute="top" constant="55" id="MIs-db-SfD"/>
                             <constraint firstItem="1Ni-w7-pap" firstAttribute="trailing" secondItem="4Kb-JJ-06e" secondAttribute="trailing" id="NCt-VG-mF1"/>
-                            <constraint firstItem="4Kb-JJ-06e" firstAttribute="top" secondItem="1Ni-w7-pap" secondAttribute="top" constant="142" id="SPE-KV-Ijn"/>
+                            <constraint firstItem="4Kb-JJ-06e" firstAttribute="top" secondItem="1Ni-w7-pap" secondAttribute="top" constant="172" id="SPE-KV-Ijn"/>
                             <constraint firstItem="Dy6-19-Wrn" firstAttribute="centerX" secondItem="7XA-E9-kUS" secondAttribute="centerX" id="X4s-4c-Lbp"/>
                             <constraint firstItem="1Ni-w7-pap" firstAttribute="bottom" secondItem="4Kb-JJ-06e" secondAttribute="bottom" id="cKT-E3-Zm6"/>
                             <constraint firstItem="4Kb-JJ-06e" firstAttribute="leading" secondItem="1Ni-w7-pap" secondAttribute="leading" id="goi-tz-v32"/>
@@ -55,13 +75,15 @@
                         <viewLayoutGuide key="safeArea" id="1Ni-w7-pap"/>
                     </view>
                     <connections>
+                        <outlet property="bluetoothIndicator" destination="jbG-ux-vf3" id="yUt-Gi-mBh"/>
+                        <outlet property="connectionIndicator" destination="1hS-vf-NxK" id="Zye-Us-1gf"/>
                         <outlet property="tableView" destination="4Kb-JJ-06e" id="bJ1-G5-2ql"/>
                         <outlet property="textField" destination="Dy6-19-Wrn" id="pCo-tZ-wuE"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Cmw-kx-JrQ" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="867.6258992805756" y="109.54773869346734"/>
+            <point key="canvasLocation" x="866.66666666666674" y="109.15178571428571"/>
         </scene>
         <!--Colour Picker View Controller-->
         <scene sceneID="zSd-Y9-nTK">
@@ -276,5 +298,6 @@
         <image name="person.3.fill" catalog="system" width="71" height="34"/>
         <image name="skew" catalog="system" width="64" height="54"/>
         <image name="square.and.arrow.up" catalog="system" width="56" height="64"/>
+        <image name="wifi" catalog="system" width="64" height="46"/>
     </resources>
 </document>

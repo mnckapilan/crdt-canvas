@@ -31,6 +31,7 @@ class ViewController: UIViewController {
     var centreX: CGFloat!
     var centreY: CGFloat!
     var monitor = NWPathMonitor()
+    var connected = true
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -69,10 +70,12 @@ class ViewController: UIViewController {
                 // Ask for all changes from someone
                 self.xmppController!.disconnect()
                 self.xmppController!.connect(self.currentRoom)
+                self.connected = true
                 
             } else {
                 print("** Internet Disconnected")
                 // Have an icon which displays the status of internet and bluetooth
+                self.connected = false
             }
         }
         
