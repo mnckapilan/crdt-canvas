@@ -26,7 +26,7 @@ class sessionDetailsViewController: UIViewController {
         super.viewDidLoad()
         textField.text = mainViewController!.currentRoom
         let homeSymbolConfiguration = UIImage.SymbolConfiguration(pointSize: 55, weight: .black)
-        if (mainViewController!.connected) {
+        if (mainViewController!.connected && mainViewController!.xmppController!.isConnected()) {
             connectionIndicator.image = UIImage(systemName: "wifi", withConfiguration: homeSymbolConfiguration)
             connectionIndicator.tintColor = UIColor.green
         } else {

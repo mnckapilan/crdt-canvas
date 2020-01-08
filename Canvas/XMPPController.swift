@@ -49,11 +49,13 @@ class XMPPController: NSObject {
     }
     
     func connect(_ name: String) {
+        print("*** XMPP Connecting")
         if !self.xmppStream.isDisconnected {
             return
         }
+        print("*** XMPP Connecting")
         self.currentRoom = name
-        try! self.xmppStream.connect(withTimeout: XMPPStreamTimeoutNone)
+        do {try self.xmppStream.connect(withTimeout: XMPPStreamTimeoutNone)} catch {print("XMPP Fail: ", error)}
     }
     
     func disconnect() {

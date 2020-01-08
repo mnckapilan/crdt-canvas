@@ -25,9 +25,9 @@ class ViewController: UIViewController {
     var colourPickerVC: ColourPickerViewController!
     var xmppController: XMPPController?
     var connectedDevices: [String]?
-    var bluetoothService = BluetoothService(withRoomName: "imperial4")
+    var bluetoothService = BluetoothService(withRoomName: "imperial5")
     var isMaster = true
-    var currentRoom = "imperial4"
+    var currentRoom = "imperial5"
     var centreX: CGFloat!
     var centreY: CGFloat!
     var monitor = NWPathMonitor()
@@ -160,7 +160,9 @@ extension ViewController : BluetoothServiceDelegate {
             //Send to XMPP if master
             if (self.isMaster) {
                 if self.xmppController!.isConnected(){
-                    self.xmppController!.room!.sendMessage(withBody: data)
+                    let t = XMPPMessage.init(type: XMPPMessage.MessageType.groupchat.rawValue, elementID: UIDevice.current.identifierForVendor!.uuidString)
+                    t.addBody(data)
+                    self.xmppController!.room!.send(t)
                 }
             }
             
